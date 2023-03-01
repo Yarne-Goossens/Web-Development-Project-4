@@ -4,7 +4,17 @@ import cors from "cors";
 import * as bodyParser from "body-parser";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-
+/**
+ * @swagger
+ * /planets:
+ * get:
+ *  summary: Get all planets
+ *  responses:
+ *    200:
+ *    description: Get all planets
+ *    content:
+ *      application/json:
+**/
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
