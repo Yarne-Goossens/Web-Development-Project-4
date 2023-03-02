@@ -1,7 +1,7 @@
 export class Planet {
     readonly planet_id: number
     readonly account_id?: number
-    readonly webshop_name: String
+    readonly webshop_name?: String
     readonly radius: number
     readonly semimajor_axis: bigint
     readonly mass: bigint
@@ -16,7 +16,7 @@ export class Planet {
         this.planet_name = planet_name
     }
 
-    static createPlanet({planet_id, webshop_name, radius, semimajor_axis, mass, planet_name}) {
+    static create_planet({planet_id, webshop_name, radius, semimajor_axis, mass, planet_name}) {
         return new Planet( planet_id,webshop_name, radius, semimajor_axis, mass, planet_name)
     }
 }
