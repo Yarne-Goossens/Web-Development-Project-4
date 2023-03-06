@@ -46,10 +46,11 @@ export const planet_router = express.Router();
 
 planet_router.get('/planetoverview', async(req:Request, res:Response) => {
     try {
-        
         const planets = planetService.getAllPlanetsService();
+        
         res.status(200).json({planets});
     } catch (error) {
+        console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
     }
 });
@@ -84,18 +85,20 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  * 
  *        - name: semimajor_axis
  *          in: query
- *          description: semimajor_axis
+ *          description: semimajor_axis in mathematical notation or normal notation
  *          required: true
  *          schema:  
- *            type: number
+ *            type: string
+ *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
  * 
  *        - name: mass
  *          in: query
- *          description: mass
+ *          description: mass in mathematical notation or normal notation
  *          required: true
  *          schema:
- *            type: number
- * 
+ *            type: string
+ *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *
  *        - name: webshop_name
  *          in: query
  *          description: webshop_name
@@ -106,12 +109,7 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        console.log(req.query.radius);
-        console.log(req.query.semimajor_axis);
-        console.log(req.query.mass);
-        const planets = planetService.addPlanetService(
-
-            new Planet(String(req.query.planet_name), Number(req.query.radius), BigInt(req.query.semimajor_axis), BigInt(req.query.mass), String(req.query.webshop_name)));
+        const planets = planetService.addPlanetService(new Planet(String(req.query.planet_name), Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.webshop_name)));
         
         res.status(200).json({planets});
     } catch (error) {

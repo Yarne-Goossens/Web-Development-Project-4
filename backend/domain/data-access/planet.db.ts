@@ -13,7 +13,7 @@ export class PlanetDb{
     public addPlanet=(planet:Planet)=>{
         this.id++;
         planet.setPlanet_id(this.id);
-        this.planets.push(planet);
+        this.planets.push(Planet.create_planet(planet));
     }
 
     public getAllPlanets=():Planet[]=>{  

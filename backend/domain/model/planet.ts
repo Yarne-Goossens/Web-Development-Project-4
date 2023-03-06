@@ -3,12 +3,12 @@ export class Planet {
     readonly planet_name: String
     planet_id: number
     readonly account_id?: number
-    readonly webshop_name?: String
+    readonly webshop_name: String
     readonly radius: number
-    readonly semimajor_axis: bigint
-    readonly mass: bigint
+    readonly semimajor_axis: number
+    readonly mass: number
 
-    constructor( webshop_name: String, radius: number, semimajor_axis: bigint, mass: bigint, planet_name: String) {
+    constructor( webshop_name: String, radius: number, semimajor_axis: number, mass: number, planet_name: String) {
         
         this.planet_name = planet_name
         this.radius = radius
