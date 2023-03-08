@@ -5,7 +5,7 @@ import * as bodyParser from "body-parser";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { planet_router } from "./controller/planet.routes";
-
+import { satellite_router } from "./controller/satellite.routes";
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
@@ -27,6 +27,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/planet",planet_router);
+
+app.use("/satellite",satellite_router);
 
 app.get("/status", (req, res) => {
   res.json({ message: "Back-end is running..." });

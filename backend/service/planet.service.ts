@@ -7,4 +7,10 @@ export class PlanetService{
     getAllPlanetsService=():Planet[]=>this.planetDb.getAllPlanets();
 
     addPlanetService=(planet:Planet)=>this.planetDb.addPlanet(planet);
+
+    editPlanetService=(id:number,planet:Planet)=>this.planetDb.editPlanet(id,planet);
+
+    deletePlanetService=(id:number)=>this.planetDb.deletePlanet(id);
+
+    getPlanetWithIdService=(id:number)=>this.planetDb.getPlanetWithId(id);
 }

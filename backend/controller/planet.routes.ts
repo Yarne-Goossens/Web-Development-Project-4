@@ -12,9 +12,9 @@
  *           radius:
  *             type: number
  *           semimajor_axis:
- *             type: bigint
+ *             type: number
  *           mass:
- *             type: bigint
+ *             type: number
  *           planet_name:
  *             type: string
  *           webshop_name:
@@ -47,7 +47,6 @@ export const planet_router = express.Router();
 planet_router.get('/planetoverview', async(req:Request, res:Response) => {
     try {
         const planets = planetService.getAllPlanetsService();
-        
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
@@ -109,9 +108,124 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        const planets = planetService.addPlanetService(new Planet(String(req.query.planet_name), Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.webshop_name)));
-        
+        const planets = await planetService.addPlanetService(new Planet(String(req.query.planet_name), Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.webshop_name)));
         res.status(200).json({planets});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+/** 
+ * @swagger
+ * /planet/editplanet/{planet_id}:
+ *   put:
+ *      summary: edit a Planet through a form using the planet_id
+ *      parameters:
+ *        - name: planet_id
+ *          in: path
+ *          description: planet id to edit
+ *          required: true
+ *          schema:
+ *            type: number
+ *        - name: planet_name
+ *          in: query
+ *          description: planet name
+ *          required: true
+ *          schema:
+ *            type: string
+ * 
+ *        - name: radius
+ *          in: query
+ *          description: radius
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *        - name: semimajor_axis
+ *          in: query
+ *          description: semimajor_axis in mathematical notation or normal notation
+ *          required: true
+ *          schema:  
+ *            type: string
+ *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ * 
+ *        - name: mass
+ *          in: query
+ *          description: mass in mathematical notation or normal notation
+ *          required: true
+ *          schema:
+ *            type: string
+ *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *
+ *        - name: webshop_name
+ *          in: query
+ *          description: webshop_name
+ *          required: true
+ *          schema:
+ *            type: string
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet edited successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => {
+    try {
+        const planetToEdit=planetService.getPlanetWithIdService(Number(req.params.planet_id));
+        planetService.editPlanetService(
+            Number(req.params.planet_id),
+            new Planet(String(req.query.planet_name), 
+            Number(req.query.radius), Number(req.query.semimajor_axis), 
+            Number(req.query.mass), String(req.query.webshop_name)
+        ));
+        res.status(200).json({planetToEdit});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+
+/** 
+ * @swagger
+ * /planet/deleteplanet/{planet_id}:
+ *   post:
+ *      summary: delete a Planet through a form using the planet_id
+ *      parameters:
+ *        - name: planet_id
+ *          in: path
+ *          description: planet id to delete
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet deleted successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
+    try {
+        const planetToDelete=planetService.getPlanetWithIdService(Number(req.params.planet_id));
+        planetService.deletePlanetService(Number(req.params.planet_id));
+        res.status(200).json({planetToDelete});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

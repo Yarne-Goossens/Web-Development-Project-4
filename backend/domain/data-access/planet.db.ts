@@ -11,13 +11,36 @@ export class PlanetDb{
     }
 
     public addPlanet=(planet:Planet)=>{
+        const planeet=Planet.create_planet(planet)
+        planeet.setPlanet_id(this.id);
+        this.planets.push(planeet);
         this.id++;
-        planet.setPlanet_id(this.id);
-        this.planets.push(Planet.create_planet(planet));
+    }
+
+    public editPlanet=(id:number,planet:Planet)=>{
+        this.planets[id-1]=planet;
+    }
+
+    public deletePlanet=(id:number)=>{
+        for(let planet of this.planets){
+            if(planet.getPlanet_id()==id){
+                this.planets.splice(this.planets.indexOf(planet),1);
+            }
+        }
     }
 
     public getAllPlanets=():Planet[]=>{  
         return this.planets;
+    }
+
+    public getPlanetWithId=(id:number):Planet=>{
+        
+        for(let planet of this.planets){
+            if(planet.getPlanet_id()==id){
+                return planet;
+            }
+        }   
+        return null;
     }
 
 }
