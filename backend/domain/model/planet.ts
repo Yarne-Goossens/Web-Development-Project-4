@@ -17,8 +17,8 @@ export class Planet {
         this.planet_id = planet_id
     }
     
-    static create_planet({webshop_name, radius, semimajor_axis, mass, planet_name}) {
-        return new Planet(webshop_name, radius, semimajor_axis, mass, planet_name)
+    static create_planet({planet_name, radius, semimajor_axis, mass, webshop_name}) {
+        return new Planet(planet_name, radius, semimajor_axis, mass, webshop_name)
     }
 
     public getPlanet_id(): number {

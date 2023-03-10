@@ -88,7 +88,7 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
  *      parameters:
  *        - name: planet_id
  *          in: path
- *          description: planet id to delete
+ *          description: planet id to search
  *          required: true
  *          schema:
  *            type: number
@@ -132,7 +132,7 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
  *      parameters:
  *        - name: satellite_name
  *          in: query
- *          description: planet name
+ *          description: satellite name
  *          required: true
  *          schema:
  *            type: string
@@ -229,13 +229,13 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  *      parameters:
  *        - name: satellite_id
  *          in: query
- *          description: planet id to edit
+ *          description: satellite id to edit
  *          required: true
  *          schema:
  *            type: number
  *        - name: satellite_name
  *          in: query
- *          description: planet name
+ *          description: satellite name
  *          required: true
  *          schema:
  *            type: string
