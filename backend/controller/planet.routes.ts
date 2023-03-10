@@ -118,12 +118,12 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /planet/editplanet/{planet_id}:
+ * /planet/editplanet/:
  *   put:
  *      summary: edit a Planet through a form using the planet_id
  *      parameters:
  *        - name: planet_id
- *          in: path
+ *          in: query
  *          description: planet id to edit
  *          required: true
  *          schema:
@@ -178,14 +178,17 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => {
+planet_router.put('/editplanet/', async(req:Request, res:Response) => {
     try {
-        const planetToEdit=planetService.getPlanetWithIdService(Number(req.params.planet_id));
-        planetService.editPlanetService(
-            Number(req.params.planet_id),
-            new Planet(String(req.query.planet_name), 
-            Number(req.query.radius), Number(req.query.semimajor_axis), 
-            Number(req.query.mass), String(req.query.webshop_name)
+        const planetToEdit=planetService.getPlanetWithIdService(Number(req.query.planet_id));
+        planetService.editPlanetService(Number(req.query.planet_id),
+            new Planet(
+            String(req.query.webshop_name), 
+            Number(req.query.radius), 
+            Number(req.query.semimajor_axis), 
+            Number(req.query.mass), 
+            String(req.query.planet_name),
+            Number(planetToEdit.planet_id)
         ));
         res.status(200).json({planetToEdit});
     } catch (error) {

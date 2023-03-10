@@ -53,7 +53,12 @@ export class SatelliteDb{
     }
 
     public editSatellite=(id:number,satellite:Satellite)=>{
-        this.satellites[id-1]=satellite;
+        for(let sat of this.satellites){
+            if(sat.getSatellite_id()==id){
+                let index=this.satellites.indexOf(sat);
+                this.satellites[index]=satellite;
+            }
+        }   
     }
 
 

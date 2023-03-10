@@ -223,7 +223,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
 
 /** 
  * @swagger
- * /satellite/editsatellite/{satellite_id}:
+ * /satellite/editsatellite/:
  *   put:
  *      summary: edit a Planet through a form using the satellite_id
  *      parameters:
@@ -283,18 +283,19 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  *          description: Internal server error
  */
 
-satellite_router.put('/editsatellite/:satellite_id', async(req:Request, res:Response) => {
+satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
     try {
-        const planetToEdit=satelliteService.getSatelliteWithIdService(Number(req.query.satellite_id));
+        const satelliteToEdit=satelliteService.getSatelliteWithIdService(Number(req.query.satellite_id));
         satelliteService.editSatelliteService(Number(req.query.satellite_id),
         new Satellite(
         Number(req.query.radius), 
         Number(req.query.semimajor_axis), 
         Number(req.query.mass),
         String(req.query.satellite_name), 
-        Number(req.query.planet_id)
+        Number(req.query.planet_id),
+        Number(satelliteToEdit.satellite_id)
         ));
-        res.status(200).json({planetToEdit});
+        res.status(200).json({satelliteToEdit});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

@@ -18,7 +18,12 @@ export class PlanetDb{
     }
 
     public editPlanet=(id:number,planet:Planet)=>{
-        this.planets[id-1]=planet;
+        for(let plnt of this.planets){
+            if(plnt.getPlanet_id()==id){
+                let index=this.planets.indexOf(plnt);
+                this.planets[index]=planet;
+            }
+        }
     }
 
     public deletePlanet=(id:number)=>{
