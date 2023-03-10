@@ -3,22 +3,20 @@ export class Planet {
     readonly planet_name: String
     planet_id: number
     account_id?: number
-    readonly webshop_name: String
     readonly radius: number
     readonly semimajor_axis: number
     readonly mass: number
 
-    constructor(webshop_name: String, radius: number, semimajor_axis: number, mass: number, planet_name: String,planet_id?:number) {
+    constructor(radius: number, semimajor_axis: number, mass: number, planet_name: String,planet_id?:number) {
         this.planet_name = planet_name
         this.radius = radius
         this.semimajor_axis = semimajor_axis
         this.mass = mass
-        this.webshop_name = webshop_name
         this.planet_id = planet_id
     }
     
-    static create_planet({planet_name, radius, semimajor_axis, mass, webshop_name}) {
-        return new Planet(planet_name, radius, semimajor_axis, mass, webshop_name)
+    static create_planet({radius, semimajor_axis, mass, planet_name}) {
+        return new Planet(radius, semimajor_axis, mass, planet_name)
     }
 
     public getPlanet_id(): number {

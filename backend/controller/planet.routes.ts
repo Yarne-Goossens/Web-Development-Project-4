@@ -17,8 +17,6 @@
  *             type: number
  *           planet_name:
  *             type: string
- *           webshop_name:
- *             type: string
  *           account_id:
  *             type: number
  */
@@ -97,18 +95,11 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  *          schema:
  *            type: string
  *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- *
- *        - name: webshop_name
- *          in: query
- *          description: webshop_name
- *          required: true
- *          schema:
- *            type: string
  */
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        const planets = await planetService.addPlanetService(new Planet(String(req.query.planet_name), Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.webshop_name)));
+        const planets = await planetService.addPlanetService(new Planet(Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.planet_name)));
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
@@ -158,12 +149,6 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *            type: string
  *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
  *
- *        - name: webshop_name
- *          in: query
- *          description: webshop_name
- *          required: true
- *          schema:
- *            type: string
  * 
  *      responses:
  *         200:
@@ -183,7 +168,6 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
         const planetToEdit=planetService.getPlanetWithIdService(Number(req.query.planet_id));
         planetService.editPlanetService(Number(req.query.planet_id),
             new Planet(
-            String(req.query.webshop_name), 
             Number(req.query.radius), 
             Number(req.query.semimajor_axis), 
             Number(req.query.mass), 
