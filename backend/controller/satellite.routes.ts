@@ -17,8 +17,6 @@
  *             type: number
  *           planet_name:
  *             type: string
- *           webshop_name:
- *             type: string
  *           account_id:
  *             type: number
  * 
@@ -39,8 +37,6 @@
  *           mass:
  *             type: number
  *           planet_name:
- *             type: string
- *           webshop_name:
  *             type: string
  *           account_id:
  *             type: number
