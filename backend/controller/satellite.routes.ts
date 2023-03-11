@@ -8,7 +8,7 @@
  *           satellite_id:
  *             type: number
  *             format: int64
- *             description: The auto-generated id of the planet
+ *             description: The auto-generated id of the satellite
  *           radius:
  *             type: number
  *           semimajor_axis:
@@ -166,14 +166,14 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
 
 satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
     try {
-        const planet = await satelliteService.addSatellite(
+        const satellite = await satelliteService.addSatellite(
         new Satellite( Number(req.query.radius), 
         Number(req.query.semimajor_axis), 
         Number(req.query.mass),
         String(req.query.satellite_name), 
         Number(req.query.planet_id)));
-        console.log(planet);
-        res.status(200).json({planet});
+        console.log(satellite);
+        res.status(200).json({satellite});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
@@ -221,7 +221,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  * @swagger
  * /satellite/editsatellite/:
  *   put:
- *      summary: edit a Planet through a form using the satellite_id
+ *      summary: edit a Satellite through a form using the satellite_id
  *      parameters:
  *        - name: satellite_id
  *          in: query
@@ -272,7 +272,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Satellite'
  *         404:
  *          description: Object not found
  *         500:
