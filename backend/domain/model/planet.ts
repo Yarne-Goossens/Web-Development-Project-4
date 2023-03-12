@@ -15,7 +15,7 @@ export class Planet {
         this.planet_id = planet_id
     }
     
-    static create_planet({radius, semimajor_axis, mass, planet_name}) {
+    static create_planet({radius, semimajor_axis, mass, planet_name}): Planet {
         return new Planet(radius, semimajor_axis, mass, planet_name)
     }
 

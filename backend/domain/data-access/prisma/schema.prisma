@@ -11,6 +11,40 @@ datasource db {
 }
 
 model Planet{
-  id    Int @id @default(autoincrement())
+  planet_id    Int @id @default(autoincrement())
+  planet_name String
+  account_id Int
+  radius Int
+  semimajor_axis BigInt
+  mass         BigInt
+  resources Resource[]
+  account Account @relation(fields: [account_id], references: [account_id])
+  satellites Satellite[]
 }
 
+model Account {
+  account_id Int @id @default(autoincrement())
+  username String
+  password String
+  email String
+  planets Planet[]
+}
+
+model Resource {
+  resource_id Int @id @default(autoincrement())
+  resource_name String
+  description String
+  chemical_composition String
+  planet_id Int
+  planets Planet[]
+}
+
+model Satellite {
+  satellite_id Int @id @default(autoincrement())
+  satellite_name String
+  planet_id Int
+  radius Int
+  semimajor_axis BigInt
+  mass         BigInt
+  planet Planet @relation(fields: [planet_id], references: [planet_id])
+}

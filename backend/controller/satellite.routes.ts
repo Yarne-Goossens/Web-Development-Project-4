@@ -20,26 +20,6 @@
  *           account_id:
  *             type: number
  * 
- * @swagger
- *   components:
- *     schemas:
- *       Planet:
- *         type: object
- *         properties:
- *           planet_id:
- *             type: number
- *             format: int64
- *             description: The auto-generated id of the planet
- *           radius:
- *             type: number
- *           semimajor_axis:
- *             type: number
- *           mass:
- *             type: number
- *           planet_name:
- *             type: string
- *           account_id:
- *             type: number
  */
  
 

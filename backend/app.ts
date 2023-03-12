@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import { planet_router } from "./controller/planet.routes";
 import { satellite_router } from "./controller/satellite.routes";
 import { resource_router } from "./controller/resource.routes";
+import { account_router } from "./controller/account.routes";
 
 const app = express();
 dotenv.config();
@@ -33,6 +34,8 @@ app.use("/planet",planet_router);
 app.use("/satellite",satellite_router);
 
 app.use("/resource",resource_router);
+
+app.use("/account",account_router);
 
 app.get("/status", (req, res) => {
   res.json({ message: "Back-end is running..." });
