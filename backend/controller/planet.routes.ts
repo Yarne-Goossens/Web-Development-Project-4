@@ -44,7 +44,8 @@ export const planet_router = express.Router();
 
 planet_router.get('/planetoverview', async(req:Request, res:Response) => {
     try {
-        const planets = planetService.getAllPlanetsDb();
+        const planets = await planetService.getAllPlanetsDb();
+        console.log(planets);
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
@@ -99,9 +100,9 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        const planets = await planetService.addPlanetService(
-            new Planet(Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.planet_name)));
-        res.status(200).json({planets});
+        //const planets = await planetService.addPlanetService(
+        //    new Planet(Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.planet_name)));
+        //res.status(200).json({planets});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
