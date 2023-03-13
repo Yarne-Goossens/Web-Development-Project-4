@@ -1,22 +1,24 @@
 export class Account {
     private account_id: number
-     email: string
-     name: String
-     address: String
-     password: String
-    constructor( email?: string, name?: String, address?: String, password?: String) {
+    email: string
+    name: String
+    address: String
+    password: String
+    role: String
+    constructor(role?:String, email?: string, name?: String, address?: String, password?: String) {
         this.email = email
         this.name = name
         this.address = address
         this.password = password
     }
 
-    static create_account({ email, name, address, password}): Account {
+    static create_account({role, email, name, address, password}): Account {
         const account=new Account()
         account.setEmail(email);
         account.setName(name);
         account.setAddress(address);
         account.setPassword(password);
+        account.setRole(role);
         return account
     }
 
@@ -60,5 +62,10 @@ export class Account {
             throw new Error("Your password is too short");
         }
         this.password = password;
+    }
+
+    public setRole(role: String): void {
+        
+        this.role = role;
     }
 }

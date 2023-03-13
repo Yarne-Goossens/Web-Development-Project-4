@@ -4,7 +4,7 @@ export class AccountDb{
     accounts: Account[] =[];
 
     constructor(){
-        this.addAccount(Account.create_account({email:"cas.oli@gmail.com" ,name: "Casper",address:"Tielt-Winge", password: "21345"}))
+        this.addAccount(Account.create_account({email:"cas.oli@gmail.com" ,name: "Casper",address:"Tielt-Winge", password: "21345",role:"admin"}))
     }
 
     public addAccount=(account:Account)=>{
