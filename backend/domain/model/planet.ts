@@ -7,10 +7,10 @@ export class Planet {
     private _mass: number;
 
     constructor(
-        radius: number,
-        semimajor_axis: number,
-        mass: number,
-        planet_name: string,
+        radius?: number,
+        semimajor_axis?: number,
+        mass?: number,
+        planet_name?: string,
         planet_id?: number,
         account_id?: number
     ) {
@@ -25,48 +25,45 @@ export class Planet {
     get planet_name(): string {
         return this._planet_name;
     }
-
-    set planet_name(value: string) {
-        this._planet_name = value;
-    }
-
     get planet_id(): number {
         return this._planet_id;
     }
-
-    set planet_id(value: number) {
-        this._planet_id = value;
-    }
-
     get account_id(): number | undefined {
         return this._account_id;
     }
-
-    set account_id(value: number | undefined) {
-        this._account_id = value;
-    }
-
     get radius(): number {
         return this._radius;
     }
-
-    set radius(value: number) {
-        this._radius = value;
-    }
-
     get semimajor_axis(): number {
         return this._semimajor_axis;
     }
-
-    set semimajor_axis(value: number) {
-        this._semimajor_axis = value;
-    }
-
     get mass(): number {
         return this._mass;
     }
 
+    set planet_name(value: string) {
+        if(value.length < 1) throw new Error('Planet name cannot be empty');
+        if(value.length > 30) throw new Error('Planet name cannot be longer than 30 characters');
+        
+        this._planet_name = value;
+    }
+    set planet_id(value: number) {
+        //gets set by the database
+        this._planet_id = value;
+    }
+    set account_id(value: number | undefined) {
+        this._account_id = value;
+    }
+    set radius(value: number) {
+        if(value < 0) throw new Error('Radius cannot be negative');
+        this._radius = value;
+    }
+    set semimajor_axis(value: number) {
+        if(value < 0) throw new Error('Semimajor axis cannot be negative');
+        this._semimajor_axis = value;
+    }
     set mass(value: number) {
+        if(value < 0) throw new Error('Mass cannot be negative');
         this._mass = value;
     }
 
@@ -77,15 +74,15 @@ export class Planet {
         planet_name,
         planet_id,
         account_id,
-    }: {
-        radius: number;
-        semimajor_axis: number;
-        mass: number;
-        planet_name: string;
-        planet_id: number;
-        account_id?: number;
-    }): Planet {
-        return new Planet(radius, semimajor_axis, mass, planet_name, planet_id, account_id);
+    }: {radius: number;semimajor_axis: number;mass: number;planet_name: string;planet_id: number;account_id?: number;}): Planet {
+        const plan=new Planet();
+        plan.radius=radius;
+        plan.semimajor_axis=semimajor_axis;
+        plan.mass=mass;
+        plan.planet_name=planet_name;
+        plan.planet_id=planet_id;
+        plan.account_id=account_id;
+        return plan;
     }
 
     static from(arg0: Planet) {
