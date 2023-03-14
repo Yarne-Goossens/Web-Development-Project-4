@@ -1,48 +1,45 @@
-import { Resource } from '../model/resource';
+import {Resource} from '../model/resource';
+import { PrismaClient,resource as PrismaResource } from "@prisma/client";
 
-export class ResourceDb{
-    private id:number=0;
-    resources: Resource[] =[];
+const prisma = new PrismaClient();
+export async function getAllResources(): Promise<Resource[]> {
+    const resources: PrismaResource[] = await prisma.resource.findMany();
+    return resources.map(resource => Resource.from(<Resource>resource));
+}
 
-    constructor(){
-        this.addResource(Resource.create_resource({resource_name:"Ijzer" ,chemical_composition: "Fe",description:"balls", planet_id: "1"}))
-    }
+export async function getAllResourcesOfPlanetWithId(id:number): Promise<Resource[]> {
+    const resources: PrismaResource[] = await prisma.resource.findMany({where: {planet_id:  id}});
+    return resources.map(resource => Resource.from(<Resource>resource));
+}
 
-    public addResource=(resource:Resource)=>{
-        const res=Resource.create_resource(resource)
-        
-        res.setResource_id(this.id);
-        this.resources.push(res);
-        this.id++;
-    }
+export async function getResourceWithId(id: number): Promise<Resource> {
+    const resource: PrismaResource = await prisma.resource.findUnique({ where: { resource_id: id } });
+    return Resource.from(<Resource>resource);
+}
 
-    public getAllResources=():Resource[]=>{  
-        return this.resources;
-    }
+export async function addResource(resource: Resource) {
+    await prisma.resource.create({
+        data: {
+            resource_name: resource.resource_name,
+            chemical_composition: resource.chemical_composition,
+            description: resource.description,
+            planet_id: resource.planet_id,
+        },
+    });
+}
 
-    public getResourceWithId=(id:number):Resource=>{
-        for(let res of this.resources){
-            if(res.getResource_id()==id){
-                return res;
-            }
-        }   
-        return null;
-    }
+export async function editResource(id: number, resource: Resource) {
+    await prisma.resource.update({
+        where: {resource_id: id},
+        data: {
+            resource_name: resource.resource_name,
+            chemical_composition: resource.chemical_composition,
+            description: resource.description,
+            planet_id: resource.planet_id,
+        },
+    });
+}
 
-    public deleteResource=(id:number)=>{
-        for(let res of this.resources){
-            if(res.getResource_id()==id){
-                this.resources.splice(this.resources.indexOf(res),1);
-            }   
-        }
-    }
-
-    public editResource=(id:number,resource:Resource)=>{
-        for(let res of this.resources){
-            if(res.getResource_id()==id){
-                let index=this.resources.indexOf(res);
-                this.resources[index]=resource;
-            }
-        }   
-    }
+export async function deleteResource(id: number) {
+    await prisma.resource.delete({ where: { resource_id: id } });
 }

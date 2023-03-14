@@ -48,8 +48,46 @@ export const resource_router = express.Router();
 
 resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
     try {
-        const resources = resourceservice.getAllResources();
+        const resources = await resourceservice.getAllResourceService();
         res.status(200).json({resources});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+/**
+* @swagger
+ * /resource/resourceoverview/{planet_id}:
+ *   get:
+ *      summary: Show all resources that belong to a planet
+ *      tags:
+ *        - resource
+ *      parameters:
+ *        - name: planet_id
+ *          in: path
+ *          description: planet id to search
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Resource shown
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Resource'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Response) => {
+    try {
+        const resourcesOfPlanet = await resourceservice.getAllResourceOfPlanetWithId(Number(req.params.planet_id));
+        res.status(200).json({resourcesOfPlanet});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
@@ -109,47 +147,7 @@ resource_router.post('/addresource', async(req:Request, res:Response) => {
         String(req.query.chemical_composition), 
         String(req.query.description), 
         Number(req.query.planet_id)));
-        console.log(resource);
         res.status(200).json({resource});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
-    }
-});
-
-/** 
- * @swagger
- * /resource/deleteresource/{resource_id}:
- *   post:
- *      summary: delete a resource through a form using the resource_id
- *      tags:
- *        - resource
- *      parameters:
- *        - name: resource_id
- *          in: path
- *          description: resource id to delete
- *          required: true
- *          schema:
- *            type: number
- * 
- *      responses:
- *         200:
- *            description: Resource deleted successfully
- *            content:
- *               application/json:
- *                   schema:
- *                       $ref: '#/components/schemas/Resource'
- *         404:
- *          description: Object not found
- *         500:
- *          description: Internal server error
- */
-
-resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Response) => {
-    try {
-        const resourceToDelete=resourceservice.getResourceWithIdService(Number(req.params.resource_id));
-        resourceservice.deleteResource(Number(req.params.resource_id));
-        res.status(200).json({resourceToDelete});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
@@ -214,16 +212,54 @@ resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Resp
 
 resource_router.put('/editresource/', async(req:Request, res:Response) => {
     try {
-        const resourceToEdit=resourceservice.getResourceWithIdService(Number(req.query.resource_id));
+        const resourceToEdit=await resourceservice.getResourceWithIdService(Number(req.query.resource_id));
         resourceservice.editResourceService(Number(req.query.resource_id),
         new Resource(
         String(req.query.resource_name), 
         String(req.query.chemical_composition),
         String(req.query.description), 
-        Number(req.query.planet_id),
-        Number(resourceToEdit.resource_id)
+        Number(req.query.planet_id)
         ));
         res.status(200).json({resourceToEdit});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+/** 
+ * @swagger
+ * /resource/deleteresource/{resource_id}:
+ *   post:
+ *      summary: delete a resource through a form using the resource_id
+ *      tags:
+ *        - resource
+ *      parameters:
+ *        - name: resource_id
+ *          in: path
+ *          description: resource id to delete
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Resource deleted successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Resource'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Response) => {
+    try {
+        const resourceToDelete=await resourceservice.getResourceWithIdService(Number(req.params.resource_id));
+        resourceservice.deleteResource(Number(req.params.resource_id));
+        res.status(200).json({resourceToDelete});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

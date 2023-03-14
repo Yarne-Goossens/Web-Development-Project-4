@@ -172,45 +172,6 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /satellite/deletesatellite/{satellite_id}:
- *   post:
- *      summary: delete a satellite through a form using the satellite_id
- *      tags:
- *        - satellite
- *      parameters:
- *        - name: satellite_id
- *          in: path
- *          description: satellite id to delete
- *          required: true
- *          schema:
- *            type: number
- * 
- *      responses:
- *         200:
- *            description: Satellite deleted successfully
- *            content:
- *               application/json:
- *                   schema:
- *                       $ref: '#/components/schemas/Satellite'
- *         404:
- *          description: Object not found
- *         500:
- *          description: Internal server error
- */
-
-satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
-    try {
-        const planetToDelete=await satelliteService.getSatelliteWithIdService(Number(req.params.satellite_id));
-        satelliteService.deleteSatellite(Number(req.params.satellite_id));
-        res.status(200).json({planetToDelete});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
-    }
-});
-
-/** 
- * @swagger
  * /satellite/editsatellite/:
  *   put:
  *      summary: edit a Satellite through a form using the satellite_id
@@ -282,9 +243,48 @@ satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
         Number(req.query.semimajor_axis), 
         Number(req.query.mass),
         String(req.query.satellite_name), 
-        Number(req.query.planet_id),
+        Number(req.query.planet_id)
         ));
         res.status(200).json({satelliteToEdit});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+/** 
+ * @swagger
+ * /satellite/deletesatellite/{satellite_id}:
+ *   post:
+ *      summary: delete a satellite through a form using the satellite_id
+ *      tags:
+ *        - satellite
+ *      parameters:
+ *        - name: satellite_id
+ *          in: path
+ *          description: satellite id to delete
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Satellite deleted successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Satellite'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
+    try {
+        const planetToDelete=await satelliteService.getSatelliteWithIdService(Number(req.params.satellite_id));
+        satelliteService.deleteSatellite(Number(req.params.satellite_id));
+        res.status(200).json({planetToDelete});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

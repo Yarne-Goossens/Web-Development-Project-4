@@ -27,14 +27,6 @@ export class Satellite {
         this.satellite_id = satellite_id;
     }
 
-    /*public getPlanet_id(): number {
-        return this.planet_id;
-    }
-
-    public setPlanet_id(planet_id: number): void {
-        this.planet_id = planet_id;
-    }*/
-
     static from(arg0: Satellite) {
         return new Satellite(arg0.radius, arg0.semimajor_axis, arg0.mass, arg0.satellite_name, arg0.planet_id, arg0.satellite_id)
     }
