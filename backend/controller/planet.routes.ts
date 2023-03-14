@@ -47,7 +47,6 @@ export const planet_router = express.Router();
 planet_router.get('/planetoverview', async(req:Request, res:Response) => {
     try {
         const planets = await planetService.getAllPlanetsService();
-        console.log(planets);
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
