@@ -1,18 +1,18 @@
-import { PlanetDb }  from '../domain/data-access/planet.db';
 import {Planet} from '../domain/model/planet';
-import {getAllPlanets} from '../domain/data-access/planet.db';   
+import {getAllPlanets} from '../domain/data-access/planet.db';  
+import { addPlanet } from '../domain/data-access/planet.db'; 
+import {getPlanetWithId} from '../domain/data-access/planet.db';
+import {editPlanet} from '../domain/data-access/planet.db';
+import {deletePlanet} from '../domain/data-access/planet.db';
+
 export class PlanetService{
-    private planetDb: PlanetDb = new PlanetDb();
+    addPlanetService=async(planet:Planet)=>await addPlanet(planet);
 
-    getAllPlanetsService=():Planet[]=>this.planetDb.getAllPlanets();
+    editPlanetService=async(id:number,planet:Planet)=>await editPlanet(id,planet);
 
-    addPlanetService=(planet:Planet)=>this.planetDb.addPlanetOld(planet);
+    deletePlanetService=async(id:number)=>await deletePlanet(id);
 
-    editPlanetService=(id:number,planet:Planet)=>this.planetDb.editPlanet(id,planet);
+    getPlanetWithIdService=async(id:number):Promise<Planet>=>await getPlanetWithId(id);
 
-    deletePlanetService=(id:number)=>this.planetDb.deletePlanet(id);
-
-    getPlanetWithIdService=(id:number)=>this.planetDb.getPlanetWithId(id);
-
-    getAllPlanetsDb=async():Promise<Planet[]>=>await getAllPlanets();
+    getAllPlanetsService=async():Promise<Planet[]>=>await getAllPlanets();
 }
