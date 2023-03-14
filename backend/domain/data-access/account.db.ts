@@ -43,6 +43,6 @@ export class AccountDb{
                 return true;
             }
         }
-        throw new Error("Email or password is not correct");
+        //throw new Error("Email or password is not correct");
     }
 }

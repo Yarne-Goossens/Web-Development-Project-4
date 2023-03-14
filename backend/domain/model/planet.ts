@@ -40,10 +40,10 @@ export class Planet {
     get mass(): number {
         return this._mass;
     }
-
+//we moeten een manier vinden om errors te throwen en catchen da ni het programma crasht
     set planet_name(value: string) {
-        if(value.length < 1) throw new Error('Planet name cannot be empty');
-        if(value.length > 30) throw new Error('Planet name cannot be longer than 30 characters');
+        //if(value.length < 1) throw new Error('Planet name cannot be empty');
+        //if(value.length > 30) throw new Error('Planet name cannot be longer than 30 characters');
         
         this._planet_name = value;
     }
@@ -55,15 +55,15 @@ export class Planet {
         this._account_id = value;
     }
     set radius(value: number) {
-        if(value < 0) throw new Error('Radius cannot be negative');
+        //if(value < 0) throw new Error('Radius cannot be negative');
         this._radius = value;
     }
     set semimajor_axis(value: number) {
-        if(value < 0) throw new Error('Semimajor axis cannot be negative');
+        //if(value < 0) throw new Error('Semimajor axis cannot be negative');
         this._semimajor_axis = value;
     }
     set mass(value: number) {
-        if(value < 0) throw new Error('Mass cannot be negative');
+        //if(value < 0) throw new Error('Mass cannot be negative');
         this._mass = value;
     }
 

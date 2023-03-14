@@ -53,7 +53,10 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
         res.status(200).json({accounts});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        if( error instanceof Error){
+            res.status(400).json(error)
+        }
+        res.status(500).json(error);
     }
 });
 
@@ -113,6 +116,9 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
         res.status(200).json({toAdd});
     } catch (error) {
         console.log(error);
+        if( error instanceof Error){
+            res.status(400).json(error)
+        }
         res.status(500).json(error);
     }
 });
@@ -182,7 +188,10 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
         res.status(200).json({planetToEdit});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        if( error instanceof Error){
+            res.status(400).json(error)
+        }
+        res.status(500).json(error);
     }
 });
 
@@ -264,10 +273,14 @@ account_router.post('/deleteAccount/:account_id', async(req:Request, res:Respons
 
 account_router.put('/login/', async(req:Request, res:Response) => {
     try {
+        //validatie weggehaald omdat het programma crashte
         accountService.loginValidation(String(req.query.email),String(req.query.password));
         res.status(200).json({message: 'User logged in successfully'});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        if( error instanceof Error){
+            res.status(400).json(error)
+        }
+        res.status(500).json(error);
     }
 });
