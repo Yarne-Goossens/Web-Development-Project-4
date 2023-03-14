@@ -1,65 +1,47 @@
-import { Planet } from '../model/planet';
 import {Satellite} from '../model/satellite';
+import { PrismaClient,satellite as PrismaSatellite } from "@prisma/client";
 
-export class SatelliteDb{
-    private id:number=0;
-    satellites: Satellite[] =[];
+const prisma = new PrismaClient();
+export async function getAllSatellites(): Promise<Satellite[]> {
+    const satellites: PrismaSatellite[] = await prisma.satellite.findMany();
+    return satellites.map(satellite => Satellite.from(<Satellite>satellite));
+}
 
-    constructor(){
-        this.addSatellite(Satellite.create_satellite({  radius:69911 ,semimajor_axis: 778412010,mass:1.8986*Math.pow(10,27), satellite_name:'Europa', planet_id:0})),
-        this.addSatellite(Satellite.create_satellite({  radius: 6371, semimajor_axis: 149598023, mass: 5.972168*Math.pow(10,24), satellite_name: 'Moon', planet_id:1})),
-        this.addSatellite(Satellite.create_satellite({  radius: 1830, semimajor_axis: 227939366, mass: 6.4171*Math.pow(10,23), satellite_name: 'Deimos', planet_id:2})),
-        this.addSatellite(Satellite.create_satellite({  radius: 1830, semimajor_axis: 227939366, mass: 6.4171*Math.pow(10,23), satellite_name: 'Phobos', planet_id:2}))
-    }
+export async function getAllSatellitesOfPlanetWithId(id:number): Promise<Satellite[]> {
+    const satellites: PrismaSatellite[] = await prisma.satellite.findMany({where: {planet_id:  id}});
+    return satellites.map(satellite => Satellite.from(<Satellite>satellite));
+}
 
-    public addSatellite=(satellite:Satellite)=>{
-        const sat=Satellite.create_satellite(satellite)
-        
-        sat.setSatellite_id(this.id);
-        this.satellites.push(sat);
-        this.id++;
-    }
+export async function getSatelliteWithId(id: number): Promise<Satellite> {
+    const satellite: PrismaSatellite = await prisma.satellite.findUnique({ where: { satellite_id: id } });
+    return Satellite.from(<Satellite>satellite);
+}
 
-    public deleteSatellite=(id:number)=>{
-        for(let sat of this.satellites){
-            if(sat.getSatellite_id()==id){
-                this.satellites.splice(this.satellites.indexOf(sat),1);
-            }   
-        }
-    }
+export async function addSatellite(satellite: Satellite) {
+    await prisma.satellite.create({
+        data: {
+            satellite_name: satellite.satellite_name,
+            radius: satellite.radius,
+            semimajor_axis: satellite.semimajor_axis,
+            mass: satellite.mass,
+            planet_id: satellite.planet_id,
+        },
+    });
+}
 
-    public getAllSatellites=():Satellite[]=>{  
-        return this.satellites;
-    }
+export async function editSatellite(id: number, satellite: Satellite) {
+    await prisma.satellite.update({
+        where: {satellite_id: id},
+        data: {
+            satellite_name: satellite.satellite_name,
+            radius: satellite.radius,
+            semimajor_axis: satellite.semimajor_axis,
+            mass: satellite.mass,
+            planet_id: satellite.planet_id,
+        },
+    });
+}
 
-    public getAllSatellitesOfPlanetWithId=(planet_id:number):Planet[]=>{
-        const planets=this.satellites;
-        const res=[];
-        for(let sat of planets){
-            if(sat.getPlanet_id()==planet_id){
-                res.push(sat);
-            }
-        }
-        return res;
-    }
-
-    public getSatelliteWithId=(id:number):Satellite=>{
-        for(let sat of this.satellites){
-            if(sat.getSatellite_id()==id){
-                return sat;
-            }
-        }   
-        return null;
-    }
-
-    public editSatellite=(id:number,satellite:Satellite)=>{
-        for(let sat of this.satellites){
-            if(sat.getSatellite_id()==id){
-                let index=this.satellites.indexOf(sat);
-                this.satellites[index]=satellite;
-            }
-        }   
-    }
-
-
+export async function deleteSatellite(id: number) {
+    await prisma.satellite.delete({ where: { satellite_id: id } });
 }

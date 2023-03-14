@@ -55,7 +55,7 @@ export const satellite_router  = express.Router();
 
 satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
     try {
-        const satellites = satelliteService.getAllSatellitesService();
+        const satellites = await satelliteService.getAllSatellitesService();
         res.status(200).json({satellites});
     } catch (error) {
         console.log(error);
@@ -93,7 +93,7 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
 
 satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Response) => {
     try {
-        const satellitesOfPlanet = satelliteService.getAllSatellitesOfPlanetWithId(Number(req.params.planet_id));
+        const satellitesOfPlanet = await satelliteService.getAllSatellitesOfPlanetWithId(Number(req.params.planet_id));
         res.status(200).json({satellitesOfPlanet});
     } catch (error) {
         console.log(error);
@@ -163,7 +163,6 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
         Number(req.query.mass),
         String(req.query.satellite_name), 
         Number(req.query.planet_id)));
-        console.log(satellite);
         res.status(200).json({satellite});
     } catch (error) {
         console.log(error);
@@ -201,7 +200,7 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
 
 satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
     try {
-        const planetToDelete=satelliteService.getSatelliteWithIdService(Number(req.params.satellite_id));
+        const planetToDelete=await satelliteService.getSatelliteWithIdService(Number(req.params.satellite_id));
         satelliteService.deleteSatellite(Number(req.params.satellite_id));
         res.status(200).json({planetToDelete});
     } catch (error) {
@@ -276,7 +275,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
 
 satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
     try {
-        const satelliteToEdit=satelliteService.getSatelliteWithIdService(Number(req.query.satellite_id));
+        const satelliteToEdit=await satelliteService.getSatelliteWithIdService(Number(req.query.satellite_id));
         satelliteService.editSatelliteService(Number(req.query.satellite_id),
         new Satellite(
         Number(req.query.radius), 
@@ -284,7 +283,6 @@ satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
         Number(req.query.mass),
         String(req.query.satellite_name), 
         Number(req.query.planet_id),
-        Number(satelliteToEdit.satellite_id)
         ));
         res.status(200).json({satelliteToEdit});
     } catch (error) {
