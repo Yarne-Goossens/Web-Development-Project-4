@@ -224,44 +224,43 @@ account_router.post('/deleteAccount/:account_id', async(req:Request, res:Respons
         res.status(500).json({message: 'Internal Server Error'});
     }
 });
-
-/** 
+/**
  * @swagger
  * /account/login/:
  *   put:
- *      summary:login an Account through a form using the account_id
- *      tags:
- *        - account
- *      parameters:
+ *     summary: login an Account through a form using the account_id
+ *     tags:
+ *       - account
+ *     parameters:
+ *       - name: email
+ *         in: query
+ *         description: account email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: email
  * 
- *        - name: email
- *          in: query
- *          description: account email
- *          required: true
- *          schema:
- *            type: string
- *            format: email
+ *       - name: password
+ *         in: query
+ *         description: password
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: password
  * 
- *        - name: password
- *          in: query
- *          description: password
- *          required: true
- *          schema:
- *            type: string
- *            format: password
- * 
- *      responses:
- *         200:
- *            description: User logged in successfully
- *            content:
- *               application/json:
- *                   schema:
- *                       $ref: '#/components/schemas/Account'
- *         404:
- *          description: Object not found
- *         500:
- *          description: Internal server error
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Account'
+ *       404:
+ *         description: Object not found
+ *       500:
+ *         description: Internal server error
  */
+
 
 account_router.put('/login/', async(req:Request, res:Response) => {
     try {
