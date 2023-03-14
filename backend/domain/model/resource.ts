@@ -1,5 +1,5 @@
 export class Resource {
-    resource_id?: Number
+    resource_id?: number
     readonly resource_name: string
     readonly chemical_composition: string
     readonly description: string
@@ -17,7 +17,15 @@ export class Resource {
         return new Resource(resource_name,chemical_composition,description,planet_id)
     }
 
+    public getResource_id?(): number {
+        return this.resource_id;
+    }
+
+    public setResource_id?(resource_id: number): void {
+        this.resource_id = resource_id;
+    }
+
     static from(arg0: Resource) {
-        return new Resource(arg0.resource_name, arg0.chemical_composition, arg0.description, arg0.planet_id)
+        return new Resource(arg0.resource_name, arg0.chemical_composition, arg0.description, arg0.planet_id, arg0.resource_id)
     }
 }
