@@ -33,6 +33,8 @@ export const planet_router = express.Router();
  * /planet/planetoverview:
  *   get:
  *      summary: Get all planets
+ *      tags:
+ *        - planet
  *      responses:
  *          200:
  *            description: Get all planets
@@ -58,6 +60,8 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  * /planet/addplanet:
  *   post:
  *      summary: Add a new Planet through a form
+ *      tags:
+ *        - planet
  *      responses:
  *          200:
  *            description: Planet added
@@ -114,6 +118,8 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  * /planet/editplanet/:
  *   put:
  *      summary: edit a Planet through a form using the planet_id
+ *      tags:
+ *        - planet
  *      parameters:
  *        - name: planet_id
  *          in: query
@@ -167,7 +173,6 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
 
 planet_router.put('/editplanet/', async(req:Request, res:Response) => {
     try {
-        const planetToEdit=planetService.getPlanetWithIdService(Number(req.query.planet_id));
         planetService.editPlanetService(Number(req.query.planet_id),
             new Planet(
             Number(req.query.radius), 
@@ -175,7 +180,7 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
             Number(req.query.mass), 
             String(req.query.planet_name),
         ));
-        res.status(200).json({planetToEdit});
+        res.status(200).json({message: 'Planet edited successfully'});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
@@ -188,6 +193,8 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
  * /planet/deleteplanet/{planet_id}:
  *   post:
  *      summary: delete a Planet through a form using the planet_id
+ *      tags:
+ *        - planet
  *      parameters:
  *        - name: planet_id
  *          in: path
@@ -211,11 +218,11 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
 
 planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
     try {
-        const planetToDelete=planetService.getPlanetWithIdService(Number(req.params.planet_id));
+        
         planetService.deletePlanetService(Number(req.params.planet_id));
-        res.status(200).json({planetToDelete});
+        res.status(200).json({message: 'Planet deleted successfully'});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(500).json({message: error});
     }
 });

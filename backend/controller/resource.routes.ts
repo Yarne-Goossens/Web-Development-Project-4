@@ -11,13 +11,16 @@
  *             description: The auto-generated id of the resource
  *           resource_name:
  *             type: string
- *             description: resource of the planet
+ *             description: name of the resource (e.g. water)
  *           chemical_composition:
  *             type: string
+ *             description: chemical composition of the resource (e.g. H2O)
  *           description:
  *             type: string
+ *             description: description of the resource (e.g. water is a liquid)
  *           planet_id:
  *             type: number
+ *             description: id of the planet the resource is on
  */
 
 import express,{Request,Response} from 'express';
@@ -32,6 +35,8 @@ export const resource_router = express.Router();
  * /resource/resourceoverview:
  *   get:
  *      summary: Get all resources
+ *      tags:
+ *        - resource
  *      responses:
  *          200:
  *            description: Get all resources
@@ -56,6 +61,8 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
  * /resource/addresource:
  *   post:
  *      summary: Add a new resource through a form
+ *      tags:
+ *        - resource
  *      responses:
  *          200:
  *            description: Resource added
@@ -88,7 +95,7 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
  *
  *        - name: planet_id
  *          in: query
- *          description: planet id of the planet the satellite belongs to
+ *          description: planet id of the planet the resource is on
  *          required: true
  *          schema:
  *            type: string
@@ -115,6 +122,8 @@ resource_router.post('/addresource', async(req:Request, res:Response) => {
  * /resource/deleteresource/{resource_id}:
  *   post:
  *      summary: delete a resource through a form using the resource_id
+ *      tags:
+ *        - resource
  *      parameters:
  *        - name: resource_id
  *          in: path
@@ -152,6 +161,8 @@ resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Resp
  * /resource/editresource/:
  *   put:
  *      summary: edit a Resource through a form using the resource_id
+ *      tags:
+ *        - resource
  *      parameters:
  *        - name: resource_id
  *          in: query
@@ -159,6 +170,7 @@ resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Resp
  *          required: true
  *          schema:
  *            type: number
+ * 
  *        - name: resource_name
  *          in: query
  *          description: resource name

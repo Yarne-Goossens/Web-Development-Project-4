@@ -11,14 +11,19 @@
  *             description: The auto-generated id of the satellite
  *           radius:
  *             type: number
+ *             description: radius of the satellite in km
  *           semimajor_axis:
  *             type: number
+ *             description: semimajor axis of the satellite in m
  *           mass:
  *             type: number
+ *             description: mass of the satellite in kg
  *           planet_name:
  *             type: string
- *           account_id:
+ *             description: name of the planet the satellite orbits
+ *           planet_id:
  *             type: number
+ *             description: id of the account that created the satellite
  * 
  */
  
@@ -37,6 +42,8 @@ export const satellite_router  = express.Router();
  * /satellite/satelliteoverview:
  *   get:
  *      summary: Get all satellites
+ *      tags:
+ *        - satellite
  *      responses:
  *          200:
  *            description: Get all satellites
@@ -61,6 +68,8 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
  * /satellite/satelliteoverview/{planet_id}:
  *   get:
  *      summary: Show all satellites that belong to a planet
+ *      tags:
+ *        - satellite
  *      parameters:
  *        - name: planet_id
  *          in: path
@@ -75,7 +84,7 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Satellite'
  *         404:
  *          description: Object not found
  *         500:
@@ -97,6 +106,8 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
  * /satellite/addsatellite:
  *   post:
  *      summary: Add a new satellite through a form
+ *      tags:
+ *        - satellite
  *      responses:
  *          200:
  *            description: Satellite added
@@ -165,6 +176,8 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
  * /satellite/deletesatellite/{satellite_id}:
  *   post:
  *      summary: delete a satellite through a form using the satellite_id
+ *      tags:
+ *        - satellite
  *      parameters:
  *        - name: satellite_id
  *          in: path
@@ -202,6 +215,8 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  * /satellite/editsatellite/:
  *   put:
  *      summary: edit a Satellite through a form using the satellite_id
+ *      tags:
+ *        - satellite
  *      parameters:
  *        - name: satellite_id
  *          in: query

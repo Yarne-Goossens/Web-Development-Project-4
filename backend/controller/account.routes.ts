@@ -8,15 +8,20 @@
  *           account_id:
  *             type: number
  *             format: int64
- *             description: The auto-generated id of the planet
+ *             description: The auto-generated id of the account
  *           email:
  *             type: string
+ *             description: email of the account owner 
+ *             format: email
  *           name:
  *             type: string
+ *             description: name of the account owner
  *           address:
  *             type: string
+ *             description: address of the account owner
  *           password:
  *             type: string
+ *             description: password of the account owner
  */
 
 import express,{Request,Response} from 'express';
@@ -31,6 +36,8 @@ export const account_router = express.Router();
  * /account/accountoverview:
  *   get:
  *      summary: Get all accounts
+ *      tags:
+ *        - account
  *      responses:
  *          200:
  *            description: Get all accounts
@@ -55,19 +62,21 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  * @swagger
  * /account/addaccount:
  *   post:
- *      summary: Add a new Planet through a form
+ *      summary: Add a new Account through a form
+ *      tags:
+ *        - account
  *      responses:
  *          200:
- *            description: Planet added
+ *            description: Account added
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Account'
  * 
  *      parameters:
  *        - name: name
  *          in: query
- *          description: planet name
+ *          description: account name
  *          required: true
  *          schema:
  *            type: string
@@ -82,14 +91,14 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  * 
  *        - name: address
  *          in: query
- *          description: semimajor_axis in mathematical notation or normal notation
+ *          description: address
  *          required: true
  *          schema:  
  *            type: string
  * 
  *        - name: password
  *          in: query
- *          description: mass in mathematical notation or normal notation
+ *          description: password
  *          required: true
  *          schema:
  *            type: string
@@ -112,7 +121,9 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  * @swagger
  * /account/editaccount/:
  *   put:
- *      summary: edit a Planet through a form using the planet_id
+ *      summary: edit an account through a form using the account id
+ *      tags:
+ *        - account
  *      parameters:
  *        - name: account_id
  *          in: query
@@ -152,11 +163,11 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  * 
  *      responses:
  *         200:
- *            description: Planet edited successfully
+ *            description: Account edited successfully
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Account'
  *         404:
  *          description: Object not found
  *         500:
@@ -180,6 +191,8 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
  * /account/deleteaccount/{account_id}:
  *   post:
  *      summary: delete an Account through a form using the account_id
+ *      tags:
+ *        - account
  *      parameters:
  *        - name: account_id
  *          in: path
@@ -194,7 +207,7 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Account'
  *         404:
  *          description: Object not found
  *         500:
@@ -216,7 +229,9 @@ account_router.post('/deleteAccount/:account_id', async(req:Request, res:Respons
  * @swagger
  * /account/login/:
  *   put:
- *      summary: edit a Planet through a form using the planet_id
+ *      summary:login an Account through a form using the account_id
+ *      tags:
+ *        - account
  *      parameters:
  * 
  *        - name: email
@@ -241,7 +256,7 @@ account_router.post('/deleteAccount/:account_id', async(req:Request, res:Respons
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Account'
  *         404:
  *          description: Object not found
  *         500:
