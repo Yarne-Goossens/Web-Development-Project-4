@@ -6,7 +6,7 @@ export class ResourceService{
 
     getAllResourceOfPlanetWithId=async(planet_id:number):Promise<Resource[]>=>await getAllResourcesOfPlanetWithId(planet_id);
     
-    getResourceWithIdService=async(id:number)=>await getResourceWithId(id);
+    getResourceWithIdService=async(id:number):Promise<Resource>=>await getResourceWithId(id);
 
     addResource=async(resource:Resource)=>await addResource(resource);
 

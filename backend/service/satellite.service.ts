@@ -6,7 +6,7 @@ export class SatelliteService{
 
     getAllSatellitesOfPlanetWithId=async(planet_id:number):Promise<Satellite[]>=>await getAllSatellitesOfPlanetWithId(planet_id);
     
-    getSatelliteWithIdService=async(id:number)=>await getSatelliteWithId(id);
+    getSatelliteWithIdService=async(id:number):Promise<Satellite>=>await getSatelliteWithId(id);
 
     addSatellite=async(satellite:Satellite)=>await addSatellite(satellite);
 
