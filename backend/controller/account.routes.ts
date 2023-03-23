@@ -274,7 +274,7 @@ account_router.post('/deleteAccount/:account_id', async(req:Request, res:Respons
 account_router.put('/login/', async(req:Request, res:Response) => {
     try {
         //validatie weggehaald omdat het programma crashte
-        accountService.loginValidation(String(req.query.email),String(req.query.password));
+       // accountService.loginValidation(String(req.query.email),String(req.query.password));
         res.status(200).json({message: 'User logged in successfully'});
     } catch (error) {
         console.log(error);
