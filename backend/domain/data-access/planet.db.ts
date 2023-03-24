@@ -4,8 +4,8 @@ import { PrismaClient, planet as PrismaPlanet } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function getAllPlanets(): Promise<Planet[]> {
-    const teams: PrismaPlanet[] = await prisma.planet.findMany();
-    return teams.map((team) => Planet.from(<Planet>team));
+    const planets: PrismaPlanet[] = await prisma.planet.findMany();
+    return planets.map((planet) => Planet.from(<Planet>planet));
 }
 
 export async function getPlanetWithId(id: number): Promise<Planet> {

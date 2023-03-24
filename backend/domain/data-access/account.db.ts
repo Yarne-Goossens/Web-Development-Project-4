@@ -4,7 +4,6 @@ import { PrismaClient, account as PrismaAccount } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getAllAccounts(): Promise<Account[]> {
-    
     const accounts: PrismaAccount[] = await prisma.account.findMany();
     return accounts.map((account) => Account.from(<Account>account));
 }
@@ -18,7 +17,7 @@ export async function addAccount(account: Account) {
     await prisma.account.create({
         data: {
             email: account.email,
-            username: account.name,
+            username: account.username,
             password: account.password,
             role: account.password
         },
@@ -30,7 +29,7 @@ export async function updateAccount(id: number, account: Account) {
         where: {account_id: id},
         data: {
             email: account.email,
-            username: account.name,
+            username: account.username,
             password: account.password,
             role: account.password,
             },

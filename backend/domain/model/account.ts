@@ -2,7 +2,6 @@ export class Account {
     private _account_id: number
     private _email: string
     private _username: string
-    private _address: string
     private _password: string
     private _role: string
 
@@ -20,11 +19,8 @@ export class Account {
     get account_id(): number {
         return this._account_id;
     }
-    get name(): string {
+    get username(): string {
         return this._username;
-    }
-    get address(): string {
-        return this._address;
     }
     get password(): string {
         return this._password;
@@ -41,11 +37,8 @@ export class Account {
         //gets set by the database
         this._account_id = value;
     }
-    set name(value: string) {
+    set username(value: string) {
         this._username = value;
-    }
-    set address(value: string) {
-        this._address = value;
     }
     set password(value: string) {
         this._password = value;
@@ -56,11 +49,11 @@ export class Account {
 
     static from(arg0: Account) {
         return new Account(
-            arg0.account_id,
             arg0.email,
-            arg0._username,
+            arg0.username,
             arg0.password,
             arg0.role,
+            arg0.account_id,
         );
     }
 }

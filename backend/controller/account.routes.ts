@@ -16,9 +16,6 @@
  *           name:
  *             type: string
  *             description: name of the account owner
- *           address:
- *             type: string
- *             description: address of the account owner
  *           password:
  *             type: string
  *             description: password of the account owner
@@ -49,7 +46,7 @@ export const account_router = express.Router();
 
 account_router.get('/accountoverview', async(req:Request, res:Response) => {
     try {
-        const accounts = accountService.getAllAccounts();
+        const accounts = await accountService.getAllAccounts();
         res.status(200).json({accounts});
     } catch (error) {
         console.log(error);
@@ -92,12 +89,6 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *            type: string
  *            format: email
  * 
- *        - name: address
- *          in: query
- *          description: address
- *          required: true
- *          schema:  
- *            type: string
  * 
  *        - name: password
  *          in: query
@@ -110,7 +101,7 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
 
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
-        const toAdd=new Account(String(req.query.email),String(req.query.name),  String(req.query.address), String(req.query.password))
+        const toAdd=new Account(String(req.query.email),String(req.query.name), String(req.query.password))
         await accountService.addAccountService(toAdd);
 
         res.status(200).json({toAdd});
@@ -152,12 +143,6 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  *            type: string
  *            format: email
  * 
- *        - name: address
- *          in: query
- *          description: address
- *          required: true
- *          schema:  
- *            type: string
  * 
  *        - name: password
  *          in: query
@@ -184,7 +169,7 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
     try {
         const planetToEdit=accountService.getAccountById(Number(req.query.account_id));
         accountService.updateAccount(Number(req.query.account_id),
-            new Account(String(req.query.email),String(req.query.name),  String(req.query.address), String(req.query.password)));
+            new Account(String(req.query.email),String(req.query.name), String(req.query.password)));
         res.status(200).json({planetToEdit});
     } catch (error) {
         console.log(error);
