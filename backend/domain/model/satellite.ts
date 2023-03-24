@@ -1,30 +1,55 @@
 export class Satellite {
-    satellite_id?: number
-    readonly radius: number
-    readonly semimajor_axis: number
-    readonly mass: number
-    readonly satellite_name: string
-    planet_id: number
+    private _satellite_id: number
+    private _radius: number
+    private _semimajor_axis: number
+    private _mass: number
+    private _satellite_name: string
+    private _planet_id: number
 
-    constructor(radius: number, semimajor_axis: number, mass: number, satellite_name: string, planet_id: number, satellite_id?: number) {
-        this.satellite_id = satellite_id
-        this.radius = radius
-        this.semimajor_axis = semimajor_axis
-        this.mass = mass
-        this.satellite_name = satellite_name
-        this.planet_id = planet_id
+    constructor(radius?: number, semimajor_axis?: number, mass?: number, satellite_name?: string, planet_id?: number, satellite_id?: number) {
+        this._satellite_id = satellite_id
+        this._radius = radius
+        this._semimajor_axis = semimajor_axis
+        this._mass = mass
+        this._satellite_name = satellite_name
+        this._planet_id = planet_id
     }
 
-    static create_satellite({radius, semimajor_axis, mass, satellite_name, planet_id}) {
-        return new Satellite(radius, semimajor_axis, mass, satellite_name, planet_id);
+    get satellite_id(): number{
+        return this._satellite_id;
     }
-
-    public getSatellite_id?(): number {
-        return this.satellite_id;
+    get radius(): number{
+        return this._radius;
     }
-
-    public setSatellite_id?(satellite_id: number): void {
-        this.satellite_id = satellite_id;
+    get semimajor_axis(): number{
+        return this._semimajor_axis;
+    }
+    get mass(): number{
+        return this._mass;
+    }
+    get satellite_name(): string{
+        return this._satellite_name;
+    }
+    get planet_id(): number{
+        return this._planet_id;
+    }
+    set satellite_id(value:number) {
+        this._satellite_id=value;
+    }
+    set radius(value:number){
+        this._radius=value;
+    }
+    set semimajor_axis(value:number){
+        this._semimajor_axis=value;
+    }
+    set mass(value:number){
+        this._mass=value;
+    }
+    set satellite_name(value:string){
+        this._satellite_name=value;
+    }
+    set planet_id(value:number){
+        this._planet_id=value;
     }
 
     static from(arg0: Satellite) {
