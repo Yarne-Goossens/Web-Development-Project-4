@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <>
-      <MetaHead />
+      <MetaHead title="Planet Home"/>
       <Header />
       <main className={styles.main}>
         <div className={styles.description}>
