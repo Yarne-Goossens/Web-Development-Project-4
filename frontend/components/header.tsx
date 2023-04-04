@@ -6,7 +6,7 @@ const Header:React.FC = () => {
         <nav>
             <Link href="/">Home</Link>
             <Link href="/PlanetAdd">Add Planet</Link>
-            <Link href="/PlanetOverview">Planet Overview</Link>
+            <Link href="/planets">Planet Overview</Link>
         </nav>
     </header>)
 }

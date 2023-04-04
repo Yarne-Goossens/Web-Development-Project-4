@@ -47,7 +47,7 @@ export const planet_router = express.Router();
 planet_router.get('/planetoverview', async(req:Request, res:Response) => {
     try {
         const planets = await planetService.getAllPlanetsService();
-        res.status(200).json({planets});
+        res.status(200).json(planets);
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

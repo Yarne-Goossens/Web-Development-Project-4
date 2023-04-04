@@ -49,7 +49,7 @@ export const resource_router = express.Router();
 resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
     try {
         const resources = await resourceservice.getAllResourceService();
-        res.status(200).json({resources});
+        res.status(200).json(resources);
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

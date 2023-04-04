@@ -1,6 +1,5 @@
 const getAllPlanets=()=>{
-    console.log("getAllPlanets")
-    return fetch('http://localhost:8000/api/planetoverview')
+    return fetch('http://localhost:3000/planet/planetoverview')
 }
 const PlanetService={
     getAllPlanets

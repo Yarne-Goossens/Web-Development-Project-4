@@ -47,7 +47,7 @@ export const account_router = express.Router();
 account_router.get('/accountoverview', async(req:Request, res:Response) => {
     try {
         const accounts = await accountService.getAllAccounts();
-        res.status(200).json({accounts});
+        res.status(200).json(accounts);
     } catch (error) {
         console.log(error);
         if( error instanceof Error){

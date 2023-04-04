@@ -56,7 +56,7 @@ export const satellite_router  = express.Router();
 satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
     try {
         const satellites = await satelliteService.getAllSatellitesService();
-        res.status(200).json({satellites});
+        res.status(200).json(satellites);
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
