@@ -103,8 +103,15 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
+        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        //error handling
+        if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
+        if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
+        if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
+        if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
+        
         const planets = await planetService.addPlanetService(
-        new Planet(Number(req.query.radius), Number(req.query.semimajor_axis), Number(req.query.mass), String(req.query.planet_name)));
+        new Planet(radius, semimajor_axis, mass, planet_name));
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
@@ -172,12 +179,18 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
 
 planet_router.put('/editplanet/', async(req:Request, res:Response) => {
     try {
+        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        //error handling
+        if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
+        if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
+        if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
+        if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
         planetService.editPlanetService(Number(req.query.planet_id),
             new Planet(
-            Number(req.query.radius), 
-            Number(req.query.semimajor_axis), 
-            Number(req.query.mass), 
-            String(req.query.planet_name),
+            radius, 
+            semimajor_axis, 
+            mass, 
+            planet_name,
         ));
         res.status(200).json({message: 'Planet edited successfully'});
     } catch (error) {

@@ -1,19 +1,15 @@
-import  Header from '../../components/header'
+import  Header from '../../../components/header'
 import Head from 'next/head'
-import MetaHead from '../../components/MetaHead'
-import PlanetOverview from '../../components/planets/PlanetOverviewTable'
-import PlanetService from '../../services/PlanetService'
+import MetaHead from '../../../components/MetaHead'
+import PlanetOverview from '../../../components/planet/PlanetOverviewTable'
+import PlanetService from '../../../services/PlanetService'
 import {useState,useEffect} from 'react'
-import {Planet} from '../../types'
+import {Planet} from '../../../types'
 
 const Planets: React.FC = () => {
     const[planets,setPlanets] = useState<Array<Planet>>([])
 
     const getPlanets = async () => {
-        /*console.log("getPlanets")
-        
-        PlanetService.getAllPlanets().then((res)=>res.json())
-        .then((planets)=>setPlanets(planets)) */
          try{
         const response = await PlanetService.getAllPlanets();
             const data = await response.json();

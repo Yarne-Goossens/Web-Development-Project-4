@@ -40,7 +40,7 @@ export class Planet {
     get mass(): number {
         return this._mass;
     }
-//we moeten een manier vinden om errors te throwen en catchen da ni het programma crasht
+    //we moeten een manier vinden om errors te throwen en catchen da ni het programma crasht
     set planet_name(value: string) {
         //if(value.length < 1) throw new Error('Planet name cannot be empty');
         //if(value.length > 30) throw new Error('Planet name cannot be longer than 30 characters');

@@ -1,12 +1,10 @@
 import styles from '@/styles/Home.module.css'
 import { Planet } from '../../types'
-
 type Props  = {
   planets:Array<Planet>
 }
 
 const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
-  
     return (
     <>
         <main className={styles.main}>
