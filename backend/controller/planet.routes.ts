@@ -109,7 +109,7 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
         if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
         if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
         if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
-        if(planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
+        if(await planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
 
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
@@ -186,7 +186,7 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
         if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
         if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
         if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
-        if(planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
+        if(await planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
         
         planetService.editPlanetService(Number(req.query.planet_id),
             new Planet(

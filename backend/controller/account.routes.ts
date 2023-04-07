@@ -24,6 +24,7 @@
 import express,{Request,Response} from 'express';
 import { AccountService } from '../service/account.service';
 import { Account } from '../domain/model/account';
+import { idExists } from '../domain/data-access/planet.db';
 
 export const accountService:AccountService=new AccountService();
 export const account_router = express.Router();
@@ -89,6 +90,12 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *            type: string
  *            format: email
  * 
+ *        - name: role
+ *          in: query
+ *          description: account role
+ *          required: true
+ *          schema:
+ *            type: string
  * 
  *        - name: password
  *          in: query
@@ -101,7 +108,24 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
 
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
-        const toAdd=new Account(String(req.query.email),String(req.query.name), String(req.query.password))
+        const email=String(req.query.email);const name=String(req.query.name);const password=String(req.query.password);const role=String(req.query.role);
+        const toAdd=new Account(name,email, password,role)
+
+        if(await accountService.emailExistsService(email)){
+            res.status(400).json({message:"Email already exists"});
+            return;
+
+        }
+        if(email==null|| email=="")
+        {
+            res.status(400).json({message:"Email cannot be empty"});
+            return;
+        }
+        if(name==null|| name==""){res.status(400).json({message:"Name cannot be empty"});return;}
+        if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
+        if(role==null|| role==""){res.status(400).json({message:"Role cannot be empty"});return;}
+
+        
         await accountService.addAccountService(toAdd);
 
         res.status(200).json({toAdd});
@@ -143,6 +167,12 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  *            type: string
  *            format: email
  * 
+ *        - name: role
+ *          in: query
+ *          description: account role
+ *          required: true
+ *          schema:
+ *            type: string
  * 
  *        - name: password
  *          in: query
@@ -167,9 +197,17 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 
 account_router.put('/editaccount/', async(req:Request, res:Response) => {
     try {
-        const planetToEdit=accountService.getAccountById(Number(req.query.account_id));
-        accountService.updateAccount(Number(req.query.account_id),
-            new Account(String(req.query.email),String(req.query.name), String(req.query.password)));
+        const account_id=Number(req.query.account_id);const name=String(req.query.name);const email=String(req.query.email);const password=String(req.query.password);const role=String(req.query.role);
+        if(await accountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
+
+        if(name==null||name.length<1||name.length>30){res.status(400).json({message:"Name required"});return;}
+        if(email==null||email.length<1||email.length>30){res.status(400).json({message:"Email required"});return;}
+        if(password==null||password.length<1||password.length>30){res.status(400).json({message:"Password required"});return;}
+        if(role==null||role.length<1||role.length>30){res.status(400).json({message:"Role required"});return;}
+
+        const planetToEdit=accountService.getAccountById(account_id);
+        accountService.updateAccount(account_id,
+            new Account(email,name,password,role));
         res.status(200).json({planetToEdit});
     } catch (error) {
         console.log(error);
@@ -210,8 +248,13 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
 
 account_router.post('/deleteAccount/:account_id', async(req:Request, res:Response) => {
     try {
-        const planetToDelete=accountService.getAccountById(Number(req.params.account_id));
-        accountService.deleteAccount(Number(req.params.account_id));
+        const account_id=Number(req.params.account_id);
+        if(await accountService.idExistsService(account_id)===false){
+            res.status(404).json({message: 'Account not found'});
+            return;
+        }
+        const planetToDelete=accountService.getAccountById(account_id);
+        accountService.deleteAccount(account_id);
         res.status(200).json({planetToDelete});
     } catch (error) {
         console.log(error);
@@ -262,6 +305,7 @@ account_router.put('/login/', async(req:Request, res:Response) => {
        // accountService.loginValidation(String(req.query.email),String(req.query.password));
        if(await accountService.loginValidation(String(req.query.email),String(req.query.password))==false){
            res.status(400).json({message: 'Invalid email or password'});
+           return;
         }
        
         res.status(200).json({message: 'User logged in successfully'});

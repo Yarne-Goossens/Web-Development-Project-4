@@ -46,7 +46,7 @@ export async function idExists(id: number): Promise<boolean> {
 }
 
 export async function planetNameExists(name: string): Promise<boolean> {
-    const planet: PrismaPlanet[] = await prisma.planet.findMany({ where: { planet_name: name } });
+    const planet: PrismaPlanet = await prisma.planet.findFirst({ where: { planet_name: name } });
     return !!planet;
 }
 

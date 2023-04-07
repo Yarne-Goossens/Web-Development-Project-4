@@ -45,3 +45,13 @@ export async function loginValidation(email: string, password: string): Promise<
     if(account === null) return false;
     return account.password === password;
 }
+
+export async function idExists(id: number): Promise<boolean> {
+    const account: PrismaAccount = await prisma.account.findUnique({ where: { account_id: id } });
+    return account !== null;
+}
+
+export async function emailExists(email: string): Promise<boolean> {
+    const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
+    return account !== null;
+}
