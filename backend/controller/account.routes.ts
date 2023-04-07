@@ -260,6 +260,10 @@ account_router.put('/login/', async(req:Request, res:Response) => {
     try {
         //validatie weggehaald omdat het programma crashte
        // accountService.loginValidation(String(req.query.email),String(req.query.password));
+       if(await accountService.loginValidation(String(req.query.email),String(req.query.password))==false){
+           res.status(400).json({message: 'Invalid email or password'});
+        }
+       
         res.status(200).json({message: 'User logged in successfully'});
     } catch (error) {
         console.log(error);

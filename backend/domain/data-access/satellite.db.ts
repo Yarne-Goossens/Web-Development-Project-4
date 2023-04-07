@@ -45,3 +45,13 @@ export async function editSatellite(id: number, satellite: Satellite) {
 export async function deleteSatellite(id: number) {
     await prisma.satellite.delete({ where: { satellite_id: id } });
 }
+
+export async function idExists(id: number): Promise<boolean> {
+    const satellite: PrismaSatellite = await prisma.satellite.findUnique({ where: { satellite_id: id } });
+    return satellite != null;
+}
+
+export async function satelliteNameExists(name: string): Promise<boolean> {
+    const satellite: PrismaSatellite[] = await prisma.satellite.findMany({ where: { satellite_name: name } });
+    return satellite != null;
+}

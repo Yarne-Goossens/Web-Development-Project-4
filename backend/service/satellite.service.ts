@@ -1,4 +1,5 @@
-import { getAllSatellites, getAllSatellitesOfPlanetWithId, getSatelliteWithId, addSatellite, editSatellite, deleteSatellite }  from '../domain/data-access/satellite.db';
+
+import { getAllSatellites, getAllSatellitesOfPlanetWithId, getSatelliteWithId, addSatellite, editSatellite, deleteSatellite, satelliteNameExists, idExists }  from '../domain/data-access/satellite.db';
 import {Satellite} from '../domain/model/satellite';
 
 export class SatelliteService{
@@ -13,4 +14,8 @@ export class SatelliteService{
     editSatelliteService=async(id:number,satellite:Satellite)=>await editSatellite(id,satellite);
 
     deleteSatellite=async(id:number)=>await deleteSatellite(id);
+
+    idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
+
+    satelliteNameExistsService=async(name:string):Promise<boolean>=>await satelliteNameExists(name);
 }

@@ -40,3 +40,13 @@ export async function deletePlanet(planet_id: number) {
     await prisma.planet.delete({ where: { planet_id: planet_id } });
 }
 
+export async function idExists(id: number): Promise<boolean> {
+    const planet: PrismaPlanet = await prisma.planet.findUnique({ where: { planet_id: id } });
+    return !!planet;
+}
+
+export async function planetNameExists(name: string): Promise<boolean> {
+    const planet: PrismaPlanet[] = await prisma.planet.findMany({ where: { planet_name: name } });
+    return !!planet;
+}
+

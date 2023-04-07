@@ -1,4 +1,5 @@
-import { getAllResources, getAllResourcesOfPlanetWithId, getResourceWithId, addResource, editResource, deleteResource }  from '../domain/data-access/resource.db';
+
+import { getAllResources, getAllResourcesOfPlanetWithId, getResourceWithId, addResource, editResource, deleteResource,idExists }  from '../domain/data-access/resource.db';
 import {Resource} from '../domain/model/resource';
 
 export class ResourceService{
@@ -13,4 +14,6 @@ export class ResourceService{
     editResourceService=async(id:number,resource:Resource)=>await editResource(id,resource);
 
     deleteResource=async(id:number)=>await deleteResource(id);
+
+    idExistsService=async(id:number)=>await idExists(id);
 }

@@ -18,7 +18,6 @@ const Planets: React.FC = () => {
         } catch (error) {
             console.log('Error fetching Teams', error);
         } 
-
     }
     useEffect(()=>{
         console.log(    "useEffect")

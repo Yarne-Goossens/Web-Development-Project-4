@@ -31,7 +31,8 @@
 import express,{Request,Response} from 'express';
 import { SatelliteService } from '../service/satellite.service';
 import { Satellite } from '../domain/model/satellite';
-
+import{PlanetService} from '../service/planet.service';
+import { planetService } from './planet.routes';
 
 
 export const satelliteService:SatelliteService=new SatelliteService();
@@ -93,7 +94,11 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
 
 satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Response) => {
     try {
-        const satellitesOfPlanet = await satelliteService.getAllSatellitesOfPlanetWithId(Number(req.params.planet_id));
+        const planet_id=Number(req.params.planet_id);
+        if(await planetService.idExistsService(planet_id)===false){
+            res.status(404).json({message: 'Planet not found'});
+        }
+        const satellitesOfPlanet = await satelliteService.getAllSatellitesOfPlanetWithId(planet_id);
         res.status(200).json({satellitesOfPlanet});
     } catch (error) {
         console.log(error);
@@ -157,12 +162,22 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
 
 satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
     try {
+        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const satellite_name=String(req.query.satellite_name);const planet_id=Number(req.query.planet_id);
+        if(await planetService.idExistsService(planet_id)===false){res.status(404).json({message: 'Planet not found'});}
+        if(await satelliteService.satelliteNameExistsService(satellite_name)===true){res.status(404).json({message: 'Satellite name already exists'});}
+        if(radius<0||radius==null){res.status(404).json({message: 'Radius cannot be negative'});}
+        if(semimajor_axis<0||semimajor_axis==null){res.status(404).json({message: 'Semimajor axis cannot be negative'});}
+        if(mass<0||mass==null){res.status(404).json({message: 'Mass cannot be negative'});}
+        if(satellite_name==null){res.status(404).json({message: 'Satellite name cannot be null'});}
+        if(planet_id==null){res.status(404).json({message: 'Planet id cannot be null'});}
+
+
         const satellite = await satelliteService.addSatellite(
-        new Satellite( Number(req.query.radius), 
-        Number(req.query.semimajor_axis), 
-        Number(req.query.mass),
-        String(req.query.satellite_name), 
-        Number(req.query.planet_id)));
+        new Satellite( radius, 
+        semimajor_axis, 
+        mass,
+        satellite_name, 
+        planet_id));
         res.status(200).json({satellite});
     } catch (error) {
         console.log(error);
@@ -236,14 +251,24 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
 
 satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
     try {
-        const satelliteToEdit=await satelliteService.getSatelliteWithIdService(Number(req.query.satellite_id));
-        satelliteService.editSatelliteService(Number(req.query.satellite_id),
+        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const satellite_name=String(req.query.satellite_name);const planet_id=Number(req.query.planet_id);const satellite_id=Number(req.query.satellite_id);
+        if(await planetService.idExistsService(planet_id)===false){res.status(404).json({message: 'Planet not found'});}
+        if(await satelliteService.satelliteNameExistsService(satellite_name)===true){res.status(404).json({message: 'Satellite name already exists'});}
+        if(radius<0||radius==null){res.status(404).json({message: 'Radius cannot be negative'});}
+        if(semimajor_axis<0||semimajor_axis==null){res.status(404).json({message: 'Semimajor axis cannot be negative'});}
+        if(mass<0||mass==null){res.status(404).json({message: 'Mass cannot be negative'});}
+        if(satellite_name==null){res.status(404).json({message: 'Satellite name cannot be null'});}
+        if(planet_id==null){res.status(404).json({message: 'Planet id cannot be null'});}
+        if(satellite_id==null){res.status(404).json({message: 'Satellite id cannot be null'});}
+        
+        const satelliteToEdit=await satelliteService.getSatelliteWithIdService(satellite_id);
+        satelliteService.editSatelliteService(satellite_id,
         new Satellite(
-        Number(req.query.radius), 
-        Number(req.query.semimajor_axis), 
-        Number(req.query.mass),
-        String(req.query.satellite_name), 
-        Number(req.query.planet_id)
+        radius, 
+        semimajor_axis, 
+        mass,
+        satellite_name, 
+        planet_id
         ));
         res.status(200).json({satelliteToEdit});
     } catch (error) {
@@ -282,8 +307,11 @@ satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
 
 satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
     try {
-        const planetToDelete=await satelliteService.getSatelliteWithIdService(Number(req.params.satellite_id));
-        satelliteService.deleteSatellite(Number(req.params.satellite_id));
+        const satellite_id=Number(req.params.satellite_id);
+        if(await satelliteService.idExistsService(satellite_id)===false){res.status(404).json({message: 'Satellite not found'});}
+
+        const planetToDelete=await satelliteService.getSatelliteWithIdService(satellite_id);
+        satelliteService.deleteSatellite(satellite_id);
         res.status(200).json({planetToDelete});
     } catch (error) {
         console.log(error);

@@ -43,3 +43,9 @@ export async function editResource(id: number, resource: Resource) {
 export async function deleteResource(id: number) {
     await prisma.resource.delete({ where: { resource_id: id } });
 }
+
+export async function idExists(id: number): Promise<boolean> {
+    const resource: PrismaResource = await prisma.resource.findUnique({ where: { resource_id: id } });
+    return !!resource;
+}
+

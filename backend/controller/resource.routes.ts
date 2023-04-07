@@ -26,6 +26,8 @@
 import express,{Request,Response} from 'express';
 import { ResourceService } from '../service/resource.service';
 import { Resource } from '../domain/model/resource';
+import { PlanetService } from '../service/planet.service';
+import { planetService } from './planet.routes';
 
 export const resourceservice:ResourceService=new ResourceService();
 export const resource_router = express.Router();
@@ -86,6 +88,10 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
 
 resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Response) => {
     try {
+        if(await planetService.idExistsService(Number(req.params.planet_id)) == false){
+            res.status(404).json({message: 'Planet not found'});
+        }
+
         const resourcesOfPlanet = await resourceservice.getAllResourceOfPlanetWithId(Number(req.params.planet_id));
         res.status(200).json({resourcesOfPlanet});
     } catch (error) {
@@ -141,12 +147,16 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
 
 resource_router.post('/addresource', async(req:Request, res:Response) => {
     try {
+        const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
+
+        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
+        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
+        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
+        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
+        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}
+
         const resource = await resourceservice.addResource(
-        new Resource( 
-        String(req.query.resource_name), 
-        String(req.query.chemical_composition), 
-        String(req.query.description), 
-        Number(req.query.planet_id)));
+        new Resource( resource_name, chemical_composition, description, planet_id));
         res.status(200).json({resource});
     } catch (error) {
         console.log(error);
@@ -212,13 +222,22 @@ resource_router.post('/addresource', async(req:Request, res:Response) => {
 
 resource_router.put('/editresource/', async(req:Request, res:Response) => {
     try {
-        const resourceToEdit=await resourceservice.getResourceWithIdService(Number(req.query.resource_id));
-        resourceservice.editResourceService(Number(req.query.resource_id),
+        const resource_id=Number(req.query.resource_id);const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
+
+        if(resource_id==null||resource_id<0){res.status(400).json({message: 'Resource id must be a number'});return;}
+        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 50 characters'});return;}
+        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
+        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
+        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
+        if(await planetService.idExistsService(planet_id)==false){res.status(400).json({message: 'Planet not found'});return;}
+
+        const resourceToEdit=await resourceservice.getResourceWithIdService(resource_id);
+        resourceservice.editResourceService(resource_id,
         new Resource(
-        String(req.query.resource_name), 
-        String(req.query.chemical_composition),
-        String(req.query.description), 
-        Number(req.query.planet_id)
+        resource_name, 
+        chemical_composition,
+        description, 
+        planet_id
         ));
         res.status(200).json({resourceToEdit});
     } catch (error) {
@@ -257,6 +276,8 @@ resource_router.put('/editresource/', async(req:Request, res:Response) => {
 
 resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Response) => {
     try {
+        if(await resourceservice.idExistsService(Number(req.params.resource_id))==false){res.status(400).json({message: 'Resource not found'});return;}
+        
         const resourceToDelete=await resourceservice.getResourceWithIdService(Number(req.params.resource_id));
         resourceservice.deleteResource(Number(req.params.resource_id));
         res.status(200).json({resourceToDelete});

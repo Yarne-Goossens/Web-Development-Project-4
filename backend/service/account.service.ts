@@ -1,5 +1,5 @@
 import {Account} from '../domain/model/account';
-import { getAllAccounts } from '../domain/data-access/account.db';
+import { getAllAccounts, loginValidation } from '../domain/data-access/account.db';
 import { addAccount } from '../domain/data-access/account.db';
 import { getAccountWithId } from '../domain/data-access/account.db';
 import { deleteAccount } from '../domain/data-access/account.db';
@@ -16,5 +16,5 @@ export class AccountService{
 
     deleteAccount=async (id:number)=>await deleteAccount(id);
 
-    //loginValidation=(email:string,password:string):boolean=>this.accountDb.loginValidation(email,password);
+    loginValidation=async(email:string,password:string):Promise<boolean>=>await loginValidation(email,password);
 }

@@ -39,3 +39,9 @@ export async function updateAccount(id: number, account: Account) {
 export async function deleteAccount(id: number) {
     await prisma.account.delete({ where: { account_id: id } });
 }
+
+export async function loginValidation(email: string, password: string): Promise<boolean> {
+    const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
+    if(account === null) return false;
+    return account.password === password;
+}

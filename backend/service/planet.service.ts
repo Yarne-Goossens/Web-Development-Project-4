@@ -1,5 +1,5 @@
 import {Planet} from '../domain/model/planet';
-import {getAllPlanets} from '../domain/data-access/planet.db';  
+import {getAllPlanets, idExists, planetNameExists} from '../domain/data-access/planet.db';  
 import { addPlanet } from '../domain/data-access/planet.db'; 
 import {getPlanetWithId} from '../domain/data-access/planet.db';
 import {editPlanet} from '../domain/data-access/planet.db';
@@ -15,4 +15,8 @@ export class PlanetService{
     getPlanetWithIdService=async(id:number):Promise<Planet>=>await getPlanetWithId(id);
 
     getAllPlanetsService=async():Promise<Planet[]>=>await getAllPlanets();
+
+    idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
+
+    planetNameExistsService=async(name:string):Promise<boolean>=>await planetNameExists(name);
 }
