@@ -2,40 +2,40 @@ import  Header from '../../../components/header'
 import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import AccountOverview from '../../../components/account/AccountOverviewTable'
-import PlanetService from '../../../services/PlanetService'
+import AccountService from '../../../services/AccountService'
 import {useState,useEffect} from 'react'
-import {Planet} from '../../../types'
+import {Account} from '../../../types'
 
-const Planets: React.FC = () => {
-    const[planets,setPlanets] = useState<Array<Planet>>([])
+const Accounts: React.FC = () => {
+    const[accounts,setAccounts] = useState<Array<Account>>([])
 
-    const getPlanets = async () => {
+    const getAccounts = async () => {
          try{
-        const response = await PlanetService.getAllPlanets();
+        const response = await AccountService.getAllAccounts();
             const data = await response.json();
 
-            setPlanets(data);
+            setAccounts(data);
         } catch (error) {
-            console.log('Error fetching Teams', error);
+            console.log('Error fetching Accounts', error);
         } 
 
     }
     useEffect(()=>{
         console.log(    "useEffect")
-        getPlanets()
+        getAccounts()
     },[])
 
     return (
         <>
         <Header />
-        <MetaHead title="Planet Overview" />
+        <MetaHead title="Account Overview" />
         
         <main>
             <section className='row justify-content-center'>
-                <AccountOverview planets={planets} />
+                <AccountOverview accounts={accounts} />
             </section>
         </main>
         </>)
     
 }
-export default Planets
+export default Accounts

@@ -1,32 +1,30 @@
 import styles from '@/styles/Home.module.css'
-import { Planet } from '../../types'
+import { Account } from '../../types'
 type Props  = {
-  planets:Array<Planet>
+  accounts:Array<Account>
 }
 
-const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
+const AccountOverviewTable:React.FC<Props> = ({accounts}:Props) => {
     return (
     <>
         <main className={styles.main}>
         <div className={styles.description}>
           
-          {planets&& (<table><thead><tr>
-            <th>Planet Name</th>
-            <th>Planet Id</th>
+          {accounts&& (<table><thead><tr>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Email</th>
+            <th>Role</th>
             <th>Account Id</th>
-            <th>Radius</th>
-            <th>Semimajor Axis</th>
-            <th>Mass</th>
             </tr>
             </thead>
-            <tbody>{planets && planets.map((planet,index)=>(
+            <tbody>{accounts && accounts.map((account,index)=>(
               <tr key={index}>
-                <td>{planet._planet_name}</td>
-                <td>{planet._planet_id}</td>
-                <td>{planet._account_id}</td>
-                <td>{planet._radius}</td>
-                <td>{planet._semimajor_axis}</td>
-                <td>{planet._mass}</td>
+                <td>{account._username}</td>
+                <td>{account._password}</td>
+                <td>{account._email}</td>
+                <td>{account._role}</td>
+                <td>{account._account_id}</td>
               </tr>
             ))}
             </tbody>
@@ -36,4 +34,4 @@ const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
       </main>
     </>)
 }
-export default PlanetOverviewTable;
+export default AccountOverviewTable;

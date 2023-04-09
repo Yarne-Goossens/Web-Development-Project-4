@@ -1,32 +1,30 @@
 import styles from '@/styles/Home.module.css'
-import { Planet } from '../../types'
+import { Resource } from '../../types'
 type Props  = {
-  planets:Array<Planet>
+  resources:Array<Resource>
 }
 
-const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
+const ResourceOverviewTable:React.FC<Props> = ({resources}:Props) => {
     return (
     <>
         <main className={styles.main}>
         <div className={styles.description}>
           
-          {planets&& (<table><thead><tr>
-            <th>Planet Name</th>
+          {resources&& (<table><thead><tr>
+            <th>Resource Name</th>
+            <th>Resource Id</th>
+            <th>Chemical Composition</th>
+            <th>Description</th>
             <th>Planet Id</th>
-            <th>Account Id</th>
-            <th>Radius</th>
-            <th>Semimajor Axis</th>
-            <th>Mass</th>
             </tr>
             </thead>
-            <tbody>{planets && planets.map((planet,index)=>(
+            <tbody>{resources && resources.map((resource,index)=>(
               <tr key={index}>
-                <td>{planet._planet_name}</td>
-                <td>{planet._planet_id}</td>
-                <td>{planet._account_id}</td>
-                <td>{planet._radius}</td>
-                <td>{planet._semimajor_axis}</td>
-                <td>{planet._mass}</td>
+                <td>{resource._resource_name}</td>
+                <td>{resource._resource_id}</td>
+                <td>{resource._chemical_composition}</td>
+                <td>{resource._description}</td>
+                <td>{resource._planet_id}</td>
               </tr>
             ))}
             </tbody>
@@ -36,4 +34,4 @@ const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
       </main>
     </>)
 }
-export default PlanetOverviewTable;
+export default ResourceOverviewTable;

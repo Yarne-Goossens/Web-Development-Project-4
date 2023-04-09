@@ -2,40 +2,40 @@ import  Header from '../../../components/header'
 import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import ResourceOverview from '../../../components/resource/ResourceOverviewTable'
-import PlanetService from '../../../services/PlanetService'
+import ResourceService from '../../../services/ResourceService'
 import {useState,useEffect} from 'react'
-import {Planet} from '../../../types'
+import {Resource} from '../../../types'
 
-const Planets: React.FC = () => {
-    const[planets,setPlanets] = useState<Array<Planet>>([])
+const Resources: React.FC = () => {
+    const[resources,setResources] = useState<Array<Resource>>([])
 
-    const getPlanets = async () => {
+    const getResources = async () => {
          try{
-        const response = await PlanetService.getAllPlanets();
+        const response = await ResourceService.getAllResources();
             const data = await response.json();
 
-            setPlanets(data);
+            setResources(data);
         } catch (error) {
-            console.log('Error fetching Teams', error);
+            console.log('Error fetching Resources', error);
         } 
 
     }
     useEffect(()=>{
         console.log(    "useEffect")
-        getPlanets()
+        getResources()
     },[])
 
     return (
         <>
         <Header />
-        <MetaHead title="Planet Overview" />
+        <MetaHead title="Resource Overview" />
         
         <main>
             <section className='row justify-content-center'>
-                <ResourceOverview planets={planets} />
+                <ResourceOverview resources={resources} />
             </section>
         </main>
         </>)
     
 }
-export default Planets
+export default Resources

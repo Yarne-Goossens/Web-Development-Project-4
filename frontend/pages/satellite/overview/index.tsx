@@ -2,26 +2,26 @@ import  Header from '../../../components/header'
 import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import SatelliteOverview from '../../../components/satellite/SatelliteOverviewTable'
-import PlanetService from '../../../services/PlanetService'
+import SatelliteService from '../../../services/SatelliteService'
 import {useState,useEffect} from 'react'
-import {Planet} from '../../../types'
+import {Satellite} from '../../../types'
 
-const Planets: React.FC = () => {
-    const[planets,setPlanets] = useState<Array<Planet>>([])
+const Satellites: React.FC = () => {
+    const[satellites,setSatellites] = useState<Array<Satellite>>([])
 
-    const getPlanets = async () => {
+    const getSatellites = async () => {
          try{
-        const response = await PlanetService.getAllPlanets();
+        const response = await SatelliteService.getAllSatellites();
             const data = await response.json();
 
-            setPlanets(data);
+            setSatellites(data);
         } catch (error) {
-            console.log('Error fetching Teams', error);
+            console.log('Error fetching Satellites', error);
         } 
     }
     useEffect(()=>{
         console.log(    "useEffect")
-        getPlanets()
+        getSatellites()
     },[])
 
     return (
@@ -31,10 +31,10 @@ const Planets: React.FC = () => {
         
         <main>
             <section className='row justify-content-center'>
-                <SatelliteOverview planets={planets} />
+                <SatelliteOverview satellites={satellites} />
             </section>
         </main>
         </>)
     
 }
-export default Planets
+export default Satellites

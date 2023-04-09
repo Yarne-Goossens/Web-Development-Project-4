@@ -1,7 +1,7 @@
-const getAllPlanets=()=>{
-    return fetch('http://localhost:3000/planet/planetoverview')
+const getAllAccounts=()=>{
+    return fetch('http://localhost:3000/account/accountoverview')
 }
-const PlanetService={
-    getAllPlanets
+const AccountService={
+    getAllAccounts
 }
-export default PlanetService
+export default AccountService

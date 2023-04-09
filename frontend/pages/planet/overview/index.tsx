@@ -16,7 +16,7 @@ const Planets: React.FC = () => {
 
             setPlanets(data);
         } catch (error) {
-            console.log('Error fetching Teams', error);
+            console.log('Error fetching Planets', error);
         } 
 
     }

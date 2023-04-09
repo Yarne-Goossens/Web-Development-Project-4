@@ -1,32 +1,32 @@
 import styles from '@/styles/Home.module.css'
-import { Planet } from '../../types'
+import { Satellite } from '../../types'
 type Props  = {
-  planets:Array<Planet>
+  satellites:Array<Satellite>
 }
 
-const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
+const SatelliteOverviewTable:React.FC<Props> = ({satellites}:Props) => {
     return (
     <>
         <main className={styles.main}>
         <div className={styles.description}>
           
-          {planets&& (<table><thead><tr>
-            <th>Planet Name</th>
-            <th>Planet Id</th>
-            <th>Account Id</th>
+          {satellites&& (<table><thead><tr>
+            <th>Satellite Name</th>
+            <th>Satellite Id</th>
             <th>Radius</th>
             <th>Semimajor Axis</th>
             <th>Mass</th>
+            <th>Planet Id</th>
             </tr>
             </thead>
-            <tbody>{planets && planets.map((planet,index)=>(
+            <tbody>{satellites && satellites.map((satellite,index)=>(
               <tr key={index}>
-                <td>{planet._planet_name}</td>
-                <td>{planet._planet_id}</td>
-                <td>{planet._account_id}</td>
-                <td>{planet._radius}</td>
-                <td>{planet._semimajor_axis}</td>
-                <td>{planet._mass}</td>
+                <td>{satellite._satellite_name}</td>
+                <td>{satellite._satellite_id}</td>
+                <td>{satellite._radius}</td>
+                <td>{satellite._semimajor_axis}</td>
+                <td>{satellite._mass}</td>
+                <td>{satellite._planet_id}</td>
               </tr>
             ))}
             </tbody>
@@ -36,4 +36,4 @@ const PlanetOverviewTable:React.FC<Props> = ({planets}:Props) => {
       </main>
     </>)
 }
-export default PlanetOverviewTable;
+export default SatelliteOverviewTable;
