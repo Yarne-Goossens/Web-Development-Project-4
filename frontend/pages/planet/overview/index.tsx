@@ -29,13 +29,11 @@ const Planets: React.FC = () => {
         <>
         <Header />
         <MetaHead title="Planet Overview" />
-        
         <main>
             <section className='row justify-content-center'>
                 <PlanetOverview planets={planets} />
             </section>
         </main>
         </>)
-    
 }
 export default Planets

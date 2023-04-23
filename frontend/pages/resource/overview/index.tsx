@@ -28,14 +28,12 @@ const Resources: React.FC = () => {
     return (
         <>
         <Header />
-        <MetaHead title="Resource Overview" />
-        
+        <MetaHead title="Resource Overview" />    
         <main>
             <section className='row justify-content-center'>
                 <ResourceOverview resources={resources} />
             </section>
         </main>
-        </>)
-    
+        </>) 
 }
 export default Resources

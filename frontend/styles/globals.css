@@ -109,3 +109,28 @@ a {
     color-scheme: dark;
   }
 }
+
+
+
+th, td {
+  padding: 1em 1em 1em 1em;
+}
+
+td{
+  border: 1px solid;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body {
+  background-image: url("../images/space_bg.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
