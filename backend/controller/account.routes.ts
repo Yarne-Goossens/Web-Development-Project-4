@@ -110,24 +110,13 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
         const email=String(req.query.email);const name=String(req.query.name);const password=String(req.query.password);const role=String(req.query.role);
         const toAdd=new Account(name,email, password,role)
-
-        if(await accountService.emailExistsService(email)){
-            res.status(400).json({message:"Email already exists"});
-            return;
-
-        }
-        if(email==null|| email=="")
-        {
-            res.status(400).json({message:"Email cannot be empty"});
-            return;
-        }
+        if(await accountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
+        if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
         if(name==null|| name==""){res.status(400).json({message:"Name cannot be empty"});return;}
         if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
         if(role==null|| role==""){res.status(400).json({message:"Role cannot be empty"});return;}
 
-        
         await accountService.addAccountService(toAdd);
-
         res.status(200).json({toAdd});
     } catch (error) {
         console.log(error);
