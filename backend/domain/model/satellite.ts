@@ -5,14 +5,16 @@ export class Satellite {
     private _mass: number
     private _satellite_name: string
     private _planet_id: number
+    private _account_id?: number
 
-    constructor(radius?: number, semimajor_axis?: number, mass?: number, satellite_name?: string, planet_id?: number, satellite_id?: number) {
+    constructor(radius?: number, semimajor_axis?: number, mass?: number, satellite_name?: string, planet_id?: number, satellite_id?: number, account_id?:number) {
         this._satellite_id = satellite_id
         this._radius = radius
         this._semimajor_axis = semimajor_axis
         this._mass = mass
         this._satellite_name = satellite_name
         this._planet_id = planet_id
+        this._account_id = account_id
     }
 
     get satellite_id(): number{
@@ -33,6 +35,9 @@ export class Satellite {
     get planet_id(): number{
         return this._planet_id;
     }
+    get account_id(): number|undefined{
+        return this._account_id;
+    }
     set satellite_id(value:number) {
         this._satellite_id=value;
     }
@@ -51,8 +56,11 @@ export class Satellite {
     set planet_id(value:number){
         this._planet_id=value;
     }
+    set account_id(value:number|undefined){
+        this._account_id=value;
+    }
 
     static from(arg0: Satellite) {
-        return new Satellite(arg0.radius, arg0.semimajor_axis, arg0.mass, arg0.satellite_name, arg0.planet_id, arg0.satellite_id)
+        return new Satellite(arg0.radius, arg0.semimajor_axis, arg0.mass, arg0.satellite_name, arg0.planet_id, arg0.satellite_id, arg0.account_id)
     }
 }

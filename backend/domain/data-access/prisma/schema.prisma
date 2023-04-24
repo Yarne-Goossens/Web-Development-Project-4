@@ -29,6 +29,7 @@ model account {
   email String
   role String
   planets planet[]
+  satellites satellite[]
 }
 
 model resource {
@@ -48,4 +49,6 @@ model satellite {
   semimajor_axis Float
   mass         Float
   planet planet @relation(fields: [planet_id], references: [planet_id])
+  account_id Int?
+  account account? @relation(fields: [account_id], references: [account_id])
 }

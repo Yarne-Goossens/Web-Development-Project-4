@@ -7,8 +7,8 @@ const main = async () => {
 
   prisma.satellite.deleteMany({}).then(()=>console.log('removed all satellites'));
   prisma.planet.deleteMany({}).then(()=>console.log('removed all planets'));
-  prisma.account.deleteMany({}).then(()=>console.log('removed all planets'));
-  prisma.resource.deleteMany({}).then(()=>console.log('removed all planets'));
+  prisma.account.deleteMany({}).then(()=>console.log('removed all accounts'));
+  prisma.resource.deleteMany({}).then(()=>console.log('removed all resources'));
   
   const planets = await prisma.planet.createMany({
     data: [
