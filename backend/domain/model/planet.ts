@@ -1,3 +1,5 @@
+import { Satellite } from './satellite';
+import { Resource } from './resource';
 export class Planet {
     private _planet_name: string;
     private _planet_id: number;
@@ -5,24 +7,30 @@ export class Planet {
     private _radius: number;
     private _semimajor_axis: number;
     private _mass: number;
-
+    private _satellites: Satellite[];
+    private _resources: Resource[];
+    
     constructor(
         radius?: number,
         semimajor_axis?: number,
         mass?: number,
         planet_name?: string,
         planet_id?: number,
-        account_id?: number
+        account_id?: number,
+        satellites?: Satellite[],
+        resources?: Resource[]
     ) {
-        this._planet_name = planet_name;
-        this._radius = radius;
-        this._semimajor_axis = semimajor_axis;
-        this._mass = mass;
-        this._planet_id = planet_id;
-        this._account_id = account_id;
+        this.planet_name = planet_name;
+        this.radius = radius;
+        this.semimajor_axis = semimajor_axis;
+        this.mass = mass;
+        this.planet_id = planet_id;
+        this.account_id = account_id;
+        this.satellites = satellites;
+        this.resources = resources;
     }
 
-    get planet_name(): string {
+     get planet_name(): string {
         return this._planet_name;
     }
     get planet_id(): number {
@@ -39,6 +47,12 @@ export class Planet {
     }
     get mass(): number {
         return this._mass;
+    }
+    get satellites(): Satellite[] {
+        return this._satellites;
+    }
+    get resources(): Resource[] {
+        return this._resources;
     }
     //we moeten een manier vinden om errors te throwen en catchen da ni het programma crasht
     set planet_name(value: string) {
@@ -66,6 +80,12 @@ export class Planet {
         //if(value < 0) throw new Error('Mass cannot be negative');
         this._mass = value;
     }
+    set satellites(value: Satellite[]) {
+        this._satellites = value;
+    }
+    set resources(value: Resource[]) {
+        this._resources = value;
+    }
 
     static create_planet({
         radius,
@@ -74,7 +94,8 @@ export class Planet {
         planet_name,
         planet_id,
         account_id,
-    }: {radius: number;semimajor_axis: number;mass: number;planet_name: string;planet_id: number;account_id?: number;}): Planet {
+        satellites,
+    }: {radius: number;semimajor_axis: number;mass: number;planet_name: string;planet_id: number;account_id?: number;satellites?: Satellite[]}): Planet {
         const plan=new Planet();
         plan.radius=radius;
         plan.semimajor_axis=semimajor_axis;
@@ -82,8 +103,9 @@ export class Planet {
         plan.planet_name=planet_name;
         plan.planet_id=planet_id;
         plan.account_id=account_id;
+        plan.satellites=[];
         return plan;
-    }
+    } 
 
     static from(arg0: Planet) {
         return new Planet(
@@ -92,7 +114,9 @@ export class Planet {
             arg0.mass,
             arg0.planet_name,
             arg0.planet_id,
-            arg0.account_id
+            arg0.account_id,
+            arg0.satellites,
+            arg0.resources
         );
     }
 }

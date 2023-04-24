@@ -4,6 +4,7 @@ import { addPlanet } from '../domain/data-access/planet.db';
 import {getPlanetWithId} from '../domain/data-access/planet.db';
 import {editPlanet} from '../domain/data-access/planet.db';
 import {deletePlanet} from '../domain/data-access/planet.db';
+import { Satellite } from '../domain/model/satellite';
 
 export class PlanetService{
     addPlanetService=async(planet:Planet)=>await addPlanet(planet);

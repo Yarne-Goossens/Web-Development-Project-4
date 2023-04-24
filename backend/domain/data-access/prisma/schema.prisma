@@ -16,7 +16,7 @@ model planet{
   account_id Int? 
   radius Float
   semimajor_axis Float
-  mass         Float
+  mass Float
   resources resource[]
   account account? @relation(fields: [account_id], references: [account_id])
   satellites satellite[]

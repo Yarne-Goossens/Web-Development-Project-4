@@ -1,10 +1,16 @@
 import { Planet } from '../model/planet';
 import { PrismaClient, planet as PrismaPlanet } from '@prisma/client';
-
+import { Satellite } from '../model/satellite';
 const prisma = new PrismaClient();
 
 export async function getAllPlanets(): Promise<Planet[]> {
-    const planets: PrismaPlanet[] = await prisma.planet.findMany();
+    const planets: PrismaPlanet[] = await prisma.planet.findMany({
+        
+            include: {
+                satellites: true,
+        }
+    }
+    );
     return planets.map((planet) => Planet.from(<Planet>planet));
 }
 
@@ -50,3 +56,6 @@ export async function planetNameExists(name: string): Promise<boolean> {
     return !!planet;
 }
 
+export default{
+
+}

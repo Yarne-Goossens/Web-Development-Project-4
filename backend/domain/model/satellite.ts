@@ -15,6 +15,7 @@ export class Satellite {
         this._satellite_name = satellite_name
         this._planet_id = planet_id
         this._account_id = account_id
+
     }
 
     get satellite_id(): number{
@@ -55,10 +56,12 @@ export class Satellite {
     }
     set planet_id(value:number){
         this._planet_id=value;
+
     }
     set account_id(value:number|undefined){
         this._account_id=value;
     }
+hanges
 
     static from(arg0: Satellite) {
         return new Satellite(arg0.radius, arg0.semimajor_axis, arg0.mass, arg0.satellite_name, arg0.planet_id, arg0.satellite_id, arg0.account_id)
