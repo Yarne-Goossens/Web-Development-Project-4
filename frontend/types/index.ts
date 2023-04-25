@@ -5,6 +5,8 @@ export interface Planet{
     _radius:number
     _semimajor_axis:number
     _mass:number
+    _satellites: Satellite[]
+    _resources: Resource[]
 }
 
 export interface Satellite{
@@ -14,6 +16,7 @@ export interface Satellite{
     _mass: number
     _satellite_name: string
     _planet_id: number
+    _account_id?: number
 }
 
 export interface Resource{
