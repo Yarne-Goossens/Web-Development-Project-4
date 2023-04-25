@@ -10,13 +10,13 @@ export interface Planet{
 }
 
 export interface Satellite{
-    _satellite_id: number
-    _radius: number
-    _semimajor_axis: number
-    _mass: number
-    _satellite_name: string
-    _planet_id: number
-    _account_id?: number
+    satellite_id: number
+    radius: number
+    semimajor_axis: number
+    mass: number
+    satellite_name: string
+    planet_id: number
+    account_id?: number
 }
 
 export interface Resource{

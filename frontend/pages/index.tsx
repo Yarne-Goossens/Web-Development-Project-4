@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <MetaHead title="Planet Home"/>
       <Header />
-      <main className={styles.main}>
+      {/*<main className={styles.main}>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
@@ -112,6 +112,13 @@ export default function Home() {
               with&nbsp;Vercel.
             </p>
           </a>
+        </div>
+  </main>*/}
+      <main>
+        <div className={styles.slogan}>
+          <p>
+            Own a Piece of the Universe - Buy Your Own Planet Today!
+          </p>
         </div>
       </main>
     </>
