@@ -95,7 +95,8 @@ export class Planet {
         planet_id,
         account_id,
         satellites,
-    }: {radius: number;semimajor_axis: number;mass: number;planet_name: string;planet_id: number;account_id?: number;satellites?: Satellite[]}): Planet {
+        resources
+    }: {radius: number;semimajor_axis: number;mass: number;planet_name: string;planet_id: number;account_id?: number;satellites?: Satellite[];resources?:Resource[]}): Planet {
         const plan=new Planet();
         plan.radius=radius;
         plan.semimajor_axis=semimajor_axis;
@@ -104,6 +105,7 @@ export class Planet {
         plan.planet_id=planet_id;
         plan.account_id=account_id;
         plan.satellites=[];
+        plan.resources=[];
         return plan;
     } 
 

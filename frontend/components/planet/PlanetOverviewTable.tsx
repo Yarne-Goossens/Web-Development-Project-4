@@ -1,6 +1,6 @@
 import styles from '@/styles/Home.module.css'
 import { Planet } from '../../types'
-import React from 'react';
+import React, { MouseEvent, MouseEventHandler} from "react";
 
 type Props  = {
   planets:Array<Planet>
@@ -23,10 +23,10 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                   <th>Mass</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody> 
                 {planets.map((planet, index) => (
                   <React.Fragment key={index}>
-                    <tr>
+                    <tr >
                       <td>{planet._planet_name}</td>
                       <td>{planet._planet_id}</td>
                       <td>{planet._account_id}</td>
@@ -35,10 +35,10 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                       <td>{planet._mass}</td>
                     </tr>
                     {planet._satellites && (
-                      <tr>
-                        <td colSpan={6}>
-                          <table>
-                            <thead>
+                      <tr onClick={hide_or_show_sat(planet._planet_name)}>
+                        <td colSpan={6} ><div id={`show${planet._planet_name}`} >hide satellites</div>
+                          <table id={planet._planet_name}>
+                            <thead> 
                               <tr>
                                 <th>Satellite Name</th>
                                 <th>Satellite Id</th>
@@ -48,7 +48,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                                 <th>Mass</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                               {planet._satellites.map((satellite, index) => (
                                 <tr key={index}>
                                   <td>{satellite.satellite_name}</td>
@@ -74,5 +74,24 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
     </>
   );
 };
+
+const hide_or_show_sat = (planet_name: string): MouseEventHandler<HTMLTableRowElement> => {
+  return (event: MouseEvent<HTMLTableRowElement>) => {
+    
+    var x = document.getElementById(planet_name);
+    var show=document.getElementById(`show${planet_name}`);
+    show.innerHTML='';
+    if (x.style.display === "none") {
+      x.style.display = "inline";
+      show.innerHTML +='hide satellites';
+      
+    } else {
+      x.style.display = "none";
+      show.innerHTML +='show satellites';
+    }
+  };
+};
+
+
 
 export default PlanetOverviewTable;

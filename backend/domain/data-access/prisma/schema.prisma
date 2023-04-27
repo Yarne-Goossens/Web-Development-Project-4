@@ -10,16 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model planet{
-  planet_id    Int @id @default(autoincrement())
-  planet_name String
-  account_id Int? 
-  radius Float
-  semimajor_axis Float
-  mass Float
-  resources resource[]
-  account account? @relation(fields: [account_id], references: [account_id])
-  satellites satellite[]
+model planet {
+  planet_id        Int     @id @default(autoincrement())
+  planet_name      String
+  account_id       Int?
+  radius           Float
+  semimajor_axis   Float
+  mass             Float
+  account          account? @relation(fields: [account_id], references: [account_id])
+  satellites       satellite[]
+  resources        resource[]
+}
+
+model resource {
+  resource_id      Int     @id @default(autoincrement())
+  resource_name    String
+  description      String
+  chemical_composition String
+  planet_id        Int
+  planets          planet[]
 }
 
 model account {
@@ -30,15 +39,6 @@ model account {
   role String
   planets planet[]
   satellites satellite[]
-}
-
-model resource {
-  resource_id Int @id @default(autoincrement())
-  resource_name String
-  description String
-  chemical_composition String
-  planet_id Int
-  planets planet[]
 }
 
 model satellite {

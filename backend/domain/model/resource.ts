@@ -1,3 +1,5 @@
+import { Planet } from "./planet"
+
 export class Resource {
     private _resource_id: number
     private _resource_name: string
@@ -5,7 +7,7 @@ export class Resource {
     private _description: string
     private _planet_id: number
 
-    constructor (resource_name?: string, chemical_composition?: string, description?: string, planet_id?: number, resource_id?:number) {
+    constructor (resource_name?: string, chemical_composition?: string, description?: string, planet_id?: number, resource_id?:number, planets?: Planet[]) {
         this._resource_name = resource_name
         this._chemical_composition = chemical_composition
         this._description = description
@@ -28,6 +30,8 @@ export class Resource {
     get planet_id(): number {
         return this._planet_id;
     }
+    
+
     set resource_id(value:number) {
         this._resource_id = value;
     }
@@ -43,6 +47,7 @@ export class Resource {
     set planet_id(value:number) {
         this._planet_id=value;
     }
+    
 
     static from(arg0: Resource) {
         return new Resource(arg0.resource_name, arg0.chemical_composition, arg0.description, arg0.planet_id, arg0.resource_id)

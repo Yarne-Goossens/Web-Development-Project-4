@@ -9,7 +9,7 @@ const main = async () => {
   prisma.planet.deleteMany({}).then(()=>console.log('removed all planets'));
   prisma.account.deleteMany({}).then(()=>console.log('removed all accounts'));
   prisma.resource.deleteMany({}).then(()=>console.log('removed all resources'));
-  
+ 
   const planets = await prisma.planet.createMany({
     data: [
       {
@@ -17,6 +17,7 @@ const main = async () => {
       radius: 6371,
       semimajor_axis: 149598023,
       mass: 5.972168*Math.pow(10,24),
+      
       },
       {
         planet_name: 'Jupiter',
@@ -89,35 +90,9 @@ const accounts=await prisma.account.createMany({
     ]
 })
 
-const resources=await prisma.resource.createMany({
-  data: [
-    {
-      resource_name: 'Water',
-      description: "Water is a transparent, tasteless, odorless, and nearly colorless chemical substance, which is the main constituent of Earth's streams, lakes, and oceans, and the fluids of most living organisms. It is vital for all known forms of life, even though it provides no calories or organic nutrients. Its chemical formula is H2O, meaning that each of its molecules contains one oxygen and two hydrogen atoms, connected by covalent bonds.",
-      chemical_composition: 'H2O',
-      planet_id: 1
-    },
-    {
-      resource_name: 'Oxygen',
-      description: "Oxygen is a chemical element with the symbol O and atomic number 8. It is a member of the chalcogen group on the periodic table, a highly reactive nonmetal, and an oxidizing agent that readily forms oxides with most elements as well as with other compounds. By mass, oxygen is the third-most abundant element in the universe, after hydrogen and helium.",
-      chemical_composition: 'O2',
-      planet_id: 1
-    },
-    {
-      resource_name: 'Silica',
-      description: "Silica, also known as silicon dioxide, is an oxide of silicon with the chemical formula SiO2, most commonly found in nature as quartz and in various living organisms. In many parts of the world, silica is the major constituent of sand. Silica is one of the most complex and most abundant families of materials, existing as a compound of several minerals and as synthetic product.",
-      chemical_composition: 'SiO2',
-      planet_id: 1
-    },
-    {
-      resource_name: 'Silica',
-      description: "Silica, also known as silicon dioxide, is an oxide of silicon with the chemical formula SiO2, most commonly found in nature as quartz and in various living organisms. In many parts of the world, silica is the major constituent of sand. Silica is one of the most complex and most abundant families of materials, existing as a compound of several minerals and as synthetic product.",
-      chemical_composition: 'SiO2',
-      planet_id: 3
-    }
-  ]})}
 
 
+}
 main()
   .then(async () => {
     await prisma.$disconnect();

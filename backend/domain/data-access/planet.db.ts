@@ -5,12 +5,14 @@ const prisma = new PrismaClient();
 export async function getAllPlanets(): Promise<Planet[]> {
     const planets: PrismaPlanet[] = await prisma.planet.findMany({
             include: {
-                satellites: true,
+                
+                satellites: true,resources: true,
         }
     }
-
     );
-    return planets.map((planet) => Planet.from(<Planet>planet));
+    var res=planets.map((planet) => Planet.from(<Planet>planet));
+    console.log(res);
+    return res;
 }
 
 export async function getPlanetWithId(id: number): Promise<Planet> {
