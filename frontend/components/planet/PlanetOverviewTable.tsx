@@ -71,37 +71,37 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                     )}
                     
                     {planet._resources && planet._resources.length > 0 && (
-  <tr onClick={hide_or_show_res(planet._planet_name)}>
-    <td colSpan={6}>
-      <div id={`showres${planet._planet_name}`}>show resources</div>
-      <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
-        <thead>
-          <tr>
-            <th>Resource Name</th>
-            <th>Resource Id</th>
-            <th>Resource Id</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {planet._resources.map((resource, index) => (
-            <tr key={index}>
-              <td>{resource.resource_name}</td>
-              <td>{resource.resource_id}</td>
-              <td>{resource.description}</td>
-              <td>{resource.chemical_composition}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </td>
-  </tr>
-)}
-{planet._resources && planet._resources.length === 0 && (
-  <tr>
-    <td colSpan={6}>No resources available</td>
-  </tr>
-)}
+                  <tr onClick={hide_or_show_res(planet._planet_name)}>
+                    <td colSpan={6}>
+                      <div id={`showres${planet._planet_name}`}>show resources</div>
+                      <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
+                        <thead>
+                          <tr>
+                            <th>Resource Name</th>
+                            <th>Resource Id</th>
+                            <th>Resource Id</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {planet._resources.map((resource, index) => (
+                            <tr key={index}>
+                              <td>{resource.resource_name}</td>
+                              <td>{resource.resource_id}</td>
+                              <td>{resource.description}</td>
+                              <td>{resource.chemical_composition}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                )}
+                {planet._resources && planet._resources.length === 0 && (
+                  <tr>
+                    <td colSpan={6}>No resources available</td>
+                  </tr>
+                )}
 
                   </React.Fragment>
                 ))}

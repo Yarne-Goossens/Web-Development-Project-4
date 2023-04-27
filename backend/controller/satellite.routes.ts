@@ -338,3 +338,98 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
         res.status(500).json({message: 'Internal Server Error'});
     }
 });
+
+
+/** 
+ * @swagger
+ * /satellite/buysatellite/:
+ *   post:
+ *      summary: buy a Planet through a form using the planet_id
+ *      tags:
+ *        - satellite
+ *      parameters:
+ *        - name: satellite_id
+ *          in: query
+ *          description: planet id to buy
+ *          required: true
+ *          schema:
+ *            type: number
+ *        - name: account_id
+ *          in: query
+ *          description: account id to add it to
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Satellite bought successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+satellite_router.post('/buysatellite/', async(req:Request, res:Response) => {
+    try {
+        if(await satelliteService.idExistsService(Number(req.query.satellite_id))==false)
+        {res.status(400).json({message: 'Planet not found'});return;}//error handling
+
+        satelliteService.buySatelliteService(Number(req.query.satellite_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet deleted successfully'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error});
+    }
+});
+
+/** 
+ * @swagger
+ * /satellite/sellsatellite/:
+ *   post:
+ *      summary: sell a Planet through a form using the planet_id
+ *      tags:
+ *        - satellite
+ *      parameters:
+ *        - name: sat_id
+ *          in: query
+ *          description: planet id to sell
+ *          required: true
+ *          schema:
+ *            type: number
+ *        - name: account_id
+ *          in: query
+ *          description: account to 
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet sold successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+satellite_router.post('/sellsatellite/', async(req:Request, res:Response) => {
+    try {
+        if(await satelliteService.idExistsService(Number(req.query.sat_id))==false)
+        {res.status(400).json({message: 'Satellite not found'});return;}//error handling
+
+        satelliteService.sellSatelliteService(Number(req.query.sat_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet deleted successfully'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error});
+    }
+});

@@ -55,3 +55,27 @@ export async function satelliteNameExists(name: string): Promise<boolean> {
     const satellite: PrismaSatellite[] = await prisma.satellite.findMany({ where: { satellite_name: name } });
     return satellite != null;
 }
+
+export async function buySatellite(sat_id: number,account_id:number) {
+    await prisma.account.update({
+        where: { account_id: account_id },
+        data: {
+            satellites: {
+                connect: {
+                    satellite_id: sat_id
+                }
+            }
+        }
+    });}
+
+export async function sellSatellite(sat_id: number,account_id:number) {
+    await prisma.account.update({
+        where: { account_id: account_id },
+        data: {
+            satellites: {
+                disconnect: {
+                    satellite_id: sat_id
+                }
+            }
+        }
+    });}

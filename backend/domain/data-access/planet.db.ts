@@ -57,6 +57,30 @@ export async function planetNameExists(name: string): Promise<boolean> {
     return !!planet;
 }
 
+export async function buyPlanet(planet_id: number,account_id:number) {
+    await prisma.account.update({
+        where: { account_id: account_id },
+        data: {
+            planets: {
+                connect: {
+                    planet_id: planet_id
+                }
+            }
+        }
+    });}
+
+export async function sellPlanet(account_id:number,planet_id: number) {
+    await prisma.account.update({
+        where: { account_id: account_id },
+        data: {
+            planets: {
+                disconnect: {
+                    planet_id: planet_id
+                }
+            }
+        }
+    });}
+
 export default{
 
 }

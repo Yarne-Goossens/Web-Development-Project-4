@@ -243,3 +243,97 @@ planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) 
         res.status(500).json({message: error});
     }
 });
+
+/** 
+ * @swagger
+ * /planet/buyplanet/:
+ *   post:
+ *      summary: buy a Planet through a form using the planet_id
+ *      tags:
+ *        - planet
+ *      parameters:
+ *        - name: planet_id
+ *          in: query
+ *          description: planet id to buy
+ *          required: true
+ *          schema:
+ *            type: number
+ *        - name: account_id
+ *          in: query
+ *          description: account id to add it to
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet bought successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+planet_router.post('/buyplanet/', async(req:Request, res:Response) => {
+    try {
+        if(await planetService.idExistsService(Number(req.query.planet_id))==false)
+        {res.status(400).json({message: 'Planet not found'});return;}//error handling
+
+        planetService.buyPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet deleted successfully'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error});
+    }
+});
+
+/** 
+ * @swagger
+ * /planet/sellPlanet/:
+ *   post:
+ *      summary: sell a Planet through a form using the planet_id
+ *      tags:
+ *        - planet
+ *      parameters:
+ *        - name: planet_id
+ *          in: query
+ *          description: planet id to sell
+ *          required: true
+ *          schema:
+ *            type: number
+ *        - name: account_id
+ *          in: query
+ *          description: account to 
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet sold successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
+ */
+
+planet_router.post('/sellplanet/', async(req:Request, res:Response) => {
+    try {
+        if(await planetService.idExistsService(Number(req.query.planet_id))==false)
+        {res.status(400).json({message: 'Planet not found'});return;}//error handling
+
+        planetService.sellPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet deleted successfully'});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error});
+    }
+});
