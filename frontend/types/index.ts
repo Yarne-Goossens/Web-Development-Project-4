@@ -20,11 +20,11 @@ export interface Satellite{
 }
 
 export interface Resource{
-    _resource_id: number
-    _resource_name: string
-    _chemical_composition: string
-    _description: string
-    _planet_id: number
+    resource_id: number
+    resource_name: string
+    chemical_composition: string
+    description: string
+    planet_id: number
 }
 
 export interface Account{

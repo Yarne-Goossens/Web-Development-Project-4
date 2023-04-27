@@ -90,8 +90,6 @@ const accounts=await prisma.account.createMany({
     ]
 })
 
-
-
 }
 main()
   .then(async () => {

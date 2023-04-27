@@ -27,7 +27,6 @@ export async function addResource(resource: Resource) {
             planets: {
                 connect: {
                     planet_id: resource.planet_id}},
-
         },
     });
 }
@@ -40,6 +39,9 @@ export async function editResource(id: number, resource: Resource) {
             chemical_composition: resource.chemical_composition,
             description: resource.description,
             planet_id: resource.planet_id,
+            planets: {
+                connect: {
+                    planet_id: resource.planet_id}},
         },
     });
 }

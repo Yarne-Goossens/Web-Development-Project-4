@@ -34,10 +34,10 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                       <td>{planet._semimajor_axis}</td>
                       <td>{planet._mass}</td>
                     </tr>
-                    {planet._satellites && (
+                    {planet._satellites && planet._satellites.length > 0 && (
                       <tr onClick={hide_or_show_sat(planet._planet_name)}>
-                        <td colSpan={6} ><div id={`show${planet._planet_name}`} >hide satellites</div>
-                          <table id={planet._planet_name}>
+                        <td colSpan={6} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
+                          <table id={planet._planet_name} style={{ display: "none" }}>
                             <thead> 
                               <tr>
                                 <th>Satellite Name</th>
@@ -64,6 +64,45 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                         </td>
                       </tr>
                     )}
+                    {(!planet._satellites || planet._satellites.length === 0) && (
+                      <tr>
+                        <td colSpan={6}>No satellites available</td>
+                      </tr>
+                    )}
+                    
+                    {planet._resources && planet._resources.length > 0 && (
+  <tr onClick={hide_or_show_res(planet._planet_name)}>
+    <td colSpan={6}>
+      <div id={`showres${planet._planet_name}`}>show resources</div>
+      <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
+        <thead>
+          <tr>
+            <th>Resource Name</th>
+            <th>Resource Id</th>
+            <th>Resource Id</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {planet._resources.map((resource, index) => (
+            <tr key={index}>
+              <td>{resource.resource_name}</td>
+              <td>{resource.resource_id}</td>
+              <td>{resource.description}</td>
+              <td>{resource.chemical_composition}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </td>
+  </tr>
+)}
+{planet._resources && planet._resources.length === 0 && (
+  <tr>
+    <td colSpan={6}>No resources available</td>
+  </tr>
+)}
+
                   </React.Fragment>
                 ))}
               </tbody>
@@ -78,20 +117,37 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
 const hide_or_show_sat = (planet_name: string): MouseEventHandler<HTMLTableRowElement> => {
   return (event: MouseEvent<HTMLTableRowElement>) => {
     
-    var x = document.getElementById(planet_name);
-    var show=document.getElementById(`show${planet_name}`);
+    var satellites = document.getElementById(planet_name);
+    var show=document.getElementById(`showsat${planet_name}`);
     show.innerHTML='';
-    if (x.style.display === "none") {
-      x.style.display = "inline";
+    if (satellites.style.display === "none") {
+      satellites.style.display = "inline";
       show.innerHTML +='hide satellites';
       
     } else {
-      x.style.display = "none";
+      satellites.style.display = "none";
       show.innerHTML +='show satellites';
     }
   };
 };
 
 
+const hide_or_show_res = (planet_name: string): MouseEventHandler<HTMLTableRowElement> => {
+  return (event: MouseEvent<HTMLTableRowElement>) => {
+    
+    var resources = document.getElementById(`tableres${planet_name}`);
+    var show=document.getElementById(`showres${planet_name}`);
+
+    show.innerHTML='';
+    if (resources.style.display === "none") {
+      resources.style.display = "inline";
+      show.innerHTML +='hide resources';
+      
+    } else {
+      resources.style.display = "none";
+      show.innerHTML +='show resources';
+    }
+  };
+};
 
 export default PlanetOverviewTable;
