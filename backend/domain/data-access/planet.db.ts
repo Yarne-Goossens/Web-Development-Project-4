@@ -11,7 +11,6 @@ export async function getAllPlanets(): Promise<Planet[]> {
     }
     );
     var res=planets.map((planet) => Planet.from(<Planet>planet));
-    console.log(res);
     return res;
 }
 
@@ -69,7 +68,7 @@ export async function buyPlanet(planet_id: number,account_id:number) {
         }
     });}
 
-export async function sellPlanet(account_id:number,planet_id: number) {
+export async function sellPlanet(planet_id: number,account_id:number) {
     await prisma.account.update({
         where: { account_id: account_id },
         data: {

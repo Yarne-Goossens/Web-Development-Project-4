@@ -293,7 +293,7 @@ planet_router.post('/buyplanet/', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /planet/sellPlanet/:
+ * /planet/sellplanet/:
  *   post:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
