@@ -26,7 +26,6 @@
 import express,{Request,Response} from 'express';
 import { ResourceService } from '../service/resource.service';
 import { Resource } from '../domain/model/resource';
-import { PlanetService } from '../service/planet.service';
 import { planetService } from './planet.routes';
 
 export const resourceservice:ResourceService=new ResourceService();
@@ -249,7 +248,7 @@ resource_router.put('/editresource/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /resource/deleteresource/{resource_id}:
- *   post:
+ *   delete:
  *      summary: delete a resource through a form using the resource_id
  *      tags:
  *        - resource
@@ -274,7 +273,7 @@ resource_router.put('/editresource/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-resource_router.post('/deleteresource/:resource_id', async(req:Request, res:Response) => {
+resource_router.delete('/deleteresource/:resource_id', async(req:Request, res:Response) => {
     try {
         if(await resourceservice.idExistsService(Number(req.params.resource_id))==false){res.status(400).json({message: 'Resource not found'});return;}
         

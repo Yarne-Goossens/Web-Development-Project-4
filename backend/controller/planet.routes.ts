@@ -105,7 +105,7 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
         const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
         //error handling
-        if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
+        //if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
         if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
         if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
         if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
@@ -116,7 +116,7 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
         res.status(200).json({planets});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(500).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -206,7 +206,7 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /planet/deleteplanet/{planet_id}:
- *   post:
+ *   delete:
  *      summary: delete a Planet through a form using the planet_id
  *      tags:
  *        - planet
@@ -231,7 +231,7 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
+planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
     try {
         if(await planetService.idExistsService(Number(req.params.planet_id))==false)
         {res.status(400).json({message: 'Planet not found'});return;}//error handling
@@ -247,7 +247,7 @@ planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) 
 /** 
  * @swagger
  * /planet/buyplanet/:
- *   post:
+ *   put:
  *      summary: buy a Planet through a form using the planet_id
  *      tags:
  *        - planet
@@ -278,7 +278,7 @@ planet_router.post('/deleteplanet/:planet_id', async(req:Request, res:Response) 
  *          description: Internal server error
  */
 
-planet_router.post('/buyplanet/', async(req:Request, res:Response) => {
+planet_router.put('/buyplanet/', async(req:Request, res:Response) => {
     try {
         if(await planetService.idExistsService(Number(req.query.planet_id))==false)
         {res.status(400).json({message: 'Planet not found'});return;}//error handling
@@ -294,7 +294,7 @@ planet_router.post('/buyplanet/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /planet/sellplanet/:
- *   post:
+ *   put:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
  *        - planet
@@ -325,7 +325,7 @@ planet_router.post('/buyplanet/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.post('/sellplanet/', async(req:Request, res:Response) => {
+planet_router.put('/sellplanet/', async(req:Request, res:Response) => {
     try {
         if(await planetService.idExistsService(Number(req.query.planet_id))==false)
         {res.status(400).json({message: 'Planet not found'});return;}//error handling

@@ -300,7 +300,7 @@ satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /satellite/deletesatellite/{satellite_id}:
- *   post:
+ *   delete:
  *      summary: delete a satellite through a form using the satellite_id
  *      tags:
  *        - satellite
@@ -325,7 +325,7 @@ satellite_router.put('/editsatellite/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
+satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
     try {
         const satellite_id=Number(req.params.satellite_id);
         if(await satelliteService.idExistsService(satellite_id)===false){res.status(404).json({message: 'Satellite not found'});}
@@ -343,7 +343,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
 /** 
  * @swagger
  * /satellite/buysatellite/:
- *   post:
+ *   put:
  *      summary: buy a Planet through a form using the planet_id
  *      tags:
  *        - satellite
@@ -374,7 +374,7 @@ satellite_router.post('/deletesatellite/:satellite_id', async(req:Request, res:R
  *          description: Internal server error
  */
 
-satellite_router.post('/buysatellite/', async(req:Request, res:Response) => {
+satellite_router.put('/buysatellite/', async(req:Request, res:Response) => {
     try {
         if(await satelliteService.idExistsService(Number(req.query.satellite_id))==false)
         {res.status(400).json({message: 'Planet not found'});return;}//error handling
@@ -390,7 +390,7 @@ satellite_router.post('/buysatellite/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /satellite/sellsatellite/:
- *   post:
+ *   put:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
  *        - satellite
@@ -421,7 +421,7 @@ satellite_router.post('/buysatellite/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-satellite_router.post('/sellsatellite/', async(req:Request, res:Response) => {
+satellite_router.put('/sellsatellite/', async(req:Request, res:Response) => {
     try {
         if(await satelliteService.idExistsService(Number(req.query.sat_id))==false)
         {res.status(400).json({message: 'Satellite not found'});return;}//error handling

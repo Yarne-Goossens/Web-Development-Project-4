@@ -35,7 +35,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                       <td>{planet._mass}</td>
                     </tr>
                     {planet._satellites && planet._satellites.length > 0 && (
-                      <tr onClick={hide_or_show_sat(planet._planet_name)}>
+                      <tr role='button'  onClick={hide_or_show_sat(planet._planet_name)}>
                         <td colSpan={6} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
                           <table id={planet._planet_name} style={{ display: "none" }}>
                             <thead> 
@@ -71,7 +71,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                     )}
                     
                     {planet._resources && planet._resources.length > 0 && (
-                  <tr onClick={hide_or_show_res(planet._planet_name)}>
+                  <tr role='button' onClick={hide_or_show_res(planet._planet_name)}>
                     <td colSpan={6}>
                       <div id={`showres${planet._planet_name}`}>show resources</div>
                       <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
@@ -116,14 +116,12 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
 
 const hide_or_show_sat = (planet_name: string): MouseEventHandler<HTMLTableRowElement> => {
   return (event: MouseEvent<HTMLTableRowElement>) => {
-    
-    var satellites = document.getElementById(planet_name);
-    var show=document.getElementById(`showsat${planet_name}`);
+    const satellites = document.getElementById(planet_name);
+    const show = document.getElementById(`showsat${planet_name}`);
     show.innerHTML='';
     if (satellites.style.display === "none") {
       satellites.style.display = "inline";
       show.innerHTML +='hide satellites';
-      
     } else {
       satellites.style.display = "none";
       show.innerHTML +='show satellites';
@@ -131,23 +129,20 @@ const hide_or_show_sat = (planet_name: string): MouseEventHandler<HTMLTableRowEl
   };
 };
 
-
 const hide_or_show_res = (planet_name: string): MouseEventHandler<HTMLTableRowElement> => {
   return (event: MouseEvent<HTMLTableRowElement>) => {
-    
-    var resources = document.getElementById(`tableres${planet_name}`);
-    var show=document.getElementById(`showres${planet_name}`);
-
+    const resources = document.getElementById(`tableres${planet_name}`);
+    const show = document.getElementById(`showres${planet_name}`);
     show.innerHTML='';
     if (resources.style.display === "none") {
       resources.style.display = "inline";
       show.innerHTML +='hide resources';
-      
     } else {
       resources.style.display = "none";
       show.innerHTML +='show resources';
     }
   };
 };
+
 
 export default PlanetOverviewTable;

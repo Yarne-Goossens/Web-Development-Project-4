@@ -210,7 +210,7 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
 /** 
  * @swagger
  * /account/deleteaccount/{account_id}:
- *   post:
+ *   delete:
  *      summary: delete an Account through a form using the account_id
  *      tags:
  *        - account
@@ -235,7 +235,7 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-account_router.post('/deleteAccount/:account_id', async(req:Request, res:Response) => {
+account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.params.account_id);
         if(await accountService.idExistsService(account_id)===false){
