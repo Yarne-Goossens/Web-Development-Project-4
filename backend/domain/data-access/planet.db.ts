@@ -10,8 +10,7 @@ export async function getAllPlanets(): Promise<Planet[]> {
         }
     }
     );
-    var res=planets.map((planet) => Planet.from(<Planet>planet));
-    return res;
+    return planets.map((planet) => Planet.from(<Planet>planet));
 }
 
 export async function getPlanetWithId(id: number): Promise<Planet> {
@@ -53,6 +52,11 @@ export async function idExists(id: number): Promise<boolean> {
 
 export async function planetNameExists(name: string): Promise<boolean> {
     const planet: PrismaPlanet = await prisma.planet.findFirst({ where: { planet_name: name } });
+    return !!planet;
+}
+
+export async function planetNameExistsExceptSamePlanet(id:number,name: string): Promise<boolean> {
+    const planet: PrismaPlanet = await prisma.planet.findFirst({ where: { planet_name: name,planet_id:{not:id} } });
     return !!planet;
 }
 

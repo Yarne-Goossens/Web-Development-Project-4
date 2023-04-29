@@ -1,10 +1,9 @@
 import {Planet} from '../domain/model/planet';
-import {getAllPlanets, idExists, planetNameExists} from '../domain/data-access/planet.db';  
+import { idExists, planetNameExists, planetNameExistsExceptSamePlanet,getAllPlanets} from '../domain/data-access/planet.db';  
 import { addPlanet } from '../domain/data-access/planet.db'; 
-import {getPlanetWithId} from '../domain/data-access/planet.db';
 import {editPlanet} from '../domain/data-access/planet.db';
 import {deletePlanet,buyPlanet,sellPlanet} from '../domain/data-access/planet.db';
-
+import { idExists as accountIdExists } from '../domain/data-access/account.db';
 export class PlanetService{
     addPlanetService=async(planet:Planet)=>{
         
@@ -19,19 +18,42 @@ export class PlanetService{
         await addPlanet(planet);
     }
 
-    editPlanetService=async(id:number,planet:Planet)=>await editPlanet(id,planet);
+    editPlanetService=async(id:number,planet:Planet)=>{
+        const radius=planet.radius;const semimajor_axis=planet.semimajor_axis;const mass=planet.mass;const planet_name=planet.planet_name.trim();
 
-    deletePlanetService=async(id:number)=>await deletePlanet(id);
+        if(await idExists(id)==false){throw new Error('Planet does not exist');}
+        if(planet_name==null||planet_name.length<1||planet_name.length>30){throw new Error('Planet name must be between 1 and 30 characters.');}
+        if(radius==null||radius<0){throw new Error('Radius must be greater than 0');}
+        if(semimajor_axis==null||semimajor_axis<0){throw new Error('Semimajor axis must be greater than 0');}
+        if(mass==null||mass<0){throw new Error('Mass must be greater than 0');}
+        if(await planetNameExistsExceptSamePlanet(id,planet_name)){throw new Error('Planet name already exists');}
 
-    getPlanetWithIdService=async(id:number):Promise<Planet>=>await getPlanetWithId(id);
+        await editPlanet(id,planet);
+    }
 
-    getAllPlanetsService=async():Promise<Planet[]>=>await getAllPlanets();
+    deletePlanetService=async(id:number)=>{
+        if(await idExists(id)==false){throw new Error('Planet does not exist');}
 
-    idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
+        await deletePlanet(id);
+    }
 
-    planetNameExistsService=async(name:string):Promise<boolean>=>await planetNameExists(name);
+    getAllPlanetsService=async()=>{
+        return await getAllPlanets();
+    }
 
-    buyPlanetService=async(planet_id:number,account_id:number)=>await buyPlanet(planet_id,account_id);
+    idExistsService=async(id:number)=>{
+        return await idExists(id);
+    }
 
-    sellPlanetService=async(planet_id:number,account_id:number)=>await sellPlanet(planet_id,account_id);
+    buyPlanetService=async(planet_id:number,account_id:number)=>{
+        if(await idExists(planet_id)==false){throw new Error('Planet does not exist');}
+        if(await accountIdExists(account_id)==false){throw new Error('Account does not exist');}
+        await buyPlanet(planet_id,account_id);
+    }
+
+    sellPlanetService=async(planet_id:number,account_id:number)=>{
+        if(await idExists(planet_id)==false){throw new Error('Planet does not exist');}
+        if(await accountIdExists(account_id)==false){throw new Error('Account does not exist');}
+        await sellPlanet(planet_id,account_id);
+    }
 }

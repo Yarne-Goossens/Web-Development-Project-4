@@ -68,6 +68,10 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  *               application/json:
  *                   schema:
  *                       $ref: '#/components/schemas/Planet'
+ *          404:
+ *           description: User Input Error
+ *          500:
+ *           description: Internal server error
  * 
  *      parameters:
  *        - name: planet_name
@@ -99,30 +103,26 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  *          schema:
  *            type: string
  *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *       
  */
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
         const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
-        //error handling
-        //if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
-        if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
-        if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
-        if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
-        if(await planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
-
+        
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
         res.status(200).json({planets});
+
     } catch (error) {
         console.log(error);
-        res.status(500).json({status:'error',errorMessage: error.message});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
 /** 
  * @swagger
- * /planet/editplanet/:
+ * /planet/editplanet:
  *   put:
  *      summary: edit a Planet through a form using the planet_id
  *      tags:
@@ -173,35 +173,31 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *                   schema:
  *                       $ref: '#/components/schemas/Planet'
  *         404:
- *          description: Object not found
+ *          description: User Input Error
  *         500:
  *          description: Internal server error
  */
 
-planet_router.put('/editplanet/', async(req:Request, res:Response) => {
+planet_router.put('/editplanet', async(req:Request, res:Response) => {
     try {
         const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
-        //error handling
-        if(planet_name==null||planet_name.length<1||planet_name.length>30){res.status(400).json({message: 'Planet name must be between 1 and 30 characters'});return;}
-        if(radius==null||radius<0){res.status(400).json({message: 'Radius must be greater than 0'});return;}
-        if(semimajor_axis==null||semimajor_axis<0){res.status(400).json({message: 'Semimajor axis must be greater than 0'});return;}
-        if(mass==null||mass<0){res.status(400).json({message: 'Mass must be greater than 0'});return;}
-        if(await planetService.planetNameExistsService(planet_name)){res.status(400).json({message: 'Planet name already exists'});return;}
         
-        planetService.editPlanetService(Number(req.query.planet_id),
+        
+        const planetToEdit=await planetService.editPlanetService(Number(req.query.planet_id),
             new Planet(
             radius, 
             semimajor_axis, 
             mass, 
             planet_name,
         ));
-        res.status(200).json({message: 'Planet edited successfully'});
+        res.status(200).json({message: 'Planet edited successfully with id: '+req.query.planet_id});
+        
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
-
+ 
 
 /** 
  * @swagger
@@ -226,27 +222,24 @@ planet_router.put('/editplanet/', async(req:Request, res:Response) => {
  *                   schema:
  *                       $ref: '#/components/schemas/Planet'
  *         404:
- *          description: Object not found
+ *          description: user input error
  *         500:
  *          description: Internal server error
  */
 
 planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
     try {
-        if(await planetService.idExistsService(Number(req.params.planet_id))==false)
-        {res.status(400).json({message: 'Planet not found'});return;}//error handling
-
-        planetService.deletePlanetService(Number(req.params.planet_id));
-        res.status(200).json({message: 'Planet deleted successfully'});
+        await planetService.deletePlanetService(Number(req.params.planet_id));
+        res.status(200).json({message:  'Planet deleted successfully with id: '+req.query.planet_id});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: error});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
 /** 
  * @swagger
- * /planet/buyplanet/:
+ * /planet/buyplanet:
  *   put:
  *      summary: buy a Planet through a form using the planet_id
  *      tags:
@@ -278,22 +271,20 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
  *          description: Internal server error
  */
 
-planet_router.put('/buyplanet/', async(req:Request, res:Response) => {
+planet_router.put('/buyplanet', async(req:Request, res:Response) => {
     try {
-        if(await planetService.idExistsService(Number(req.query.planet_id))==false)
-        {res.status(400).json({message: 'Planet not found'});return;}//error handling
 
-        planetService.buyPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
-        res.status(200).json({message: 'Planet deleted successfully'});
+        await planetService.buyPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet bought successfully with id: '+req.query.planet_id}+' to account with id: '+req.query.account_id);
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: error});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
 /** 
  * @swagger
- * /planet/sellplanet/:
+ * /planet/sellplanet:
  *   put:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
@@ -325,15 +316,14 @@ planet_router.put('/buyplanet/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.put('/sellplanet/', async(req:Request, res:Response) => {
+planet_router.put('/sellplanet', async(req:Request, res:Response) => {
     try {
-        if(await planetService.idExistsService(Number(req.query.planet_id))==false)
-        {res.status(400).json({message: 'Planet not found'});return;}//error handling
+        
 
-        planetService.sellPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
-        res.status(200).json({message: 'Planet deleted successfully'});
+        await planetService.sellPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
+        res.status(200).json({message: 'Planet with id: '+Number(req.query.planet_id)+' sold successfully to account with id: '+Number(req.query.account_id)});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: error});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
