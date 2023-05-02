@@ -1,10 +1,10 @@
 import  Header from '../../../components/header'
-import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import PlanetOverview from '../../../components/planet/PlanetOverviewTable'
 import PlanetService from '../../../services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet} from '../../../types'
+import useInterval from "use-interval"
 
 const Planets: React.FC = () => {
     const[planets,setPlanets] = useState<Array<Planet>>([])
@@ -24,7 +24,7 @@ const Planets: React.FC = () => {
         console.log("useEffect")
         getPlanets()
     },[])
-
+    useInterval(getPlanets, 5000)
     return (
         <>
         <Header />

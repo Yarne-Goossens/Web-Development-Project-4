@@ -10,6 +10,7 @@ const Header:React.FC = () => {
             <Link href="/satellite/overview" className='nav-link px-4 fs-5 text-white'>Satellite Overview</Link>
             <Link href="/resource/overview" className='nav-link px-4 fs-5 text-white'>Resource Overview</Link>
             <Link href="/account/overview" className='nav-link px-4 fs-5 text-white'>Account Overview</Link>
+            <Link href="/planet/add" className='nav-link px-4 fs-5 text-white'>planet add</Link>
         </nav>
     </header>)
 }

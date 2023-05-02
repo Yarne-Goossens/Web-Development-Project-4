@@ -1,10 +1,10 @@
 import  Header from '../../../components/header'
-import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import SatelliteOverview from '../../../components/satellite/SatelliteOverviewTable'
 import SatelliteService from '../../../services/SatelliteService'
 import {useState,useEffect} from 'react'
 import {Satellite} from '../../../types'
+import useInterval from "use-interval"
 
 const Satellites: React.FC = () => {
     const[satellites,setSatellites] = useState<Array<Satellite>>([])
@@ -23,7 +23,7 @@ const Satellites: React.FC = () => {
         console.log(    "useEffect")
         getSatellites()
     },[])
-
+    useInterval(getSatellites, 5000)
     return (
         <>
         <Header />

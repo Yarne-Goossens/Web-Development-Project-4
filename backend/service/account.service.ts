@@ -8,7 +8,10 @@ export class AccountService{
 
     getAllAccounts=async():Promise<Account[]>=>await getAllAccounts();
 
-    addAccountService=async(account:Account)=>await addAccount(account);
+    addAccountService=async(account:Account)=>{
+        const email=account.email.trim();const password=account.password.trim();
+        await addAccount(account);
+    }
 
     getAccountById=async(id:number):Promise<Account>=>await getAccountWithId(id);
 

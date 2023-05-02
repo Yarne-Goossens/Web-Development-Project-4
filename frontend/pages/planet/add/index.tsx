@@ -1,41 +1,34 @@
-import  Header from '../../../components/header'
-import Head from 'next/head'
-import MetaHead from '../../../components/MetaHead'
-import PlanetOverview from '../../../components/planet/PlanetOverviewTable'
-import PlanetService from '../../../services/PlanetService'
-import {useState,useEffect} from 'react'
-import {Planet} from '../../../types'
+import styles from '@/styles/Home.module.css'
+import { Planet } from '../../types'
+import React, { MouseEvent, MouseEventHandler} from "react";
+import PlanetService from '@/services/PlanetService';
 
-const Planets: React.FC = () => {
-    const[planets,setPlanets] = useState<Array<Planet>>([])
-
-    const getPlanets = async () => {
-         try{
-        const response = await PlanetService.getAllPlanets();
-            const data = await response.json();
-
-            setPlanets(data);
-        } catch (error) {
-            console.log('Error fetching Teams', error);
-        } 
-
-    }
-    useEffect(()=>{
-        console.log(    "useEffect")
-        getPlanets()
-    },[])
-
-    return (
-        <>
-        <Header />
-        <MetaHead title="Planet Overview" />
-        
-        <main>
-            <section className='row justify-content-center'>
-                <PlanetOverview planets={planets} />
-            </section>
-        </main>
-        </>)
-    
+type Props  = {
+  
 }
-export default Planets
+
+const PlanetOverviewTable: React.FC<Props> = () => {
+  return (
+    <>
+      <form>
+        <div>
+            <div>
+                <label htmlFor="planetnameInput">Planet Name:</label>
+            </div>
+            <div>
+                <input id='planetnameInput' type="text" value={planetname} onChange={(event)=>setName(event.target.value)}/>
+                {nameError && <div>{nameError}</div>}
+            </div>
+        </div>
+        <div>
+            <button type='submit'>
+                Add Planet
+            </button>
+        </div>
+      </form>
+    </>
+  );
+};
+
+
+export default PlanetOverviewTable;

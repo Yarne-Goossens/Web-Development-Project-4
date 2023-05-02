@@ -1,10 +1,10 @@
 import  Header from '../../../components/header'
-import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import ResourceOverview from '../../../components/resource/ResourceOverviewTable'
 import ResourceService from '../../../services/ResourceService'
 import {useState,useEffect} from 'react'
 import {Resource} from '../../../types'
+import useInterval from "use-interval"
 
 const Resources: React.FC = () => {
     const[resources,setResources] = useState<Array<Resource>>([])
@@ -24,7 +24,7 @@ const Resources: React.FC = () => {
         console.log(    "useEffect")
         getResources()
     },[])
-
+    useInterval(getResources, 5000)
     return (
         <>
         <Header />

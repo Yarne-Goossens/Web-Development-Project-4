@@ -1,10 +1,10 @@
 import  Header from '../../../components/header'
-import Head from 'next/head'
 import MetaHead from '../../../components/MetaHead'
 import AccountOverview from '../../../components/account/AccountOverviewTable'
 import AccountService from '../../../services/AccountService'
 import {useState,useEffect} from 'react'
 import {Account} from '../../../types'
+import useInterval from "use-interval"
 
 const Accounts: React.FC = () => {
     const[accounts,setAccounts] = useState<Array<Account>>([])
@@ -24,7 +24,7 @@ const Accounts: React.FC = () => {
         console.log(    "useEffect")
         getAccounts()
     },[])
-
+    useInterval(getAccounts, 5000)
     return (
         <>
         <Header />
