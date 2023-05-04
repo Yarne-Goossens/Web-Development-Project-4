@@ -1,7 +1,7 @@
 import styles from '@/styles/Home.module.css'
 import { Planet } from '../../types'
 import React, { MouseEvent, MouseEventHandler} from "react";
-
+import Link from 'next/link'
 type Props  = {
   planets:Array<Planet>
 }
@@ -21,6 +21,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                   <th>Radius</th>
                   <th>Semimajor Axis</th>
                   <th>Mass</th>
+                  <th>Add Satellite</th>
                 </tr>
               </thead>
               <tbody> 
@@ -33,10 +34,19 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                       <td>{planet._radius}</td>
                       <td>{planet._semimajor_axis}</td>
                       <td>{planet._mass}</td>
+                      <td><Link href="/satellite/add/[id]" as={`/satellite/add/${planet._planet_id}`}>
+                      Add Satellite
+                    </Link></td>
+                    <td><Link href="/planet/edit/[id]" as={`/satellite/edit/${planet._planet_id}`}>
+                      Edit Planet
+                    </Link></td>
+                    <td><Link href="/satellite/delete/[id]" as={`/satellite/delete/${planet._planet_id}`}>
+                      Delete Planet
+                    </Link></td>
                     </tr>
                     {planet._satellites && planet._satellites.length > 0 && (
                       <tr role='button'  onClick={hide_or_show_sat(planet._planet_name)}>
-                        <td colSpan={6} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
+                        <td colSpan={9} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
                           <table id={planet._planet_name} style={{ display: "none" }}>
                             <thead> 
                               <tr>
@@ -64,15 +74,15 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                         </td>
                       </tr>
                     )}
+                    
                     {(!planet._satellites || planet._satellites.length === 0) && (
                       <tr>
-                        <td colSpan={6}>No satellites available</td>
+                        <td colSpan={9}>No satellites available</td>
                       </tr>
                     )}
-                    
                     {planet._resources && planet._resources.length > 0 && (
                   <tr role='button' onClick={hide_or_show_res(planet._planet_name)}>
-                    <td colSpan={6}>
+                    <td colSpan={9}>
                       <div id={`showres${planet._planet_name}`}>show resources</div>
                       <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
                         <thead>
@@ -99,7 +109,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                 )}
                 {planet._resources && planet._resources.length === 0 && (
                   <tr>
-                    <td colSpan={6}>No resources available</td>
+                    <td colSpan={9}>No resources available</td>
                   </tr>
                 )}
 

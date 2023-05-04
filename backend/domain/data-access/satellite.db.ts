@@ -24,7 +24,11 @@ export async function addSatellite(satellite: Satellite) {
             radius: satellite.radius,
             semimajor_axis: satellite.semimajor_axis,
             mass: satellite.mass,
-            planet_id: satellite.planet_id
+            planet: {
+                connect: {
+                    planet_id: satellite.planet_id 
+                }
+              }
         },
     });
 }

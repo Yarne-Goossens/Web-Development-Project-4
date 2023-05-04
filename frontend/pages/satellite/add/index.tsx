@@ -1,16 +1,15 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
-import PlanetAddForm from 'components/planet/planetAddForm'
-import PlanetService from 'services/PlanetService'
+import SatelliteService from 'services/SatelliteService'
 import {useState,useEffect} from 'react'
 import {Planet} from 'types'
 import Router, { useRouter } from 'next/router'
 
-const addplanet: React.FC = () => {
+const addSatellite: React.FC = () => {
 
     const[planets,setPlanets] = useState<Array<Planet>>([])
 
-    const[planet_name,setName] = useState<string>('')
+    const[satellite_name,setName] = useState<string>('')
     const[nameError,setNameError] = useState<string>('')
 
     const[radius,setRadius] = useState<string>('')
@@ -22,13 +21,20 @@ const addplanet: React.FC = () => {
     const[mass,setMass] = useState<string>('')
     const[massError,setMassError] = useState<string>('')
 
+    //const[planet_id,setPlanetId] = useState<string>('')
+    //const[planet_idError,setPlanetIdError] = useState<string>('')
+
     const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
 
     const router=useRouter()
+    var { id  } =  router.query;
+    
     useEffect(()=>{
-        console.log("useEffect")
-    },[])
-
+        if (id) {
+            console.log(id); // correct value
+          }
+        }, [id]);
+    
     const validate=():boolean=>{
         setNameError('');
         setRadiusError('');
@@ -38,7 +44,7 @@ const addplanet: React.FC = () => {
         setStatusMessage(null);
         var balls=true;
 
-        if(!planet_name &&planet_name.trim()===""){
+        if(!satellite_name &&satellite_name.trim()===""){
             setNameError('Planet name is required');
             balls=false;
         }
@@ -63,16 +69,20 @@ const addplanet: React.FC = () => {
         if(!validate()){
             return; 
         }
-        
-        const response= await PlanetService.addPlanet({planet_name,radius,semimajor_axis,mass});
+        var planet_id=Number(id);
+        console.log(planet_id);
+        const response= await SatelliteService.addSatellite({satellite_name,radius,semimajor_axis,mass,planet_id} );
+
         const data= await response.json();
         console.log(response);
         console.log(data);
+
         if(response.status===200){
-            sessionStorage.setItem("planet_name",planet_name)
+            sessionStorage.setItem("satellite_name",satellite_name)
             sessionStorage.setItem("radius",radius)
             sessionStorage.setItem("semimajor_axis",semimajor_axis)
             sessionStorage.setItem("mass",mass)
+            sessionStorage.setItem("planet_id",String(planet_id))
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
                 router.push('/planet/overview')
@@ -90,10 +100,10 @@ const addplanet: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="planetnameInput">Planet Name:</label>
+                <label htmlFor="satellite_nameInput">Planet Name:</label>
             </div>
             <div>
-                <input id='planetnameInput' type="text" value={planet_name} onChange={(event)=>setName(event.target.value)}/>
+                <input id='satellite_nameInput' type="text" value={satellite_name} onChange={(event)=>setName(event.target.value)}/>
                 {nameError && <div>{nameError}</div>}
             </div>
             <div>
@@ -125,5 +135,6 @@ const addplanet: React.FC = () => {
         </div>
       </form>
     </>)
+    
 }
-export default addplanet;
+export default addSatellite;

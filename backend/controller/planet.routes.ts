@@ -108,9 +108,6 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        console.log(req.body);
-        
-        
         //turn every part of the query into a body
         req.query.radius=req.body.radius;
         req.query.semimajor_axis=req.body.semimajor_axis;
@@ -118,12 +115,10 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
         req.query.planet_name=req.body.planet_name;
         
         const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
-        console.log(req.query);
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
         
         res.status(200).json({planets});
-
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});
@@ -139,7 +134,7 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *        - planet
  *      parameters:
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: planet id to edit
  *          required: true
  *          schema:
@@ -174,7 +169,6 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *            type: string
  *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
  *
- * 
  *      responses:
  *         200:
  *            description: Planet edited successfully
@@ -188,12 +182,11 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.put('/editplanet', async(req:Request, res:Response) => {
+planet_router.put('/editplanet/{planet_id}', async(req:Request, res:Response) => {
     try {
         const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
-        
-        
-        const planetToEdit=await planetService.editPlanetService(Number(req.query.planet_id),
+
+        const planetToEdit=await planetService.editPlanetService(Number(req.params.planet_id),
             new Planet(
             radius, 
             semimajor_axis, 
