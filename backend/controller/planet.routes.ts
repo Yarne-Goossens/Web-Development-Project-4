@@ -108,10 +108,20 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        console.log(req.body);
         
+        
+        //turn every part of the query into a body
+        req.query.radius=req.body.radius;
+        req.query.semimajor_axis=req.body.semimajor_axis;
+        req.query.mass=req.body.mass;
+        req.query.planet_name=req.body.planet_name;
+        
+        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        console.log(req.query);
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
+        
         res.status(200).json({planets});
 
     } catch (error) {
