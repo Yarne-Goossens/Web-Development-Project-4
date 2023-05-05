@@ -42,26 +42,26 @@ const addSatellite: React.FC = () => {
         setMassError('');
 
         setStatusMessage(null);
-        var balls=true;
+        var errorBool=true;
 
         if(!satellite_name &&satellite_name.trim()===""){
-            setNameError('Planet name is required');
-            balls=false;
+            setNameError('Satellite name is required');
+            errorBool=false;
         }
         if(!radius &&radius.trim()===""||isNaN(Number(mass))){
             setRadiusError('Radius is required');
-            balls= false;
+            errorBool= false;
         }
         if(!semimajor_axis &&semimajor_axis.trim()===""||isNaN(Number(mass))){
             setSemimajorError('Semimajor-Axis is required');
-            balls= false;
+            errorBool= false;
         }
         if(!mass &&mass.trim()===""||isNaN(Number(mass))){
             setMassError('Mass is required');
-            balls= false;
+            errorBool= false;
         }
 
-        return balls;
+        return errorBool;
     }
 
     const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
@@ -95,7 +95,7 @@ const addSatellite: React.FC = () => {
     return (
       <>
       <Header />
-      <MetaHead title="Planet Add" />
+      <MetaHead title="Satellite Add" />
         
       <form onSubmit={handleSubmit}>
         <div>
@@ -130,7 +130,7 @@ const addSatellite: React.FC = () => {
         </div>
         <div>
             <button type='submit'>
-                Add Planet
+                Add Satellite
             </button>
         </div>
       </form>

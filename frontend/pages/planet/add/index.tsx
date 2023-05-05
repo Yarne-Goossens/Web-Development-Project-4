@@ -35,26 +35,26 @@ const addplanet: React.FC = () => {
         setMassError('');
 
         setStatusMessage(null);
-        var balls=true;
+        var errorBool=true;
 
         if(!planet_name &&planet_name.trim()===""){
             setNameError('Planet name is required');
-            balls=false;
+            errorBool=false;
         }
         if(!radius &&radius.trim()===""||isNaN(Number(mass))){
             setRadiusError('Radius is required');
-            balls= false;
+            errorBool= false;
         }
         if(!semimajor_axis &&semimajor_axis.trim()===""||isNaN(Number(mass))){
             setSemimajorError('Semimajor-Axis is required');
-            balls= false;
+            errorBool= false;
         }
         if(!mass &&mass.trim()===""||isNaN(Number(mass))){
             setMassError('Mass is required');
-            balls= false;
+            errorBool= false;
         }
 
-        return balls;
+        return errorBool;
     }
 
     const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
