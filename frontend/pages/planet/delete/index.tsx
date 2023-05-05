@@ -6,10 +6,14 @@ import PlanetService from '../../../services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet} from '../../../types'
 type Props  = {
-    toDelete:Planet
+    
   }
-const DeleteConfirm:React.FC<Props> = ({toDelete}:Props) => {
-    return (<></>)
+const DeleteConfirm:React.FC<Props> = () => {
+    return (<>
+    <Header />
+      <MetaHead title="Planet Delete" />
+      <p>Are you sure you want to delete the planet with id:</p>
+    </>)
 }
 
 export default DeleteConfirm

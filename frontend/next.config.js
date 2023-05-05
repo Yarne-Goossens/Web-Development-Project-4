@@ -3,14 +3,17 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = nextConfig
-module.exports = {
+module.exports = 
+module.exports = {nextConfig,
   async rewrites() {
     return [
       {
         source: '/satellite/add/:id',
         destination: '/satellite/add',
       },
-    ]
+      {
+        source: '/planet/delete/:id',
+        destination: '/planet/delete',
+      }]
   },
 }

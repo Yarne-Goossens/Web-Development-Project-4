@@ -21,7 +21,6 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                   <th>Radius</th>
                   <th>Semimajor Axis</th>
                   <th>Mass</th>
-                  <th>Add Satellite</th>
                 </tr>
               </thead>
               <tbody> 
@@ -37,10 +36,10 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                       <td><Link href="/satellite/add/[id]" as={`/satellite/add/${planet._planet_id}`}>
                       Add Satellite
                     </Link></td>
-                    <td><Link href="/planet/edit/[id]" as={`/satellite/edit/${planet._planet_id}`}>
+                    <td><Link href="/planet/edit/[id]" as={`/planet/edit/${planet._planet_id}`}>
                       Edit Planet
                     </Link></td>
-                    <td><Link href="/satellite/delete/[id]" as={`/satellite/delete/${planet._planet_id}`}>
+                    <td><Link href="/planet/delete/[id]" as={`/planet/delete/${planet._planet_id}`}>
                       Delete Planet
                     </Link></td>
                     </tr>
