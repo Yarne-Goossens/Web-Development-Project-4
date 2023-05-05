@@ -100,7 +100,7 @@ const addSatellite: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="satellite_nameInput">Planet Name:</label>
+                <label htmlFor="satellite_nameInput">Satellite Name:</label>
             </div>
             <div>
                 <input id='satellite_nameInput' type="text" value={satellite_name} onChange={(event)=>setName(event.target.value)}/>

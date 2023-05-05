@@ -35,9 +35,9 @@ const deleteConfirm: React.FC = () => {
     return (<>
       <Header />
       <MetaHead title="Planet Delete" />
-      <p>Are you sure you want to delete the planet with id:</p>
-      <a href='#' onClick={handleNoDelete}>No</a>
+      <p>Are you sure you want to delete the planet with id:</p> 
       <a href='#' onClick={handleDelete}>Yes</a>
+      <a href='#' onClick={handleNoDelete}>No</a>
     </>)
 }
 export default deleteConfirm

@@ -134,3 +134,27 @@ body {
   background-position: center;
   background-size: cover;
 }
+
+
+form {
+  width: 50%;
+  display: grid;
+  grid-template-columns: 1fr;
+  text-align: center;
+  align-items: center;
+  max-width: 50rem;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form input {
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid black;
+}
+
+input[type=text]{
+  background-color: #ffffff10;
+}
