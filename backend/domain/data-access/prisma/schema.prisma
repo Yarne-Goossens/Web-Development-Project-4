@@ -48,7 +48,7 @@ model satellite {
   radius Float
   semimajor_axis Float
   mass         Float
-  planet planet @relation(fields: [planet_id], references: [planet_id])
+  planet planet @relation(fields: [planet_id], references: [planet_id], onDelete: Cascade)
   account_id Int?
   account account? @relation(fields: [account_id], references: [account_id])
 }

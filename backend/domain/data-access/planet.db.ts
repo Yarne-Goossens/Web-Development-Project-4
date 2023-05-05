@@ -42,6 +42,7 @@ export async function editPlanet(planet_id: number, planet: Planet) {
 }
 
 export async function deletePlanet(planet_id: number) {
+    console.log('DB')
     await prisma.planet.delete({ where: { planet_id: planet_id } });
 }
 

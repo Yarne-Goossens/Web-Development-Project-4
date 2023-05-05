@@ -33,7 +33,7 @@ export class PlanetService{
 
     deletePlanetService=async(id:number)=>{
         if(await idExists(id)==false){throw new Error('Planet does not exist');}
-
+        console.log('service')
         await deletePlanet(id);
     }
 

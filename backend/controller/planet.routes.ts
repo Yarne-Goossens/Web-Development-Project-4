@@ -211,7 +211,7 @@ planet_router.put('/editplanet/{planet_id}', async(req:Request, res:Response) =>
  *        - planet
  *      parameters:
  *        - name: planet_id
- *          in: path
+ *          in: query
  *          description: planet id to delete
  *          required: true
  *          schema:
@@ -236,8 +236,8 @@ planet_router.delete('/deleteplanet', async(req:Request, res:Response) => {
         const planet_id=Number(req.params.planet_id);
         console.log(planet_id);
         const delee=await planetService.deletePlanetService(planet_id);
-        
-        console.log(req.body.planet_id);
+
+        console.log(delee);
         res.status(200).json({message:  'Planet deleted successfully with id: '+req.query.planet_id});
     } catch (error) {
         console.log(error);

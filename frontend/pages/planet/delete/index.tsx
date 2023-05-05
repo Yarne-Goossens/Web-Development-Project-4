@@ -1,6 +1,5 @@
 import  Header from '../../../components/header'
 import MetaHead from '../../../components/MetaHead'
-import PlanetOverview from '../../../components/planet/PlanetOverviewTable'
 import PlanetService from '../../../services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet} from '../../../types'
@@ -19,8 +18,9 @@ const deleteConfirm: React.FC = () => {
         }, [id]);
 
     const handleDelete=async ()=>{
-      var planet_id=Number(id);
-      await PlanetService.deletePlanet({planet_id})
+      var planet_id=id as string
+      const response= await PlanetService.deletePlanet({planet_id})
+      
       setTimeout(()=>{
         router.push('/planet/overview')
     },500)

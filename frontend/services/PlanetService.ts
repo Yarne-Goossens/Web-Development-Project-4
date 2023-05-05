@@ -3,7 +3,7 @@ const getAllPlanets=()=>{
 }
 const deletePlanet=(planet_id:any)=>{
     return fetch('http://localhost:3000/planet/deleteplanet',{
-        method:'POST',
+        method:'DELETE',
         headers:{
             'Content-Type':'application/json'
         },
