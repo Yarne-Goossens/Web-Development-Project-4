@@ -1,8 +1,16 @@
 const getAllPlanets=()=>{
     return fetch('http://localhost:3000/planet/planetoverview')
 }
+const deletePlanet=(planet_id:any)=>{
+    return fetch('http://localhost:3000/planet/deleteplanet',{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(planet_id)
+    })
+}
 const addPlanet=(planet:any)=>{
-    console.log(planet)
     return fetch('http://localhost:3000/planet/addplanet',{
         method:'POST',
         headers:{
@@ -13,7 +21,7 @@ const addPlanet=(planet:any)=>{
 }
 const PlanetService={
     getAllPlanets,
-    addPlanet
+    addPlanet,deletePlanet
 }
 
 

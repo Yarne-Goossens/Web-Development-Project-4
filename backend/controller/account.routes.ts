@@ -24,7 +24,6 @@
 import express,{Request,Response} from 'express';
 import { AccountService } from '../service/account.service';
 import { Account } from '../domain/model/account';
-import { idExists } from '../domain/data-access/planet.db';
 
 export const accountService:AccountService=new AccountService();
 export const account_router = express.Router();

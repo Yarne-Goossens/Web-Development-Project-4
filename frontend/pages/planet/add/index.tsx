@@ -1,6 +1,5 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
-import PlanetAddForm from 'components/planet/planetAddForm'
 import PlanetService from 'services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet} from 'types'
