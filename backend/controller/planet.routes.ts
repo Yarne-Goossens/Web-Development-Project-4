@@ -261,7 +261,7 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
  *        - planet
  *      parameters:
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: planet id to delete
  *          required: true
  *          schema:
@@ -280,14 +280,10 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
  *          description: Internal server error
  */
 
-planet_router.delete('/deleteplanet', async(req:Request, res:Response) => {
+planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
     try {
-        req.params.planet_id=req.body.planet_id;
         const planet_id=Number(req.params.planet_id);
-        console.log(planet_id);
         const delee=await planetService.deletePlanetService(planet_id);
-
-        console.log(delee);
         res.status(200).json({message:  'Planet deleted successfully with id: '+req.query.planet_id});
     } catch (error) {
         console.log(error);

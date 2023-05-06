@@ -10,12 +10,11 @@ const getPlanetWithId=(planet_id:any)=>{
 }
 const deletePlanet=(planet_id:any)=>{
     console.log(planet_id)
-    return fetch('http://localhost:3000/planet/deleteplanet',{
+    return fetch(`http://localhost:3000/planet/deleteplanet/${planet_id}`,{
         method:'DELETE',
         headers:{
             'Content-Type':'application/json'
-        },
-        body:JSON.stringify(planet_id)
+        }
     })
 }
 const addPlanet=(planet:any)=>{

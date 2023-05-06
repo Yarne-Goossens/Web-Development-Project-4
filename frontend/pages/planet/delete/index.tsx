@@ -26,7 +26,7 @@ const deleteConfirm: React.FC = () => {
 
   const handleDelete = async () => {
     const planet_id = Number(id);
-    const response = await PlanetService.deletePlanet({ planet_id });
+    const response = await PlanetService.deletePlanet( planet_id );
     setTimeout(() => {
       router.push('/planet/overview');
     }, 500);
