@@ -1,9 +1,10 @@
 import {Planet} from '../domain/model/planet';
-import { idExists, planetNameExists, planetNameExistsExceptSamePlanet,getAllPlanets} from '../domain/data-access/planet.db';  
+import { idExists, planetNameExists, planetNameExistsExceptSamePlanet,getAllPlanets,getPlanetWithId} from '../domain/data-access/planet.db';  
 import { addPlanet } from '../domain/data-access/planet.db'; 
 import {editPlanet} from '../domain/data-access/planet.db';
 import {deletePlanet,buyPlanet,sellPlanet} from '../domain/data-access/planet.db';
 import { idExists as accountIdExists } from '../domain/data-access/account.db';
+
 export class PlanetService{
     addPlanetService=async(planet:Planet)=>{
         
@@ -43,6 +44,11 @@ export class PlanetService{
 
     idExistsService=async(id:number)=>{
         return await idExists(id);
+    }
+
+    getPlanetWithIdService=async(id:number)=>{
+        if(await idExists(id)==false){throw new Error('Planet does not exist');}
+        return await getPlanetWithId(id);
     }
 
     buyPlanetService=async(planet_id:number,account_id:number)=>{

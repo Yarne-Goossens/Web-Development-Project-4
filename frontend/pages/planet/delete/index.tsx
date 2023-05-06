@@ -1,44 +1,63 @@
-import  Header from '../../../components/header'
-import MetaHead from '../../../components/MetaHead'
-import PlanetService from '../../../services/PlanetService'
-import {useState,useEffect} from 'react'
-import {Planet} from '../../../types'
-import useInterval from "use-interval"
-import Router, { useRouter } from 'next/router'
+import Header from '../../../components/header';
+import MetaHead from '../../../components/MetaHead';
+import PlanetService from '../../../services/PlanetService';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Planet } from 'types';
 
 const deleteConfirm: React.FC = () => {
-  const[planet_id,setId] = useState<string>('')
-    const router=useRouter()
-    var { id  } =  router.query;
-    
-    useEffect(()=>{
-        if (id) {
-            console.log(id); // correct value
-          }
-        }, [id]);
+  const router = useRouter();
+  const { id } = router.query;
 
-    const handleDelete=async ()=>{
-      var planet_id=id as string
-      const response= await PlanetService.deletePlanet({planet_id})
-      
-      setTimeout(()=>{
-        router.push('/planet/overview')
-    },500)
+  const [planet, setPlanet] = useState<Planet | null>(null);
+
+  useEffect(() => {
+    const fetchPlanet = async () => {
+      const planet_id = Number(id);
+      const response = await PlanetService.getPlanetWithId(planet_id);
+      const data = await response.json();
+      setPlanet(data);
     };
 
-    const handleNoDelete=async ()=>{
-      setTimeout(()=>{
-        router.push('/planet/overview')
-    },500)
-    };
+    if (id) {
+      fetchPlanet();
+    }
+  }, [id]);
 
-    return (<>
+  const handleDelete = async () => {
+    const planet_id = Number(id);
+    const response = await PlanetService.deletePlanet({ planet_id });
+    setTimeout(() => {
+      router.push('/planet/overview');
+    }, 500);
+  };
+
+  const handleNoDelete = () => {
+    router.push('/planet/overview');
+  };
+
+  return (
+    <>
       <Header />
       <MetaHead title="Planet Delete" />
-      <p>Are you sure you want to delete the planet with id:</p> 
-      <a href='#' onClick={handleDelete}>Yes</a>
-      <a href='#' onClick={handleNoDelete}>No</a>
-    </>)
-}
-export default deleteConfirm
 
+      {planet ? (
+        <>
+          <p>Are you sure you want to delete the planet with id {planet._planet_id}?</p>
+          <p>Planet name: {planet._planet_name}</p>
+          <p>Account id: {planet._account_id}</p>
+          <p>Radius: {planet._radius}</p>
+          <p>Semimajor axis: {planet._semimajor_axis}</p>
+          <p>Mass: {planet._mass}</p>
+          <a href='#' onClick={handleNoDelete}>No</a>
+          <br />
+          <a href='#' onClick={handleDelete}>Yes</a>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>
+  );
+};
+
+export default deleteConfirm;

@@ -14,9 +14,16 @@ export async function getAllPlanets(): Promise<Planet[]> {
 }
 
 export async function getPlanetWithId(id: number): Promise<Planet> {
-    const planet: PrismaPlanet = await prisma.planet.findUnique({ where: { planet_id: id } });
-    return Planet.from(<Planet>planet);
+    try {
+        const planet = await prisma.planet.findUnique({ where: { planet_id: id } });
+        console.log(planet);
+        return Planet.from(<Planet>planet);
+    } catch (err) {
+        console.error(err);
+        throw new Error(`Unable to get planet with id ${id}`);
+    }
 }
+
 
 export async function addPlanet(planet: Planet) {
     await prisma.planet.create({
@@ -42,7 +49,6 @@ export async function editPlanet(planet_id: number, planet: Planet) {
 }
 
 export async function deletePlanet(planet_id: number) {
-    console.log('DB')
     await prisma.planet.delete({ where: { planet_id: planet_id } });
 }
 

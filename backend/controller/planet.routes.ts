@@ -127,7 +127,47 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /planet/editplanet:
+ * /planet/getplanetwithid/{planet_id}:
+ *   get:
+ *      summary: delete a Planet through a form using the planet_id
+ *      tags:
+ *        - planet
+ *      parameters:
+ *        - name: planet_id
+ *          in: path
+ *          description: planet id to delete
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: Planet deleted successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: user input error
+ *         500:
+ *          description: Internal server error
+ */
+
+planet_router.get('/getplanetwithid/:planet_id', async(req:Request, res:Response) => {
+    try {
+        
+        const planet_id=Number(req.params.planet_id);
+        const withId=await planetService.getPlanetWithIdService(planet_id);
+        res.status(200).json(withId);
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
+    }
+});
+
+/** 
+ * @swagger
+ * /planet/editplanet/{planet_id}:
  *   put:
  *      summary: edit a Planet through a form using the planet_id
  *      tags:
@@ -140,21 +180,21 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *          schema:
  *            type: number
  *        - name: planet_name
- *          in: query
+ *          in: body
  *          description: planet name
  *          required: true
  *          schema:
  *            type: string
  * 
  *        - name: radius
- *          in: query
+ *          in: body
  *          description: radius
  *          required: true
  *          schema:
  *            type: number
  * 
  *        - name: semimajor_axis
- *          in: query
+ *          in: body
  *          description: semimajor_axis in mathematical notation or normal notation
  *          required: true
  *          schema:  
@@ -162,7 +202,7 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
  * 
  *        - name: mass
- *          in: query
+ *          in: body
  *          description: mass in mathematical notation or normal notation
  *          required: true
  *          schema:
@@ -182,9 +222,19 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.put('/editplanet/{planet_id}', async(req:Request, res:Response) => {
+planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => {
     try {
-        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        //turn every part of the query into a body
+        const radius = Number(req.body.radius);
+        const semimajor_axis = Number(req.body.semimajor_axis);
+        const mass = Number(req.body.mass);
+        const planet_name = String(req.body.planet_name);
+
+        console.log(radius);
+        console.log(semimajor_axis);
+        console.log(mass);
+        console.log(planet_name);
+
 
         const planetToEdit=await planetService.editPlanetService(Number(req.params.planet_id),
             new Planet(
@@ -204,7 +254,7 @@ planet_router.put('/editplanet/{planet_id}', async(req:Request, res:Response) =>
 
 /** 
  * @swagger
- * /planet/deleteplanet:
+ * /planet/deleteplanet/{planet_id}:
  *   delete:
  *      summary: delete a Planet through a form using the planet_id
  *      tags:

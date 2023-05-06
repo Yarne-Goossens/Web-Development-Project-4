@@ -1,7 +1,15 @@
 const getAllPlanets=()=>{
     return fetch('http://localhost:3000/planet/planetoverview')
 }
+const getPlanetWithId=(planet_id:any)=>{
+    return fetch(`http://localhost:3000/planet/getplanetwithid/${planet_id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }})
+}
 const deletePlanet=(planet_id:any)=>{
+    console.log(planet_id)
     return fetch('http://localhost:3000/planet/deleteplanet',{
         method:'DELETE',
         headers:{
@@ -19,9 +27,18 @@ const addPlanet=(planet:any)=>{
         body:JSON.stringify(planet)
     })
 }
+const editPlanet=(planet:any,id:any)=>{
+    return fetch(`http://localhost:3000/planet/editplanet/${id}`,{
+        method:'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(planet)
+    })
+}
 const PlanetService={
     getAllPlanets,
-    addPlanet,deletePlanet
+    addPlanet,deletePlanet,getPlanetWithId,editPlanet
 }
 
 
