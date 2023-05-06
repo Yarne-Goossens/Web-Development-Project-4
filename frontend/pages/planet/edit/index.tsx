@@ -7,8 +7,6 @@ import Router, { useRouter } from 'next/router'
 
 const addplanet: React.FC = () => {
 
-    const[planets,setPlanets] = useState<Array<Planet>>([])
-
     const[planet_name,setName] = useState<string>('')
     const[nameError,setNameError] = useState<string>('')
 
@@ -39,7 +37,7 @@ const addplanet: React.FC = () => {
             setRadius(data._radius);
             setSemimajor(data._semimajor_axis);
             setName(data._planet_name);
-            
+
         };
     
         if (id) {
@@ -60,16 +58,29 @@ const addplanet: React.FC = () => {
             setNameError('Planet name is required');
             errorBool=false;
         }
-        if(!radius &&radius.trim()===""||isNaN(Number(mass))){
+        if(!radius &&radius.trim()===""){
             setRadiusError('Radius is required');
             errorBool= false;
         }
-        if(!semimajor_axis &&semimajor_axis.trim()===""||isNaN(Number(mass))){
+        if(!semimajor_axis &&semimajor_axis.trim()===""){
             setSemimajorError('Semimajor-Axis is required');
             errorBool= false;
         }
-        if(!mass &&mass.trim()===""||isNaN(Number(mass))){
+        if(!mass &&mass.trim()===""){
             setMassError('Mass is required');
+            errorBool= false;
+        }
+        //isNan
+        if(isNaN(Number(radius))){
+            setRadiusError('The radius you entered is not a number');
+            errorBool= false;
+        }
+        if(isNaN(Number(semimajor_axis))){
+            setSemimajorError('The semimajor axis you entered is not a number');
+            errorBool= false;
+        }
+        if(isNaN(Number(mass))){
+            setMassError('The mass you entered is not a number');
             errorBool= false;
         }
 

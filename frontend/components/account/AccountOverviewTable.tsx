@@ -12,18 +12,14 @@ const AccountOverviewTable:React.FC<Props> = ({accounts}:Props) => {
           
           {accounts&& (<table><thead><tr>
             <th>Username</th>
-            <th>Password</th>
             <th>Email</th>
-            <th>Role</th>
             <th>Account Id</th>
             </tr>
             </thead>
             <tbody>{accounts && accounts.map((account,index)=>(
               <tr key={index}>
                 <td>{account._username}</td>
-                <td>{account._password}</td>
                 <td>{account._email}</td>
-                <td>{account._role}</td>
                 <td>{account._account_id}</td>
               </tr>
             ))}

@@ -5,7 +5,7 @@ const Header:React.FC = () => {
   return (
     <header className="p-3 mb-3 border-bottom bg-dark">
       <nav className='nav justify-content-left'>
-            <Link href="/" className='nav-link px-4 fs-5 text-white'>Home</Link>
+            <Link href="/" className='nav-link px-4 fs-5 text-yellow'>Home</Link>
         
             <DropdownButton id="dropdown-basic-button" title="Overviews" className='nav-link px-4 fs-5'>
                 <Dropdown.Item><Link href="/planet/overview" className='nav-link px-4 fs-5 text-black'>Planet Overview</Link></Dropdown.Item>

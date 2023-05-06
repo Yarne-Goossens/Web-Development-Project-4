@@ -101,7 +101,7 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
 
 /** 
  * @swagger
- * /resource/addresource:
+ * /resource/addresource/{planet_id}:
  *   post:
  *      summary: Add a new resource through a form
  *      tags:
@@ -116,37 +116,37 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
  * 
  *      parameters:
  *        - name: resource_name
- *          in: query
+ *          in: body
  *          description: resource name
  *          required: true
  *          schema:
  *            type: string
  * 
  *        - name: chemical_composition
- *          in: query
+ *          in: body
  *          description: chemical compostion
  *          required: true
  *          schema:
  *            type: string
  * 
  *        - name: description
- *          in: query
+ *          in: body
  *          description: description
  *          required: true
  *          schema:  
  *            type: string
  *
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: planet id of the planet the resource is on
  *          required: true
  *          schema:
  *            type: string
  */
 
-resource_router.post('/addresource', async(req:Request, res:Response) => {
+resource_router.post('/addresource/:planet_id', async(req:Request, res:Response) => {
     try {
-        const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
+        const resource_name=String(req.body.resource_name);const chemical_composition=String(req.body.chemical_composition);const description=String(req.body.description);const planet_id=Number(req.params.planet_id);
 
         if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
         if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}

@@ -1,0 +1,7 @@
+:root {
+    --text-color: yellow;
+  }
+
+  body {
+    color: var(--text-color);
+  }

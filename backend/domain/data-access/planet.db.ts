@@ -14,16 +14,9 @@ export async function getAllPlanets(): Promise<Planet[]> {
 }
 
 export async function getPlanetWithId(id: number): Promise<Planet> {
-    try {
         const planet = await prisma.planet.findUnique({ where: { planet_id: id } });
-        console.log(planet);
         return Planet.from(<Planet>planet);
-    } catch (err) {
-        console.error(err);
-        throw new Error(`Unable to get planet with id ${id}`);
-    }
 }
-
 
 export async function addPlanet(planet: Planet) {
     await prisma.planet.create({

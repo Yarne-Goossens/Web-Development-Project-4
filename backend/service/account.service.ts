@@ -4,12 +4,14 @@ import { addAccount } from '../domain/data-access/account.db';
 import { getAccountWithId } from '../domain/data-access/account.db';
 import { deleteAccount } from '../domain/data-access/account.db';
 import { updateAccount } from '../domain/data-access/account.db';
+import bcrypt from 'bcrypt';
 export class AccountService{
 
     getAllAccounts=async():Promise<Account[]>=>await getAllAccounts();
 
     addAccountService=async(account:Account)=>{
-        const email=account.email.trim();const password=account.password.trim();
+        const hashpass=await bcrypt.hash(account.password,12);
+        account.password=hashpass;
         await addAccount(account);
     }
 

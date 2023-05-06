@@ -18,8 +18,7 @@ export async function addAccount(account: Account) {
         data: {
             email: account.email,
             username: account.username,
-            password: account.password,
-            role: account.password
+            password: account.password
         },
     });
 }
@@ -30,8 +29,7 @@ export async function updateAccount(id: number, account: Account) {
         data: {
             email: account.email,
             username: account.username,
-            password: account.password,
-            role: account.password,
+            password: account.password
             },
     });
 }

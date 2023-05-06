@@ -18,6 +18,10 @@ module.exports = {nextConfig,
       {
         source: '/planet/edit/:id',
         destination: '/planet/edit',
+      },
+      {
+        source: '/resource/add/:id',
+        destination: '/resource/add',
       }]
   },
 }
