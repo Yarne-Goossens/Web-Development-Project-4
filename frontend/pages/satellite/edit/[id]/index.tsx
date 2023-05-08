@@ -2,7 +2,7 @@ import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import {useState,useEffect} from 'react'
 import {Satellite} from 'types'
-import Router, { useRouter } from 'next/router'
+import  { useRouter } from 'next/router'
 import SatelliteService from '@/services/SatelliteService'
 
 const editsatellite: React.FC = () => {
@@ -20,7 +20,7 @@ const editsatellite: React.FC = () => {
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
-
+    //id halen uit url /satellite/edit/[id]
     const router=useRouter()
     const { id } = router.query;
 
@@ -32,11 +32,12 @@ const editsatellite: React.FC = () => {
           const response = await SatelliteService.getSatelliteWithId(satellite_id);
           const data = await response.json();
           setSatellite(data);
+          console.log(data)
 
           setMass(data._mass);
             setRadius(data._radius);
             setSemimajor(data._semimajor_axis);
-            setName(data._planet_name);
+            setName(data._satellite_name);
 
         };
     
@@ -92,7 +93,8 @@ const editsatellite: React.FC = () => {
         if(!validate()){
             return; 
         }
-        
+        console.log(id)
+        console.log(satellite_name,radius,semimajor_axis,mass)
         const response= await SatelliteService.editSatellite({satellite_name,radius,semimajor_axis,mass},Number(id));
         const data= await response.json();
         console.log(response);
@@ -104,7 +106,7 @@ const editsatellite: React.FC = () => {
             sessionStorage.setItem("mass",mass)
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
-                router.push('/planet/overview')
+                router.push('/satellite/overview')
             },500)
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})

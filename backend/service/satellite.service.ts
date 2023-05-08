@@ -19,6 +19,8 @@ export class SatelliteService{
 
     idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
 
+    
+
     satelliteNameExistsService=async(name:string):Promise<boolean>=>await satelliteNameExists(name);
 
     buySatelliteService=async(sat_id:number,account_id:number)=>await buySatellite(sat_id,account_id);

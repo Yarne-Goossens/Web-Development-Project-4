@@ -185,64 +185,28 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
     }
 });
 
-/** 
+/**
  * @swagger
- * /satellite/editsatellite/:
+ * /satellite/editsatellite/{satellite_id}:
  *   put:
- *      summary: edit a Satellite through a form using the satellite_id
+ *      summary: Edit a Satellite using the satellite_id
  *      tags:
  *        - satellite
  *      parameters:
  *        - name: satellite_id
- *          in: query
- *          description: satellite id to edit
+ *          in: path
+ *          description: Satellite ID to edit
  *          required: true
  *          schema:
  *            type: number
- *        - name: satellite_name
- *          in: query
- *          description: satellite name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: radius
- *          in: query
- *          description: radius
- *          required: true
- *          schema:
- *            type: number
- * 
- *        - name: semimajor_axis
- *          in: query
- *          description: semimajor_axis in mathematical notation or normal notation
- *          required: true
- *          schema:  
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- * 
- *        - name: mass
- *          in: query
- *          description: mass in mathematical notation or normal notation
- *          required: true
- *          schema:
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *      requestBody:
+ *        description: Satellite data to update
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Satellite'
  *
- *        - name: planet_id
- *          in: query
- *          description: id of the planet the satellite belongs to
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: account_id
- *          in: query
- *          description: id of the account the satellite belongs to
- *          required: true
- *          schema:
- *            type: string
- * 
  *      responses:
  *         200:
  *            description: Satellite edited successfully
@@ -256,15 +220,14 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-satellite_router.put('/editsatellite', async(req:Request, res:Response) => {
+satellite_router.put('/editsatellite/:satellite_id', async(req:Request, res:Response) => {
     try {
-        const radius=Number(req.query.radius);
-        const semimajor_axis=Number(req.query.semimajor_axis);
-        const mass=Number(req.query.mass);
-        const satellite_name=String(req.query.satellite_name);
-        const planet_id=Number(req.query.planet_id);
-        const satellite_id=Number(req.query.satellite_id);
-        const account_id=Number(req.query.account_id);
+        const radius=Number(req.body.radius);
+        const semimajor_axis=Number(req.body.semimajor_axis);
+        const mass=Number(req.body.mass);
+        const satellite_name=String(req.body.satellite_name);
+
+        const satellite_id=Number(req.params.satellite_id);
 
         /*if(await planetService.idExistsService(planet_id)===false){res.status(404).json({message: 'Planet not found'});}
         if(await satelliteService.satelliteNameExistsService(satellite_name)===true){res.status(404).json({message: 'Satellite name already exists'});}
@@ -281,9 +244,7 @@ satellite_router.put('/editsatellite', async(req:Request, res:Response) => {
             radius, 
             semimajor_axis, 
             mass,
-            satellite_name, 
-            planet_id,
-            account_id
+            satellite_name
         ));
         res.status(200).json({satelliteToEdit});
     } catch (error) {
@@ -424,5 +385,45 @@ satellite_router.put('/sellsatellite/', async(req:Request, res:Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({message: error});
+    }
+});
+
+
+/** 
+ * @swagger
+ * /satellite/getsatellitewithid/{satellite_id}:
+ *   get:
+ *      summary: get a satellite using its id
+ *      tags:
+ *        - satellite
+ *      parameters:
+ *        - name: satellite_id
+ *          in: path
+ *          description: planet id to delete
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description:  deleted successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Planet'
+ *         404:
+ *          description: user input error
+ *         500:
+ *          description: Internal server error
+ */
+
+satellite_router.get('/getsatellitewithid/:satellite_id', async(req:Request, res:Response) => {
+    try {
+        const satellite_id=Number(req.params.satellite_id);
+        const withId=await satelliteService.getSatelliteWithIdService(satellite_id);
+        res.status(200).json(withId);
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
