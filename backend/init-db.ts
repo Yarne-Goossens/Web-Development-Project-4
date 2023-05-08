@@ -1,5 +1,24 @@
 // Execute: npx ts-node init-db.ts
 /*
+PrismaClientKnownRequestError: 
+Invalid `prisma.resource.create()` invocation in
+C:\Users\yarne\OneDrive\Documents\School\Web 4\web4-project-56_17\backend\init-db.ts:45:40
+
+  42     ],
+  43   });
+  44
+→ 45 const earthRes = await prisma.resource.create(
+An operation failed because it depends on one or more records that were required but not found. Expected 1 records to be connected, found only 0.
+    at Kr.handleRequestError (C:\Users\yarne\OneDrive\Documents\School\Web 4\web4-project-56_17\backend\node_modules\@prisma\client\src\runtime\RequestHandler.ts:211:13)
+    at Kr.handleAndLogRequestError (C:\Users\yarne\OneDrive\Documents\School\Web 4\web4-project-56_    at Kr.request (C:\Users\yarne\OneDrive\Documents\School\Web 4\web4-project-56_17\backend\node_modules\@prisma\client\src\runtime\RequestHandler.ts:163:12)
+    at async t._request (C:\Users\yarne\OneDrive\Documents\School\Web 4\web4-project-56_17\backend\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:1036:14) {
+  code: 'P2025',
+  clientVersion: '4.10.1',
+  meta: { cause: 'Expected 1 records to be connected, found only 0.' },
+  batchRequestIdx: undefined
+}
+
+
 set search_path to web4;
 ALTER SEQUENCE "web4"."planet_planet_id_seq" RESTART WITH 1;
 

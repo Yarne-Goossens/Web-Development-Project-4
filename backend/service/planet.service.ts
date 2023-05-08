@@ -3,7 +3,7 @@ import { idExists, planetNameExists, planetNameExistsExceptSamePlanet,getAllPlan
 import { addPlanet } from '../domain/data-access/planet.db'; 
 import {editPlanet} from '../domain/data-access/planet.db';
 import {deletePlanet,buyPlanet,sellPlanet} from '../domain/data-access/planet.db';
-import { idExists as accountIdExists } from '../domain/data-access/account.db';
+import AccountDb from '../domain/data-access/account.db';
 
 export class PlanetService{
     addPlanetService=async(planet:Planet)=>{
@@ -52,13 +52,13 @@ export class PlanetService{
 
     buyPlanetService=async(planet_id:number,account_id:number)=>{
         if(await idExists(planet_id)==false){throw new Error('Planet does not exist');}
-        if(await accountIdExists(account_id)==false){throw new Error('Account does not exist');}
+        if(await AccountDb.idExists(account_id)==false){throw new Error('Account does not exist');}
         await buyPlanet(planet_id,account_id);
     }
 
     sellPlanetService=async(planet_id:number,account_id:number)=>{
         if(await idExists(planet_id)==false){throw new Error('Planet does not exist');}
-        if(await accountIdExists(account_id)==false){throw new Error('Account does not exist');}
+        if(await AccountDb.idExists(account_id)==false){throw new Error('Account does not exist');}
         await sellPlanet(planet_id,account_id);
     }
 }

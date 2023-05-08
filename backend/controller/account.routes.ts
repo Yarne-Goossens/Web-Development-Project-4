@@ -22,11 +22,10 @@
  */
 
 import express,{Request,Response} from 'express';
-import { AccountService } from '../service/account.service';
+import  AccountService  from '../service/account.service';
 import { Account } from '../domain/model/account';
 
 
-export const accountService:AccountService=new AccountService();
 export const account_router = express.Router();
 
 /** 
@@ -47,7 +46,7 @@ export const account_router = express.Router();
 
 account_router.get('/accountoverview', async(req:Request, res:Response) => {
     try {
-        const accounts = await accountService.getAllAccounts();
+        const accounts = await AccountService.getAllAccounts();
         res.status(200).json(accounts);
     } catch (error) {
         console.log(error);
@@ -102,13 +101,14 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
         const email=String(req.query.email);const name=String(req.query.name);const password=String(req.query.password);
-        const toAdd=new Account(name,email, password)
-        if(await accountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
+        const toAdd=new Account(email,name, password)
+
+        if(await AccountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
         if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
         if(name==null|| name==""){res.status(400).json({message:"Name cannot be empty"});return;}
         if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
         
-        await accountService.addAccountService(toAdd);
+        await AccountService.addAccountService(toAdd);
         res.status(200).json({toAdd});
     } catch (error) {
         console.log(error);
@@ -172,14 +172,14 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 account_router.put('/editaccount/', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.query.account_id);const name=String(req.query.name);const email=String(req.query.email);const password=String(req.query.password)
-        if(await accountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
+        if(await AccountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
 
         if(name==null||name.length<1||name.length>30){res.status(400).json({message:"Name required"});return;}
         if(email==null||email.length<1||email.length>30){res.status(400).json({message:"Email required"});return;}
         if(password==null||password.length<1||password.length>30){res.status(400).json({message:"Password required"});return;}
 
-        const planetToEdit=accountService.getAccountById(account_id);
-        accountService.updateAccount(account_id,
+        const planetToEdit=AccountService.getAccountById(account_id);
+        AccountService.updateAccount(account_id,
             new Account(email,name,password));
         res.status(200).json({planetToEdit});
     } catch (error) {
@@ -222,12 +222,12 @@ account_router.put('/editaccount/', async(req:Request, res:Response) => {
 account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.params.account_id);
-        if(await accountService.idExistsService(account_id)===false){
+        if(await AccountService.idExistsService(account_id)===false){
             res.status(404).json({message: 'Account not found'});
             return;
         }
-        const planetToDelete=accountService.getAccountById(account_id);
-        accountService.deleteAccount(account_id);
+        const planetToDelete=AccountService.getAccountById(account_id);
+        AccountService.deleteAccount(account_id);
         res.status(200).json({planetToDelete});
     } catch (error) {
         console.log(error);
@@ -236,28 +236,27 @@ account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Respo
 });
 /**
  * @swagger
- * /account/login/:
- *   put:
- *     summary: login an Account through a form using the account_id
+ * /account/login:
+ *   post:
+ *     summary: Login an Account through a form using email and password
  *     tags:
  *       - account
- *     parameters:
- *       - name: email
- *         in: query
- *         description: account email
- *         required: true
- *         schema:
- *           type: string
- *           format: email
- * 
- *       - name: password
- *         in: query
- *         description: password
- *         required: true
- *         schema:
- *           type: string
- *           format: password
- * 
+ *     requestBody:
+ *       description: Account login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Account email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Account password
  *     responses:
  *       200:
  *         description: User logged in successfully
@@ -271,22 +270,12 @@ account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Respo
  *         description: Internal server error
  */
 
-
-account_router.put('/login/', async(req:Request, res:Response) => {
-    try {
-        //validatie weggehaald omdat het programma crashte
-       // accountService.loginValidation(String(req.query.email),String(req.query.password));
-       if(await accountService.loginValidation(String(req.query.email),String(req.query.password))==false){
-           res.status(400).json({message: 'Invalid email or password'});
-           return;
-        }
-       
-        res.status(200).json({message: 'User logged in successfully'});
-    } catch (error) {
-        console.log(error);
-        if( error instanceof Error){
-            res.status(400).json(error)
-        }
-        res.status(500).json(error);
+account_router.post('/login', async(req:Request, res:Response) => {
+    try{
+        const userInput=req.body;
+        const token =await AccountService.loginValidation(userInput);
+        res.status(200).json({message:'Authentication successful',token});
+    }catch(error){
+        res.status(401).json({status :'unauthorized',errorMessage:error.message})
     }
 });

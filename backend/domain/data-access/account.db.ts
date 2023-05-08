@@ -3,17 +3,17 @@ import { PrismaClient, account as PrismaAccount } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function getAllAccounts(): Promise<Account[]> {
+ async function getAllAccounts(): Promise<Account[]> {
     const accounts: PrismaAccount[] = await prisma.account.findMany();
     return accounts.map((account) => Account.from(<Account>account));
 }
 
-export async function getAccountWithId(id: number): Promise<Account> {
+ async function getAccountWithId(id: number): Promise<Account> {
     const account: PrismaAccount = await prisma.account.findUnique({ where: { account_id: id } });
     return Account.from(<Account>account);
 }
 
-export async function addAccount(account: Account) {
+ async function addAccount(account: Account) {
     await prisma.account.create({
         data: {
             email: account.email,
@@ -23,7 +23,7 @@ export async function addAccount(account: Account) {
     });
 }
 
-export async function updateAccount(id: number, account: Account) {
+ async function updateAccount(id: number, account: Account) {
     await prisma.account.update({
         where: {account_id: id},
         data: {
@@ -34,22 +34,35 @@ export async function updateAccount(id: number, account: Account) {
     });
 }
 
-export async function deleteAccount(id: number) {
+ async function deleteAccount(id: number) {
     await prisma.account.delete({ where: { account_id: id } });
 }
 
-export async function loginValidation(email: string, password: string): Promise<boolean> {
+ async function loginValidation(email: string, password: string): Promise<boolean> {
     const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
     if(account === null) return false;
     return account.password === password;
 }
 
-export async function idExists(id: number): Promise<boolean> {
+ async function idExists(id: number): Promise<boolean> {
     const account: PrismaAccount = await prisma.account.findUnique({ where: { account_id: id } });
     return account !== null;
 }
 
-export async function emailExists(email: string): Promise<boolean> {
+ async function emailExists(email: string): Promise<boolean> {
     const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
     return account !== null;
 }
+
+ async function getUserByEmail(email: string): Promise<Account> {
+    console.log(email);
+    const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
+    console.log(account);
+    return Account.from(<Account>account);
+}
+
+const AccountDb={
+    getAllAccounts,addAccount,getAccountWithId,updateAccount,deleteAccount,loginValidation,idExists,emailExists,getUserByEmail
+    
+}
+export default AccountDb

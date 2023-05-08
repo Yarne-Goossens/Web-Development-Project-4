@@ -1,30 +1,52 @@
 import {Account} from '../domain/model/account';
-import { emailExists, getAllAccounts, idExists, loginValidation } from '../domain/data-access/account.db';
-import { addAccount } from '../domain/data-access/account.db';
-import { getAccountWithId } from '../domain/data-access/account.db';
-import { deleteAccount } from '../domain/data-access/account.db';
-import { updateAccount } from '../domain/data-access/account.db';
+
+import AccountDb from '../domain/data-access/account.db';
 import bcrypt from 'bcrypt';
-export class AccountService{
+import jwt from 'jsonwebtoken';
 
-    getAllAccounts=async():Promise<Account[]>=>await getAllAccounts();
 
-    addAccountService=async(account:Account)=>{
+const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts();
+
+    const addAccountService=async(account:Account)=>{
         const hashpass=await bcrypt.hash(account.password,12);
         account.password=hashpass;
-        await addAccount(account);
+        await AccountDb.addAccount(account);
     }
 
-    getAccountById=async(id:number):Promise<Account>=>await getAccountWithId(id);
+    const getAccountById=async(id:number):Promise<Account>=>await AccountDb.getAccountWithId(id);
 
-    updateAccount=async(id:number,account:Account)=>await updateAccount(id,account);
+    const updateAccount=async(id:number,account:Account)=>await updateAccount(id,account);
 
-    deleteAccount=async (id:number)=>await deleteAccount(id);
+    const deleteAccount=async (id:number)=>await deleteAccount(id);
 
-    loginValidation=async(email:string,password:string):Promise<boolean>=>await loginValidation(email,password);
+    const loginValidation=async({email,password}):Promise<string>=>{
+        
+        const user=await AccountDb.getUserByEmail(email);
+        const isValidPassword=await bcrypt.compare(password,user.password);
 
-    idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
+        if(!isValidPassword) {throw new Error('Invalid password');}
+        return generateJwtToken(email);
+    }
 
-    emailExistsService=async(email:string):Promise<boolean>=>await emailExists(email);
+    const idExistsService=async(id:number):Promise<boolean>=>await AccountDb.idExists(id);
 
-}
+    const emailExistsService=async(email:string):Promise<boolean>=>await AccountDb.emailExists(email);
+
+    const jwtSecret=process.env.JWT_SECRET;
+
+    const generateJwtToken=(username:string):string =>{
+
+        const options={expiresIn: `${process.env.JWT_EXPIRES_HOURS}`,issuer:'planetwebshop'};
+        try{
+            return jwt.sign({username},process.env.JWT_SECRET,options);
+        }
+        catch(err){
+            console.log(err);
+            throw new Error(err);
+        }
+     }
+
+     const AccountService={
+        getAllAccounts,addAccountService,getAccountById,updateAccount,deleteAccount,loginValidation,idExistsService,emailExistsService,generateJwtToken
+    }
+    export default AccountService
