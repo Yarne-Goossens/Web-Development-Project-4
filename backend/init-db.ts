@@ -1,5 +1,14 @@
 // Execute: npx ts-node init-db.ts
+/*
+set search_path to web4;
+ALTER SEQUENCE "web4"."planet_planet_id_seq" RESTART WITH 1;
 
+ALTER SEQUENCE "web4"."satellite_satellite_id_seq" RESTART WITH 1;
+
+ALTER SEQUENCE "web4"."account_account_id_seq" RESTART WITH 1;
+
+ALTER SEQUENCE "web4"."resource_resource_id_seq" RESTART WITH 1;
+*/
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const main = async () => {
@@ -13,26 +22,109 @@ const main = async () => {
   const planets = await prisma.planet.createMany({
     data: [
       {
-      planet_name: 'Earth',
-      radius: 6371,
-      semimajor_axis: 149598023,
-      mass: 5.972168*Math.pow(10,24),
-      
+        planet_name: 'Earth',
+        radius: 6371,
+        semimajor_axis: 149598023,
+        mass: 5.972168 * Math.pow(10, 24),
       },
       {
         planet_name: 'Jupiter',
         radius: 69911,
         semimajor_axis: 778412010,
-        mass: 1.8986*Math.pow(10,27)
+        mass: 1.8986 * Math.pow(10, 27),
       },
       {
         planet_name: 'Mars',
         radius: 227939366,
         semimajor_axis: 1830,
-        mass: 6.4171*Math.pow(10,23)
-      }
-    ]
-})
+        mass: 6.4171 * Math.pow(10, 23),
+      },
+    ],
+  });
+  
+const earthRes = await prisma.resource.create({
+  data: {
+    resource_name: 'Water',
+    chemical_composition: 'H2O',
+    description: 'Sustains life on Earth',
+    planet_id: 1,
+    planets: {
+      connect: {
+        planet_id: 1,
+      },
+    },
+  },
+});
+
+const earthRes2 = await prisma.resource.create({
+  data: {
+    resource_name: 'Oxygen',
+    chemical_composition: 'O2',
+    description: 'Essential gas for breathing',
+    planet_id: 1,
+    planets: {
+      connect: {
+        planet_id: 1,
+      },
+    },
+  },
+});
+
+const jupiterRes = await prisma.resource.create({
+  data: {
+    resource_name: 'Hydrogen',
+    chemical_composition: 'H2',
+    description: 'Most abundant element on Jupiter',
+    planet_id: 2,
+    planets: {
+      connect: {
+        planet_id: 2,
+      },
+    },
+  },
+});
+
+const jupiterRes2 = await prisma.resource.create({
+  data: {
+    resource_name: 'Helium',
+    chemical_composition: 'He',
+    description: 'Second most abundant element on Jupiter',
+    planet_id: 2,
+    planets: {
+      connect: {
+        planet_id: 2,
+      },
+    },
+  },
+});
+
+const marsRes = await prisma.resource.create({
+  data: {
+    resource_name: 'Iron',
+    chemical_composition: 'Fe',
+    description: 'Common metallic element on Mars',
+    planet_id: 3,
+    planets: {
+      connect: {
+        planet_id: 3,
+      },
+    },
+  },
+});
+
+const marsRes2 = await prisma.resource.create({
+  data: {
+    resource_name: 'Perchlorate',
+    chemical_composition: 'ClO4-',
+    description: 'Chemical compound found in Martian soil',
+    planet_id: 3,
+    planets: {
+      connect: {
+        planet_id: 3,
+      },
+    },
+  },
+});
 const satellites=await prisma.satellite.createMany({
   data: [
     {
@@ -77,18 +169,16 @@ const accounts=await prisma.account.createMany({
     {
       username: 'admin',
       password: 'admin',
-      email:'admin@telenet.be',
-      role: 'admin'
+      email:'admin@telenet.be'
     },
     {
       username: 'Jefke Bezos',
       password: 'Jefke',
-      email:'jefke@hotmail.com',
-      role: 'user'
-      
+      email:'jefke@hotmail.com'
     }
     ]
 })
+
 
 }
 main()
