@@ -93,8 +93,6 @@ const editsatellite: React.FC = () => {
         if(!validate()){
             return; 
         }
-        console.log(id)
-        console.log(satellite_name,radius,semimajor_axis,mass)
         const response= await SatelliteService.editSatellite({satellite_name,radius,semimajor_axis,mass},Number(id));
         const data= await response.json();
         console.log(response);

@@ -177,7 +177,6 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
         mass,
         satellite_name, 
         planet_id));
-        console.log(satellite);
         res.status(200).json({satellite});
     } catch (error) {
         console.log(error);
@@ -200,12 +199,29 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
  *          schema:
  *            type: number
  *      requestBody:
- *        description: Satellite data to update
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Satellite'
+ *       description: Account login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               satellite_name:
+ *                 type: string
+ *                 format: email
+ *                 description: Account email
+ *               radius:
+ *                 type: number
+ *                 format: password
+ *                 description: Account password
+ *               semimajor_axis:
+ *                 type: number
+ *                 format: password
+ *                 description: Account password
+ *               mass:
+ *                 type: number
+ *                 format: password
+ *                 description: Account password
  *
  *      responses:
  *         200:
