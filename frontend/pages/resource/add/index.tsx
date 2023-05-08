@@ -5,7 +5,7 @@ import {useState,useEffect} from 'react'
 import {Planet} from 'types'
 import  { useRouter } from 'next/router'
 
-const addplanet: React.FC = () => {
+const addresource: React.FC = () => {
 
     const[planets,setPlanets] = useState<Array<Planet>>([])
 
@@ -115,4 +115,4 @@ const addplanet: React.FC = () => {
       </form>
     </>)
 }
-export default addplanet;
+export default addresource;

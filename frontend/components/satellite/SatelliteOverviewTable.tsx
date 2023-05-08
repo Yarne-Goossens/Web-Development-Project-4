@@ -1,5 +1,7 @@
 import styles from '@/styles/Home.module.css'
 import { Satellite } from '../../types'
+import Link from 'next/link'
+
 type Props  = {
   satellites:Array<Satellite>
 }
@@ -27,6 +29,12 @@ const SatelliteOverviewTable:React.FC<Props> = ({satellites}:Props) => {
                 <td>{satellite._semimajor_axis}</td>
                 <td>{satellite._mass}</td>
                 <td>{satellite._planet_id}</td>
+                <td><Link href="/satellite/edit/[id]" as={`/satellite/edit/${satellite._satellite_id}`}>
+                      Edit Satellite
+                    </Link></td>
+                <td><Link href="/satellite/delete/[id]" as={`/satellite/delete/${satellite._satellite_id}`}>
+                      Delete Satellite
+                    </Link></td>
               </tr>
             ))}
             </tbody>

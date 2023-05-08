@@ -12,6 +12,10 @@ module.exports = {nextConfig,
         destination: '/satellite/add',
       },
       {
+        source: '/satellite/edit/:id',
+        destination: '/satellite/edit',
+      },
+      {
         source: '/planet/delete/:id',
         destination: '/planet/delete',
       },

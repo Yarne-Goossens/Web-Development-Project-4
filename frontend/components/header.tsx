@@ -16,8 +16,6 @@ const Header:React.FC = () => {
 
             <DropdownButton id="dropdown-basic-button" title="Add" className='nav-link px-4 fs-5'>
                 <Dropdown.Item><Link href="/planet/add" className='nav-link px-4 fs-5 text-black'>Planet Add</Link></Dropdown.Item>
-                <Dropdown.Item><Link href="/satellite/add" className='nav-link px-4 fs-5 text-black'>Satellite Add</Link></Dropdown.Item>
-                <Dropdown.Item><Link href="/resource/add" className='nav-link px-4 fs-5 text-black'>Resource Add</Link></Dropdown.Item>
                 <Dropdown.Item><Link href="/account/add" className='nav-link px-4 fs-5 text-black'>Account Add</Link></Dropdown.Item>
             </DropdownButton>
       </nav>
