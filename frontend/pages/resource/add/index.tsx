@@ -39,25 +39,15 @@ const addplanet: React.FC = () => {
         var errorBool=true;
 
         if(!resource_name &&resource_name.trim()===""){
-            setNameError('Planet name is required');
+            setNameError('Resource name is required');
             errorBool=false;
         }
         if(!chemical_composition &&chemical_composition.trim()===""){
-            setChemical_compositionError('Radius is required');
+            setChemical_compositionError('Chemical composition is required');
             errorBool= false;
         }
         if(!description &&description.trim()===""){
-            setDescriptionError('Semimajor-Axis is required');
-            errorBool= false;
-        }
-        
-        //isNan
-        if(isNaN(Number(chemical_composition))){
-            setChemical_compositionError('The radius you entered is not a number');
-            errorBool= false;
-        }
-        if(isNaN(Number(description))){
-            setDescriptionError('The semimajor axis you entered is not a number');
+            setDescriptionError('Description is required');
             errorBool= false;
         }
 
@@ -75,9 +65,9 @@ const addplanet: React.FC = () => {
         console.log(response);
         console.log(data);
         if(response.status===200){
-            sessionStorage.setItem("planet_name",resource_name)
-            sessionStorage.setItem("radius",chemical_composition)
-            sessionStorage.setItem("semimajor_axis",description)
+            sessionStorage.setItem("resource_name",resource_name)
+            sessionStorage.setItem("chemical_composition",chemical_composition)
+            sessionStorage.setItem("description",description)
 
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
@@ -91,29 +81,29 @@ const addplanet: React.FC = () => {
     return (
       <>
       <Header />
-      <MetaHead title="Planet Add" />
+      <MetaHead title="Resource Add" />
         
       <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="planetnameInput">Resource Name:</label>
+                <label htmlFor="resourcenameInput">Resource Name:</label>
             </div>
             <div>
-                <input id='planetnameInput' type="text" value={resource_name} onChange={(event)=>setResourceName(event.target.value)}/>
+                <input id='resourcenameInput' type="text" value={resource_name} onChange={(event)=>setResourceName(event.target.value)}/>
                 {resourceNameError && <div>{resourceNameError}</div>}
             </div>
             <div>
-                <label htmlFor="radiusInput">Chemical Composition:</label>
+                <label htmlFor="chemical_compositionInput">Chemical Composition:</label>
             </div>
             <div>
-                <input id='radiusInput' type="text" value={chemical_composition} onChange={(event)=>setChemical_composition(event.target.value)}/>
+                <input id='chemical_compositionInput' type="text" value={chemical_composition} onChange={(event)=>setChemical_composition(event.target.value)}/>
                 {chemical_compositionError && <div>{chemical_compositionError}</div>}
             </div>
             <div>
-                <label htmlFor="semimajorInput">Description:</label>
+                <label htmlFor="descriptionInput">Description:</label>
             </div>
             <div>
-                <input id='semimajorInput' type="text" value={description} onChange={(event)=>setDescription(event.target.value)}/>
+                <input id='descriptionInput' type="text" value={description} onChange={(event)=>setDescription(event.target.value)}/>
                 {descriptionError && <div>{descriptionError}</div>}
             </div>
         </div>
