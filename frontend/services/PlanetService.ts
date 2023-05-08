@@ -1,8 +1,11 @@
+const planetApiURL = process.env.NEXT_PUBLIC_API_URL_PLANET;
+
 const getAllPlanets=()=>{
-    return fetch('http://localhost:3000/planet/planetoverview')
+    console.log(planetApiURL)
+    return fetch(`${planetApiURL}/planetoverview`)
 }
 const getPlanetWithId=(planet_id:any)=>{
-    return fetch(`http://localhost:3000/planet/getplanetwithid/${planet_id}`, {
+    return fetch(`${planetApiURL}/getplanetwithid/${planet_id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -10,7 +13,7 @@ const getPlanetWithId=(planet_id:any)=>{
 }
 const deletePlanet=(planet_id:any)=>{
     console.log(planet_id)
-    return fetch(`http://localhost:3000/planet/deleteplanet/${planet_id}`,{
+    return fetch(`${planetApiURL}/deleteplanet/${planet_id}`,{
         method:'DELETE',
         headers:{
             'Content-Type':'application/json'
@@ -18,7 +21,7 @@ const deletePlanet=(planet_id:any)=>{
     })
 }
 const addPlanet=(planet:any)=>{
-    return fetch('http://localhost:3000/planet/addplanet',{
+    return fetch(`${planetApiURL}/addplanet`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -26,8 +29,8 @@ const addPlanet=(planet:any)=>{
         body:JSON.stringify(planet)
     })
 }
-const editPlanet=(planet:any,id:any)=>{
-    return fetch(`http://localhost:3000/planet/editplanet/${id}`,{
+const editPlanet=(planet:any,planet_id:any)=>{
+    return fetch(`${planetApiURL}/planet/editplanet/${planet_id}`,{
         method:'PUT',
         headers:{
             'Content-Type':'application/json'
