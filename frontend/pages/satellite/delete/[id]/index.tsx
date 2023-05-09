@@ -44,7 +44,7 @@ const deleteConfirm: React.FC = () => {
       {satellite ? (
         <>
           <p>Are you sure you want to delete the planet with id {satellite._satellite_id}?</p>
-          <p>Planet name: {satellite._satellite_name}</p>
+          <p>Satellite name: {satellite._satellite_name}</p>
           <p>Account id: {satellite._account_id}</p>
           <p>Radius: {satellite._radius}</p>
           <p>Semimajor axis: {satellite._semimajor_axis}</p>

@@ -199,7 +199,7 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
  *          schema:
  *            type: number
  *      requestBody:
- *       description: Account login credentials
+ *       description: Edited satellite
  *       required: true
  *       content:
  *         application/json:
@@ -208,20 +208,16 @@ satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
  *             properties:
  *               satellite_name:
  *                 type: string
- *                 format: email
- *                 description: Account email
+ *                 description: Satellite name
  *               radius:
  *                 type: number
- *                 format: password
- *                 description: Account password
+ *                 description: Satellite radius
  *               semimajor_axis:
  *                 type: number
- *                 format: password
- *                 description: Account password
+ *                 description: Satellite semimajor-axis
  *               mass:
  *                 type: number
- *                 format: password
- *                 description: Account password
+ *                 description: Satellite mass
  *
  *      responses:
  *         200:

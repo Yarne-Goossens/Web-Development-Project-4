@@ -1,5 +1,7 @@
 import styles from '@/styles/Home.module.css'
 import { Resource } from '../../types'
+import Link from 'next/link'
+
 type Props  = {
   resources:Array<Resource>
 }
@@ -25,6 +27,12 @@ const ResourceOverviewTable:React.FC<Props> = ({resources}:Props) => {
                 <td>{resource._chemical_composition}</td>
                 <td>{resource._description}</td>
                 <td>{resource._planet_id}</td>
+                <td><Link href="/resource/edit/[id]" as={`/resource/edit/${resource._resource_id}`}>
+                      Edit Resource
+                    </Link></td>
+                <td><Link href="/resource/delete/[id]" as={`/resource/delete/${resource._resource_id}`}>
+                      Delete Resource
+                    </Link></td>
               </tr>
             ))}
             </tbody>

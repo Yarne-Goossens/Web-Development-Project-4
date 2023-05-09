@@ -109,6 +109,12 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                               <td>{resource.resource_id}</td>
                               <td>{resource.description}</td>
                               <td>{resource.chemical_composition}</td>
+                              <td><Link href="/resource/edit/[id]" as={`/resource/edit/${resource.resource_id}`}>
+                                        Edit Resource
+                                      </Link></td>
+                                  <td><Link href="/resource/delete/[id]" as={`/resource/delete/${resource.resource_id}`}>
+                                        Delete Resource
+                                      </Link></td>
                             </tr>
                           ))}
                         </tbody>

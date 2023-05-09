@@ -144,15 +144,20 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
  *            type: string
  */
 
-resource_router.post('/addresource/:planet_id', async(req:Request, res:Response) => {
+resource_router.post('/addresource/', async(req:Request, res:Response) => {
     try {
-        const resource_name=String(req.body.resource_name);const chemical_composition=String(req.body.chemical_composition);const description=String(req.body.description);const planet_id=Number(req.params.planet_id);
 
-        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
+        /*if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
         if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
         if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
         if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
-        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}
+        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}*/
+        req.query.resource_name=req.body.resource_name;
+        req.query.chemical_composition=req.body.chemical_composition;
+        req.query.description=req.body.description;
+        req.query.planet_id=req.body.planet_id;
+
+        const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
 
         const resource = await resourceservice.addResource(
         new Resource( resource_name, chemical_composition, description, planet_id));
@@ -165,46 +170,36 @@ resource_router.post('/addresource/:planet_id', async(req:Request, res:Response)
 
 /** 
  * @swagger
- * /resource/editresource/:
+ * /resource/editresource/{resource_id}:
  *   put:
  *      summary: edit a Resource through a form using the resource_id
  *      tags:
  *        - resource
  *      parameters:
  *        - name: resource_id
- *          in: query
+ *          in: path
  *          description: resource id to edit
  *          required: true
  *          schema:
  *            type: number
  * 
- *        - name: resource_name
- *          in: query
- *          description: resource name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: chemical_composition
- *          in: query
- *          description: chemical composition
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: description
- *          in: query
- *          description: description
- *          required: true
- *          schema:  
- *            type: string
- *
- *        - name: planet_id
- *          in: query
- *          description: planet_id of the planet the resource belongs to
- *          required: true
- *          schema:
- *            type: string
+ *      requestBody:
+ *       description: Edited resource
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               resource_name:
+ *                 type: string
+ *                 description: resource name
+ *               chemical_composition:
+ *                 type: string
+ *                 description: chemical composition
+ *               description:
+ *                 type: string
+ *                 description: description
  * 
  *      responses:
  *         200:
@@ -219,24 +214,26 @@ resource_router.post('/addresource/:planet_id', async(req:Request, res:Response)
  *          description: Internal server error
  */
 
-resource_router.put('/editresource/', async(req:Request, res:Response) => {
+resource_router.put('/editresource/:resource_id', async(req:Request, res:Response) => {
     try {
-        const resource_id=Number(req.query.resource_id);const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
+        const resource_id=Number(req.params.resource_id);
+        const resource_name=String(req.body.resource_name);
+        const chemical_composition=String(req.body.chemical_composition);
+        const description=String(req.body.description);
 
-        if(resource_id==null||resource_id<0){res.status(400).json({message: 'Resource id must be a number'});return;}
+        /*if(resource_id==null||resource_id<0){res.status(400).json({message: 'Resource id must be a number'});return;}
         if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 50 characters'});return;}
         if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
         if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
         if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
-        if(await planetService.idExistsService(planet_id)==false){res.status(400).json({message: 'Planet not found'});return;}
+        if(await planetService.idExistsService(planet_id)==false){res.status(400).json({message: 'Planet not found'});return;}*/
 
         const resourceToEdit=await resourceservice.getResourceWithIdService(resource_id);
         resourceservice.editResourceService(resource_id,
         new Resource(
         resource_name, 
         chemical_composition,
-        description, 
-        planet_id
+        description
         ));
         res.status(200).json({resourceToEdit});
     } catch (error) {
@@ -275,13 +272,50 @@ resource_router.put('/editresource/', async(req:Request, res:Response) => {
 
 resource_router.delete('/deleteresource/:resource_id', async(req:Request, res:Response) => {
     try {
-        if(await resourceservice.idExistsService(Number(req.params.resource_id))==false){res.status(400).json({message: 'Resource not found'});return;}
-        
-        const resourceToDelete=await resourceservice.getResourceWithIdService(Number(req.params.resource_id));
-        resourceservice.deleteResource(Number(req.params.resource_id));
-        res.status(200).json({resourceToDelete});
+        const resource_id=Number(req.params.resource_id);       
+        const resourceToDelete= await resourceservice.deleteResource(Number(resource_id));
+        res.status(200).json({message: 'Resource with id '+ req.query.resource_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});
+    }
+});
+
+/** 
+ * @swagger
+ * /satellite/getsatellitewithid/{satellite_id}:
+ *   get:
+ *      summary: get a satellite using its id
+ *      tags:
+ *        - satellite
+ *      parameters:
+ *        - name: satellite_id
+ *          in: path
+ *          description: satellite id to find
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description:  found successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Satellite'
+ *         404:
+ *          description: user input error
+ *         500:
+ *          description: Internal server error
+ */
+
+resource_router.get('/getresourcewithid/:resource_id', async(req:Request, res:Response) => {
+    try {
+        const resource_id=Number(req.params.resource_id);
+        const withId=await resourceservice.getResourceWithIdService(resource_id);
+        res.status(200).json(withId);
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });

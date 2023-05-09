@@ -1,38 +1,50 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
-import ResourceService from 'services/ResourceService'
 import {useState,useEffect} from 'react'
-import {Planet} from 'types'
+import {Resource} from 'types'
 import  { useRouter } from 'next/router'
+import ResourceService from '@/services/ResourceService'
 
-const addresource: React.FC = () => {
+const editresource: React.FC = () => {
 
-    const[planets,setPlanets] = useState<Array<Planet>>([])
+    const[resource_name,setName] = useState<string>('')
+    const[nameError,setNameError] = useState<string>('')
 
-    const[resource_name,setResourceName] = useState<string>('')
-    const[resourceNameError,setNameError] = useState<string>('')
-
-    const[chemical_composition,setChemical_composition] = useState<string>('')
-    const[chemical_compositionError,setChemical_compositionError] = useState<string>('')
+    const[chemical_composition,setChemicalComposition] = useState<string>('')
+    const[chemical_compositionError,setChemicalCompositionError] = useState<string>('')
 
     const[description,setDescription] = useState<string>('')
     const[descriptionError,setDescriptionError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
-
+    //id halen uit url /resource/edit/[id]
     const router=useRouter()
-    var { id } = router.query;
+    const { id } = router.query;
 
+    const [resource, setResource] = useState<Resource | null>(null);
 
-    useEffect(()=>{
+    useEffect(() => {
+        const fetchResource = async () => {
+          const resource_id = Number(id);
+          const response = await ResourceService.getResourceWithId(resource_id);
+          const data = await response.json();
+          setResource(data);
+          console.log(data)
+
+          setChemicalComposition(data._chemical_composition);
+            setDescription(data._description)
+            setName(data._resource_name);
+
+        };
+    
         if (id) {
-          console.log(id);
+          fetchResource();
         }
-      }, [id])
+      }, [id]);
 
     const validate=():boolean=>{
         setNameError('');
-        setChemical_compositionError('');
+        setChemicalCompositionError('');
         setDescriptionError('');
 
         setStatusMessage(null);
@@ -43,7 +55,7 @@ const addresource: React.FC = () => {
             errorBool=false;
         }
         if(!chemical_composition &&chemical_composition.trim()===""){
-            setChemical_compositionError('Chemical composition is required');
+            setChemicalCompositionError('Chemical compostion is required');
             errorBool= false;
         }
         if(!description &&description.trim()===""){
@@ -59,9 +71,7 @@ const addresource: React.FC = () => {
         if(!validate()){
             return; 
         }
-        
-        var planet_id=Number(id);
-        const response= await ResourceService.addResource({resource_name: resource_name,chemical_composition: chemical_composition,description: description,planet_id});
+        const response= await ResourceService.editResource({resource_name,chemical_composition,description},Number(id));
         const data= await response.json();
         console.log(response);
         console.log(data);
@@ -69,11 +79,9 @@ const addresource: React.FC = () => {
             sessionStorage.setItem("resource_name",resource_name)
             sessionStorage.setItem("chemical_composition",chemical_composition)
             sessionStorage.setItem("description",description)
-            sessionStorage.setItem("planet_id",String(planet_id))
-
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
-                router.push('/planet/overview')
+                router.push('/resource/overview')
             },500)
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
@@ -83,7 +91,7 @@ const addresource: React.FC = () => {
     return (
       <>
       <Header />
-      <MetaHead title="Resource Add" />
+      <MetaHead title="Edit Resource" />
         
       <form onSubmit={handleSubmit}>
         <div>
@@ -91,14 +99,14 @@ const addresource: React.FC = () => {
                 <label htmlFor="resourcenameInput">Resource Name:</label>
             </div>
             <div>
-                <input id='resourcenameInput' type="text" value={resource_name} onChange={(event)=>setResourceName(event.target.value)}/>
-                {resourceNameError && <div>{resourceNameError}</div>}
+                <input id='resourcenameInput' type="text" value={resource_name} onChange={(event)=>setName(event.target.value)}/>
+                {nameError && <div>{nameError}</div>}
             </div>
             <div>
-                <label htmlFor="chemical_compositionInput">Chemical Composition:</label>
+                <label htmlFor="chemicalCompositionInput">Chemical composition:</label>
             </div>
             <div>
-                <input id='chemical_compositionInput' type="text" value={chemical_composition} onChange={(event)=>setChemical_composition(event.target.value)}/>
+                <input id='chemicalCompositionInput' type="text" value={chemical_composition} onChange={(event)=>setChemicalComposition(event.target.value)}/>
                 {chemical_compositionError && <div>{chemical_compositionError}</div>}
             </div>
             <div>
@@ -111,10 +119,10 @@ const addresource: React.FC = () => {
         </div>
         <div>
             <button type='submit'>
-                Add Resource
+                Edit Resource
             </button>
         </div>
       </form>
     </>)
 }
-export default addresource;
+export default editresource;
