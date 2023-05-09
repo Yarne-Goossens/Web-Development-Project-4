@@ -28,10 +28,20 @@ const editSatellite=(satellite:any,satellite_id:any)=>{
         body:JSON.stringify(satellite)
     })
 }
+const deleteSatellite=(satellite_id:any)=>{
+    console.log(satellite_id)
+    return fetch(`${satelliteApiURL}/deletesatellite/${satellite_id}`,{
+        method:'DELETE',
+        headers:{
+            'Content-Type':'application/json'
+        }
+    })
+}
 const SatelliteService={
     getAllSatellites,
     addSatellite,
     getSatelliteWithId,
-    editSatellite
+    editSatellite,
+    deleteSatellite
 }
 export default SatelliteService

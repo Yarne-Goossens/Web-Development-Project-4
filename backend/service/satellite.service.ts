@@ -15,7 +15,10 @@ export class SatelliteService{
 
     editSatelliteService=async(id:number,satellite:Satellite)=>await editSatellite(id,satellite);
 
-    deleteSatellite=async(id:number)=>await deleteSatellite(id);
+    deleteSatellite=async(id:number)=>{
+        if(await idExists(id)==false){throw new Error('Satellite does not exist');}
+        await deleteSatellite(id);
+    }
 
     idExistsService=async(id:number):Promise<boolean>=>await idExists(id);
 

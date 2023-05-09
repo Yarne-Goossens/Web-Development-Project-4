@@ -299,11 +299,8 @@ satellite_router.put('/editsatellite/:satellite_id', async(req:Request, res:Resp
 satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res:Response) => {
     try {
         const satellite_id=Number(req.params.satellite_id);
-        if(await satelliteService.idExistsService(satellite_id)===false){res.status(404).json({message: 'Satellite not found'});}
-
-        const planetToDelete=await satelliteService.getSatelliteWithIdService(satellite_id);
-        satelliteService.deleteSatellite(satellite_id);
-        res.status(200).json({planetToDelete});
+        const satelliteToDelete= await satelliteService.deleteSatellite(satellite_id);
+        res.status(200).json({message: 'Satellite with id '+ req.query.satellite_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

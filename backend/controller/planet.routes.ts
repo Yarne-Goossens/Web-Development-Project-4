@@ -283,8 +283,8 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
 planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response) => {
     try {
         const planet_id=Number(req.params.planet_id);
-        const delee=await planetService.deletePlanetService(planet_id);
-        res.status(200).json({message:  'Planet deleted successfully with id: '+req.query.planet_id});
+        const deletePlanet=await planetService.deletePlanetService(planet_id);
+        res.status(200).json({message:  'Planet with id: '+req.query.planet_id+ ' deleted successfully'});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});

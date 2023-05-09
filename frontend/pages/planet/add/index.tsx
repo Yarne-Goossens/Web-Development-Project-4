@@ -3,7 +3,7 @@ import MetaHead from 'components/MetaHead'
 import PlanetService from 'services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet} from 'types'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 const addplanet: React.FC = () => {
 
