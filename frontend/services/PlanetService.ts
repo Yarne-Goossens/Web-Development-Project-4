@@ -30,7 +30,7 @@ const addPlanet=(planet:any)=>{
     })
 }
 const editPlanet=(planet:any,planet_id:any)=>{
-    return fetch(`${planetApiURL}/planet/editplanet/${planet_id}`,{
+    return fetch(`${planetApiURL}/editplanet/${planet_id}`,{
         method:'PUT',
         headers:{
             'Content-Type':'application/json'

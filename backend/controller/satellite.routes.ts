@@ -244,15 +244,6 @@ satellite_router.put('/editsatellite/:satellite_id', async(req:Request, res:Resp
         const satellite_name=String(req.body.satellite_name);
 
         const satellite_id=Number(req.params.satellite_id);
-
-        /*if(await planetService.idExistsService(planet_id)===false){res.status(404).json({message: 'Planet not found'});}
-        if(await satelliteService.satelliteNameExistsService(satellite_name)===true){res.status(404).json({message: 'Satellite name already exists'});}
-        if(radius<0||radius==null){res.status(404).json({message: 'Radius cannot be negative'});}
-        if(semimajor_axis<0||semimajor_axis==null){res.status(404).json({message: 'Semimajor axis cannot be negative'});}
-        if(mass<0||mass==null){res.status(404).json({message: 'Mass cannot be negative'});}
-        if(satellite_name==null){res.status(404).json({message: 'Satellite name cannot be null'});}
-        if(planet_id==null){res.status(404).json({message: 'Planet id cannot be null'});}
-        if(satellite_id==null){res.status(404).json({message: 'Satellite id cannot be null'});}*/
         
         const satelliteToEdit=await satelliteService.getSatelliteWithIdService(satellite_id);
         satelliteService.editSatelliteService(satellite_id,
@@ -412,18 +403,18 @@ satellite_router.put('/sellsatellite/', async(req:Request, res:Response) => {
  *      parameters:
  *        - name: satellite_id
  *          in: path
- *          description: planet id to delete
+ *          description: satellite id to find
  *          required: true
  *          schema:
  *            type: number
  * 
  *      responses:
  *         200:
- *            description:  deleted successfully
+ *            description:  found successfully
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Planet'
+ *                       $ref: '#/components/schemas/Satellite'
  *         404:
  *          description: user input error
  *         500:

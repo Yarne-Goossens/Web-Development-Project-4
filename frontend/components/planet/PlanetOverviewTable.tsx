@@ -70,6 +70,12 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
                                   <td>{satellite.radius}</td>
                                   <td>{satellite.semimajor_axis}</td>
                                   <td>{satellite.mass}</td>
+                                  <td><Link href="/satellite/edit/[id]" as={`/satellite/edit/${satellite.satellite_id}`}>
+                                        Edit Satellite
+                                      </Link></td>
+                                  <td><Link href="/satellite/delete/[id]" as={`/satellite/delete/${satellite.satellite_id}`}>
+                                        Delete Satellite
+                                      </Link></td>
                                 </tr>
                               ))}
                             </tbody>

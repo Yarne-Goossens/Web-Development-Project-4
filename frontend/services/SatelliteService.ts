@@ -20,7 +20,7 @@ const addSatellite=(satellite:any)=>{
     })
 }
 const editSatellite=(satellite:any,satellite_id:any)=>{
-    return fetch(`${satelliteApiURL}/satellite/editsatellite/${satellite_id}`,{
+    return fetch(`${satelliteApiURL}/editsatellite/${satellite_id}`,{
         method:'PUT',
         headers:{
             'Content-Type':'application/json'
