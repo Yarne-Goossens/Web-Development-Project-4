@@ -2,12 +2,12 @@ import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import ResourceService from 'services/ResourceService'
 import {useState,useEffect} from 'react'
-import {Planet} from 'types'
+import {Resource} from 'types'
 import  { useRouter } from 'next/router'
 
 const addresource: React.FC = () => {
 
-    const[planets,setPlanets] = useState<Array<Planet>>([])
+    const[resources,setResources] = useState<Array<Resource>>([])
 
     const[resource_name,setResourceName] = useState<string>('')
     const[resourceNameError,setNameError] = useState<string>('')

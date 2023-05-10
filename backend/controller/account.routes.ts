@@ -100,6 +100,10 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
 
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
+        req.query.name=req.body.name;
+        req.query.email=req.body.email;
+        req.query.password=req.body.password;
+
         const email=String(req.query.email);const name=String(req.query.name);const password=String(req.query.password);
         const toAdd=new Account(email,name, password)
 
@@ -121,40 +125,38 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /account/editaccount/:
+ * /account/editaccount/{account_id}:
  *   put:
  *      summary: edit an account through a form using the account id
  *      tags:
  *        - account
  *      parameters:
  *        - name: account_id
- *          in: query
+ *          in: path
  *          description: account that needs to be edited by id
  *          required: true
  *          schema:
  *            type: string
- *        - name: name
- *          in: query
- *          description: account name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: email
- *          in: query
- *          description: account email
- *          required: true
- *          schema:
- *            type: string
- *            format: email
- * 
- *        - name: password
- *          in: query
- *          description: password
- *          required: true
- *          schema:
- *            type: string
- *            format: password
+ *        
+ *      requestBody:
+ *       description: Edited account
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: account name
+ *               email:
+ *                 type: string
+ *                 description: email
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 description: password
+ *                 format: password
  * 
  *      responses:
  *         200:
@@ -169,14 +171,14 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-account_router.put('/editaccount/', async(req:Request, res:Response) => {
+account_router.put('/editaccount/:account_id', async(req:Request, res:Response) => {
     try {
-        const account_id=Number(req.query.account_id);const name=String(req.query.name);const email=String(req.query.email);const password=String(req.query.password)
-        if(await AccountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
+        const account_id=Number(req.params.account_id);const name=String(req.body.name);const email=String(req.body.email);const password=String(req.body.password)
+        /*if(await AccountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
 
         if(name==null||name.length<1||name.length>30){res.status(400).json({message:"Name required"});return;}
         if(email==null||email.length<1||email.length>30){res.status(400).json({message:"Email required"});return;}
-        if(password==null||password.length<1||password.length>30){res.status(400).json({message:"Password required"});return;}
+        if(password==null||password.length<1||password.length>30){res.status(400).json({message:"Password required"});return;}*/
 
         const planetToEdit=AccountService.getAccountById(account_id);
         AccountService.updateAccount(account_id,
@@ -277,5 +279,44 @@ account_router.post('/login', async(req:Request, res:Response) => {
         res.status(200).json({message:'Authentication successful',token});
     }catch(error){
         res.status(401).json({status :'unauthorized',errorMessage:error.message})
+    }
+});
+
+/** 
+ * @swagger
+ * /account/getaccountwithid/{account_id}:
+ *   get:
+ *      summary: get a account using its id
+ *      tags:
+ *        - account
+ *      parameters:
+ *        - name: account_id
+ *          in: path
+ *          description: account id to find
+ *          required: true
+ *          schema:
+ *            type: number
+ * 
+ *      responses:
+ *         200:
+ *            description: account found successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Account'
+ *         404:
+ *          description: user input error
+ *         500:
+ *          description: Internal server error
+ */
+
+account_router.get('/getaccountwithid/:account_id', async(req:Request, res:Response) => {
+    try {
+        const account_id=Number(req.params.account_id);
+        const withId=await AccountService.getAccountById(account_id);
+        res.status(200).json(withId);
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });

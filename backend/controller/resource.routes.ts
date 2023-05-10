@@ -146,12 +146,6 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
 
 resource_router.post('/addresource/', async(req:Request, res:Response) => {
     try {
-
-        /*if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
-        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
-        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
-        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
-        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}*/
         req.query.resource_name=req.body.resource_name;
         req.query.chemical_composition=req.body.chemical_composition;
         req.query.description=req.body.description;
@@ -159,6 +153,12 @@ resource_router.post('/addresource/', async(req:Request, res:Response) => {
 
         const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
 
+        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
+        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
+        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
+        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
+        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}
+        
         const resource = await resourceservice.addResource(
         new Resource( resource_name, chemical_composition, description, planet_id));
         res.status(200).json({resource});
@@ -283,26 +283,26 @@ resource_router.delete('/deleteresource/:resource_id', async(req:Request, res:Re
 
 /** 
  * @swagger
- * /satellite/getsatellitewithid/{satellite_id}:
+ * /resource/getresourcewithid/{resource_id}:
  *   get:
- *      summary: get a satellite using its id
+ *      summary: get a resource using its id
  *      tags:
- *        - satellite
+ *        - resource
  *      parameters:
- *        - name: satellite_id
+ *        - name: resource_id
  *          in: path
- *          description: satellite id to find
+ *          description: resource id to find
  *          required: true
  *          schema:
  *            type: number
  * 
  *      responses:
  *         200:
- *            description:  found successfully
+ *            description: resource found successfully
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Satellite'
+ *                       $ref: '#/components/schemas/Resource'
  *         404:
  *          description: user input error
  *         500:
