@@ -55,8 +55,10 @@ const login: React.FC = () => {
         console.log(data);
 
         if(response.status===200){
-            sessionStorage.setItem("email",account_email)
             setStatusMessage({type:'success',message:data.message})
+
+            sessionStorage.setItem("token",data.token)
+            sessionStorage.setItem("email",account_email)
             setTimeout(()=>{
                 router.push('/')
             },500)

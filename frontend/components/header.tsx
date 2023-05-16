@@ -19,6 +19,7 @@ const Header:React.FC = () => {
                 <Dropdown.Item><Link href="/account/add" className='nav-link px-4 fs-5 text-black'>Account Add</Link></Dropdown.Item>
             </DropdownButton>
             <Link href="/account/login" className='nav-link px-4 fs-5 text-yellow'>Login</Link>
+            <Link href="/account/logout" className='nav-link px-4 fs-5 text-yellow'>Logout</Link>
       </nav>
     </header>
   );

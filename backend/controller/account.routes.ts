@@ -73,45 +73,39 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *                   schema:
  *                       $ref: '#/components/schemas/Account'
  * 
- *      parameters:
- *        - name: name
- *          in: query
- *          description: account name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: email
- *          in: query
- *          description: email
- *          required: true
- *          schema:
- *            type: string
- *            format: email
- * 
- *        - name: password
- *          in: query
- *          description: password
- *          required: true
- *          schema:
- *            type: string
- *            format: password
+ *      requestBody:
+ *       description: Edited account
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: account name
+ *               email:
+ *                 type: string
+ *                 description: email
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 description: password
+ *                 format: password
  */
 
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
-        req.query.name=req.body.name;
-        req.query.email=req.body.email;
-        req.query.password=req.body.password;
 
-        const email=String(req.query.email);const name=String(req.query.name);const password=String(req.query.password);
+        const email=String(req.body.email);const name=String(req.body.name);const password=String(req.body.password);
         const toAdd=new Account(email,name, password)
+        console.log(toAdd);
 
         if(await AccountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
         if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
         if(name==null|| name==""){res.status(400).json({message:"Name cannot be empty"});return;}
         if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
-        
+        console.log(toAdd);
         await AccountService.addAccountService(toAdd);
         res.status(200).json({toAdd});
     } catch (error) {
@@ -275,7 +269,10 @@ account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Respo
 account_router.post('/login', async(req:Request, res:Response) => {
     try{
         const userInput=req.body;
-        const token =await AccountService.loginValidation(userInput);
+        const email=userInput.email;
+        const password=userInput.password;
+        console.log(email,password)
+        const token =await AccountService.loginValidation(email,password);
         res.status(200).json({message:'Authentication successful',token});
     }catch(error){
         res.status(401).json({status :'unauthorized',errorMessage:error.message})

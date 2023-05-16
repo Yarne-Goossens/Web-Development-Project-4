@@ -19,11 +19,10 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
 
     const deleteAccount=async (id:number)=>await deleteAccount(id);
 
-    const loginValidation=async({email,password}):Promise<string>=>{
-        
+    const loginValidation=async(email:string,password:string):Promise<string>=>{
+
         const user=await AccountDb.getUserByEmail(email);
         const isValidPassword=await bcrypt.compare(password,user.password);
-
         if(!isValidPassword) {throw new Error('Invalid password');}
         return generateJwtToken(email);
     }
@@ -36,7 +35,7 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
 
     const generateJwtToken=(username:string):string =>{
 
-        const options={expiresIn: `${process.env.JWT_EXPIRES_HOURS}`,issuer:'planetwebshop'};
+        const options={expiresIn: `${process.env.JWT_EXPIRES_HOURS}h`,issuer:'whatt'};
         try{
             return jwt.sign({username},process.env.JWT_SECRET,options);
         }

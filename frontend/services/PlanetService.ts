@@ -1,8 +1,15 @@
 const planetApiURL = process.env.NEXT_PUBLIC_API_URL_PLANET;
 
 const getAllPlanets=()=>{
-    console.log(planetApiURL)
-    return fetch(`${planetApiURL}/planetoverview`)
+    const token=sessionStorage.getItem('token')
+    
+    return fetch(`${planetApiURL}/planetoverview`,{
+        method:'GET',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+            
+        },})
 }
 const getPlanetWithId=(planet_id:any)=>{
     return fetch(`${planetApiURL}/getplanetwithid/${planet_id}`, {

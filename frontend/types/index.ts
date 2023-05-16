@@ -34,3 +34,8 @@ export interface Account{
     _password: string
     _role: string
 }
+
+export interface StatusMessage {
+    type: string;
+    message: string;
+}

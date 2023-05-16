@@ -8,10 +8,12 @@ import { planet_router } from "./controller/planet.routes";
 import { satellite_router } from "./controller/satellite.routes";
 import { resource_router } from "./controller/resource.routes";
 import { account_router } from "./controller/account.routes";
+import {expressjwt} from "express-jwt";
 
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
+const jwtSecret=process.env.JWT_SECRET;
 
 const swaggerOpts = {
   definition: {
@@ -24,8 +26,10 @@ const swaggerOpts = {
   apis: ["./controller/*.routes.ts"],
 };
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
-
 app.use(cors());
+app.use(expressjwt({secret: jwtSecret,algorithms:['HS256']}).unless({path: ['/account/login', '/account/register']}));
+
+
 
 app.use(bodyParser.json());
 
