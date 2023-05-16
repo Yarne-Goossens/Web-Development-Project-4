@@ -12,34 +12,41 @@ const getAllPlanets=()=>{
         },})
 }
 const getPlanetWithId=(planet_id:any)=>{
+    const token=sessionStorage.getItem('token')
     return fetch(`${planetApiURL}/getplanetwithid/${planet_id}`, {
     method: 'GET',
     headers: {
+        Authorization:`Bearer ${token}`,
       'Content-Type': 'application/json'
     }})
 }
 const deletePlanet=(planet_id:any)=>{
-    console.log(planet_id)
+    const token=sessionStorage.getItem('token')
     return fetch(`${planetApiURL}/deleteplanet/${planet_id}`,{
         method:'DELETE',
         headers:{
+            Authorization:`Bearer ${token}`,
             'Content-Type':'application/json'
         }
     })
 }
 const addPlanet=(planet:any)=>{
+    const token=sessionStorage.getItem('token')
     return fetch(`${planetApiURL}/addplanet`,{
         method:'POST',
         headers:{
+            Authorization:`Bearer ${token}`,
             'Content-Type':'application/json'
         },
         body:JSON.stringify(planet)
     })
 }
 const editPlanet=(planet:any,planet_id:any)=>{
+    const token=sessionStorage.getItem('token')
     return fetch(`${planetApiURL}/editplanet/${planet_id}`,{
         method:'PUT',
         headers:{
+            Authorization:`Bearer ${token}`,
             'Content-Type':'application/json'
         },
         body:JSON.stringify(planet)

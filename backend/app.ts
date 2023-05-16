@@ -27,7 +27,7 @@ const swaggerOpts = {
 };
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use(cors());
-app.use(expressjwt({secret: jwtSecret,algorithms:['HS256']}).unless({path: ['/account/login', '/account/register']}));
+app.use(expressjwt({secret: jwtSecret,algorithms:['HS256']}).unless({path: ['/account/login', '/account/addaccount']}));
 
 
 

@@ -5,16 +5,28 @@ import ResourceService from '../../../services/ResourceService'
 import {useState,useEffect} from 'react'
 import {Resource} from '../../../types'
 import useInterval from "use-interval"
+import { StatusMessage } from '../../../types'
 
 const Resources: React.FC = () => {
     const[resources,setResources] = useState<Array<Resource>>([])
+    const [error, setError] = useState<StatusMessage | null>(null);
 
     const getResources = async () => {
          try{
         const response = await ResourceService.getAllResources();
-            const data = await response.json();
+        if(!response.ok){
+                
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
+        else{
+        const data = await response.json();
+        setResources(data);}
 
-            setResources(data);
         } catch (error) {
             console.log('Error fetching Resources', error);
         } 
@@ -24,16 +36,23 @@ const Resources: React.FC = () => {
         console.log(    "useEffect")
         getResources()
     },[])
+
     useInterval(getResources, 5000)
     return (
         <>
         <Header />
-        <MetaHead title="Resource Overview" />    
-        <main>
-            <section className='row justify-content-center'>
+        <MetaHead title="Resource Overview" />
+        <div>
+            {error ? (
+                <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+            ) : (
+                <>
+            <section className="Row Row--center">
                 <ResourceOverview resources={resources} />
             </section>
-        </main>
-        </>) 
+                </>
+            )}
+        </div>
+    </>) 
 }
 export default Resources
