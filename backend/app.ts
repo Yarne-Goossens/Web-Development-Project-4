@@ -14,7 +14,11 @@ const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
 const jwtSecret=process.env.JWT_SECRET;
-
+app.use(
+  expressjwt({secret: jwtSecret, algorithms: ['HS256']}).unless({path: [/^\/api-docs\/.*/, /^\/swagger-.*/, '/account/login', '/status', '/account/addaccount', "/"]
+      }
+  )
+);
 const swaggerOpts = {
   definition: {
     openapi: "3.0.0",
@@ -22,12 +26,27 @@ const swaggerOpts = {
       title: "Back-end",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  
   },
   apis: ["./controller/*.routes.ts"],
 };
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use(cors());
-app.use(expressjwt({secret: jwtSecret,algorithms:['HS256']}).unless({path: ['/account/login', '/account/addaccount']}));
+
 
 
 
