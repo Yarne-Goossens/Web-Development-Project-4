@@ -25,14 +25,12 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
 
     const router=useRouter()
 
-    const [planet, setPlanet] = useState<Planet | null>(null);
 
     useEffect(() => {
         const fetchPlanet = async () => {
           const planet_id = Number(id);
           const response = await PlanetService.getPlanetWithId(planet_id);
           const data = await response.json();
-          setPlanet(data);
 
           setMass(data._mass);
             setRadius(data._radius);
@@ -96,8 +94,6 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         
         const response= await PlanetService.editPlanet({planet_name,radius,semimajor_axis,mass},Number(id));
         const data= await response.json();
-        console.log(response);
-        console.log(data);
         if(response.status===200){
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{

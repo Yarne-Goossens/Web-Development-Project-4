@@ -15,6 +15,7 @@ const getResourceWithId=(resource_id:any)=>{
     return fetch(`${resourceApiURL}/getresourcewithid/${resource_id}`, {
     method: 'GET',
     headers: {
+        Authorization:`Bearer ${token}`,
       'Content-Type': 'application/json'
     }})
 }
