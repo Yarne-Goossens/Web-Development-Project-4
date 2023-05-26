@@ -65,9 +65,6 @@ const addaccount: React.FC = () => {
         console.log(response);
         console.log(data);
         if(response.status===200){
-            sessionStorage.setItem("username",username)
-            sessionStorage.setItem("email",email)
-            sessionStorage.setItem("password",password)
 
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
