@@ -1,15 +1,13 @@
-import PlanetService from 'services/PlanetService'
-import {useState,useEffect} from 'react'
-import {Planet, StatusMessage} from 'types'
-import  { useRouter } from 'next/router'
+import SatelliteService from "@/services/SatelliteService"
+import { Planet, StatusMessage } from "@/types"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
-type Props={
-    id: number|undefined
-}
 
-const PlanetEdit: React.FC<Props> = ({id}:Props) => {
+const AddSatellite:React.FC = () => {
+const[planets,setPlanets] = useState<Array<Planet>>([])
 
-    const[planet_name,setName] = useState<string>('')
+    const[satellite_name,setName] = useState<string>('')
     const[nameError,setNameError] = useState<string>('')
 
     const[radius,setRadius] = useState<string>('')
@@ -24,28 +22,14 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
-
-    const [planet, setPlanet] = useState<Planet | null>(null);
-
-    useEffect(() => {
-        const fetchPlanet = async () => {
-          const planet_id = Number(id);
-          const response = await PlanetService.getPlanetWithId(planet_id);
-          const data = await response.json();
-          setPlanet(data);
-
-          setMass(data._mass);
-            setRadius(data._radius);
-            setSemimajor(data._semimajor_axis);
-            setName(data._planet_name);
-
-        };
+    var { id  } =  router.query;
     
+    useEffect(()=>{
         if (id) {
-          fetchPlanet();
-        }
-      }, [id]);
-
+            console.log(id); // correct value
+          }
+        }, [id]);
+    
     const validate=():boolean=>{
         setNameError('');
         setRadiusError('');
@@ -55,33 +39,20 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         setStatusMessage(null);
         var errorBool=true;
 
-        if(!planet_name &&planet_name.trim()===""){
-            setNameError('Planet name is required');
+        if(!satellite_name &&satellite_name.trim()===""){
+            setNameError('Satellite name is required');
             errorBool=false;
         }
-        if(!radius &&radius.trim()===""){
+        if(!radius &&radius.trim()===""||isNaN(Number(mass))){
             setRadiusError('Radius is required');
             errorBool= false;
         }
-        if(!semimajor_axis &&semimajor_axis.trim()===""){
+        if(!semimajor_axis &&semimajor_axis.trim()===""||isNaN(Number(mass))){
             setSemimajorError('Semimajor-Axis is required');
             errorBool= false;
         }
-        if(!mass &&mass.trim()===""){
+        if(!mass &&mass.trim()===""||isNaN(Number(mass))){
             setMassError('Mass is required');
-            errorBool= false;
-        }
-        //isNan
-        if(isNaN(Number(radius))){
-            setRadiusError('The radius you entered is not a number');
-            errorBool= false;
-        }
-        if(isNaN(Number(semimajor_axis))){
-            setSemimajorError('The semimajor axis you entered is not a number');
-            errorBool= false;
-        }
-        if(isNaN(Number(mass))){
-            setMassError('The mass you entered is not a number');
             errorBool= false;
         }
 
@@ -93,12 +64,16 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         if(!validate()){
             return; 
         }
-        
-        const response= await PlanetService.editPlanet({planet_name,radius,semimajor_axis,mass},Number(id));
+        var planet_id=Number(id);
+        console.log(planet_id);
+        const response= await SatelliteService.addSatellite({satellite_name,radius,semimajor_axis,mass,planet_id} );
+
         const data= await response.json();
         console.log(response);
         console.log(data);
+
         if(response.status===200){
+            
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
                 router.push('/planet/overview')
@@ -106,17 +81,16 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }
-    };
-
-    return (
-      <>
-      <form onSubmit={handleSubmit}>
+    }
+    return(
+    <>
+    <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="planetnameInput">Planet Name:</label>
+                <label htmlFor="satellite_nameInput">Satellite Name:</label>
             </div>
             <div>
-                <input id='planetnameInput' type="text" value={planet_name} onChange={(event)=>setName(event.target.value)}/>
+                <input id='satellite_nameInput' type="text" value={satellite_name} onChange={(event)=>setName(event.target.value)}/>
                 {nameError && <div>{nameError}</div>}
             </div>
             <div>
@@ -143,10 +117,11 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         </div>
         <div>
             <button type='submit'>
-                Edit Planet
+                Add Satellite
             </button>
         </div>
       </form>
-    </>)
-}
-export default PlanetEdit;
+    
+      </>)
+    ;}
+    export default AddSatellite;

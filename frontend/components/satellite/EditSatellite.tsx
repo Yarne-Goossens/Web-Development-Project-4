@@ -1,15 +1,15 @@
-import PlanetService from 'services/PlanetService'
-import {useState,useEffect} from 'react'
-import {Planet, StatusMessage} from 'types'
-import  { useRouter } from 'next/router'
+import SatelliteService from "@/services/SatelliteService"
+import { Satellite, StatusMessage } from "@/types"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 type Props={
     id: number|undefined
 }
 
-const PlanetEdit: React.FC<Props> = ({id}:Props) => {
+const EditSatellite: React.FC<Props> = ({id}:Props) => {
 
-    const[planet_name,setName] = useState<string>('')
+const[satellite_name,setName] = useState<string>('')
     const[nameError,setNameError] = useState<string>('')
 
     const[radius,setRadius] = useState<string>('')
@@ -22,27 +22,24 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
-
+   
     const router=useRouter()
 
-    const [planet, setPlanet] = useState<Planet | null>(null);
-
     useEffect(() => {
-        const fetchPlanet = async () => {
-          const planet_id = Number(id);
-          const response = await PlanetService.getPlanetWithId(planet_id);
+        const fetchSatellite = async () => {
+          const satellite_id = Number(id);
+          const response = await SatelliteService.getSatelliteWithId(satellite_id);
           const data = await response.json();
-          setPlanet(data);
 
           setMass(data._mass);
             setRadius(data._radius);
             setSemimajor(data._semimajor_axis);
-            setName(data._planet_name);
+            setName(data._satellite_name);
 
         };
     
         if (id) {
-          fetchPlanet();
+          fetchSatellite();
         }
       }, [id]);
 
@@ -55,8 +52,8 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         setStatusMessage(null);
         var errorBool=true;
 
-        if(!planet_name &&planet_name.trim()===""){
-            setNameError('Planet name is required');
+        if(!satellite_name &&satellite_name.trim()===""){
+            setNameError('Satellite name is required');
             errorBool=false;
         }
         if(!radius &&radius.trim()===""){
@@ -93,30 +90,28 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         if(!validate()){
             return; 
         }
-        
-        const response= await PlanetService.editPlanet({planet_name,radius,semimajor_axis,mass},Number(id));
+        const response= await SatelliteService.editSatellite({satellite_name,radius,semimajor_axis,mass},Number(id));
         const data= await response.json();
-        console.log(response);
-        console.log(data);
         if(response.status===200){
+            
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
-                router.push('/planet/overview')
+                router.push('/satellite/overview')
             },500)
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }
     };
 
-    return (
-      <>
-      <form onSubmit={handleSubmit}>
+    return (<>
+    
+    <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="planetnameInput">Planet Name:</label>
+                <label htmlFor="satellitenameInput">Satellite Name:</label>
             </div>
             <div>
-                <input id='planetnameInput' type="text" value={planet_name} onChange={(event)=>setName(event.target.value)}/>
+                <input id='satellitenameInput' type="text" value={satellite_name} onChange={(event)=>setName(event.target.value)}/>
                 {nameError && <div>{nameError}</div>}
             </div>
             <div>
@@ -143,10 +138,11 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         </div>
         <div>
             <button type='submit'>
-                Edit Planet
+                Edit Satellite
             </button>
         </div>
       </form>
+    
     </>)
 }
-export default PlanetEdit;
+export default EditSatellite;
