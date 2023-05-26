@@ -1,7 +1,7 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import {useState,useEffect} from 'react'
-import {Satellite} from 'types'
+import {Satellite, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import SatelliteService from '@/services/SatelliteService'
 
@@ -19,7 +19,7 @@ const editsatellite: React.FC = () => {
     const[mass,setMass] = useState<string>('')
     const[massError,setMassError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
     //id halen uit url /satellite/edit/[id]
     const router=useRouter()
     const { id } = router.query;

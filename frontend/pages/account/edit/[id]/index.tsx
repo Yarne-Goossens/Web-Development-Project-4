@@ -1,7 +1,7 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import {useState,useEffect} from 'react'
-import {Account} from 'types'
+import {Account, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import AccountService from '@/services/AccountService'
 
@@ -16,7 +16,7 @@ const editaccount: React.FC = () => {
     const[password,setPassword] = useState<string>('')
     const[passwordError,setPasswordError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     const { id } = router.query;

@@ -1,7 +1,7 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import {useState,useEffect} from 'react'
-import {Account} from 'types'
+import {Account, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import AccountService from '@/services/AccountService'
 
@@ -18,7 +18,7 @@ const addaccount: React.FC = () => {
     const[password,setPassword] = useState<string>('')
     const[passwordError,setPasswordError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     var { id } = router.query;
@@ -65,11 +65,16 @@ const addaccount: React.FC = () => {
         console.log(response);
         console.log(data);
         if(response.status===200){
-
             setStatusMessage({type:'success',message:data.message})
-            setTimeout(()=>{
-                router.push('/account/overview')
-            },500)
+            if(sessionStorage.getItem("token")==null){
+                setTimeout(()=>{
+                    router.push('/')
+                },500)
+            }else{
+                setTimeout(()=>{
+                    router.push('/account/overview')
+                },500)
+            }
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }

@@ -20,6 +20,7 @@ const getAccountWithId=(account_id:any)=>{
     }})
 }
 const addAccount=(account:any)=>{
+    console.log(account)
     const token=sessionStorage.getItem('token')
     return fetch(`${accountApiURL}/addaccount`,{
         method:'POST',

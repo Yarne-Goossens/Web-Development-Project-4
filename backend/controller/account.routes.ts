@@ -81,7 +81,7 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *                 description: account name
  *               email:
@@ -97,15 +97,15 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
 account_router.post('/addaccount', async(req:Request, res:Response) => {
     try {
 
-        const email=String(req.body.email);const name=String(req.body.name);const password=String(req.body.password);
-        const toAdd=new Account(email,name, password)
-        console.log(toAdd);
+        const email=String(req.body.email);const username=String(req.body.username);const password=String(req.body.password);
+        const toAdd=new Account(email,username, password)
+        //console.log(toAdd);
 
         if(await AccountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
         if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
-        if(name==null|| name==""){res.status(400).json({message:"Name cannot be empty"});return;}
+        if(username==null|| username==""){res.status(400).json({message:"Name cannot be empty"});return;}
         if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
-        console.log(toAdd);
+        //console.log(toAdd);
         await AccountService.addAccountService(toAdd);
         res.status(200).json({toAdd});
     } catch (error) {
@@ -140,7 +140,7 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *                 description: account name
  *               email:
@@ -167,7 +167,7 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 
 account_router.put('/editaccount/:account_id', async(req:Request, res:Response) => {
     try {
-        const account_id=Number(req.params.account_id);const name=String(req.body.name);const email=String(req.body.email);const password=String(req.body.password)
+        const account_id=Number(req.params.account_id);const name=String(req.body.username);const email=String(req.body.email);const password=String(req.body.password)
         /*if(await AccountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
 
         if(name==null||name.length<1||name.length>30){res.status(400).json({message:"Name required"});return;}

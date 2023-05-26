@@ -1,13 +1,10 @@
-import  Header from 'components/header'
-import MetaHead from 'components/MetaHead'
-import AccountService from 'services/AccountService'
 import {useState,useEffect} from 'react'
-import {Planet} from 'types'
+import {Planet, StatusMessage} from 'types'
 import Router, { useRouter } from 'next/router'
 
 const login: React.FC = () => {
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     useEffect(()=>{

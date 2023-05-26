@@ -1,7 +1,7 @@
 import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import {useState,useEffect} from 'react'
-import {Resource} from 'types'
+import {Resource, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import ResourceService from '@/services/ResourceService'
 
@@ -16,7 +16,7 @@ const editresource: React.FC = () => {
     const[description,setDescription] = useState<string>('')
     const[descriptionError,setDescriptionError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
     //id halen uit url /resource/edit/[id]
     const router=useRouter()
     const { id } = router.query;

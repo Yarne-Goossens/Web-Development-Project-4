@@ -2,7 +2,7 @@ import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import PlanetService from 'services/PlanetService'
 import {useState,useEffect} from 'react'
-import {Planet} from 'types'
+import {Planet, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import { type } from 'os'
 
@@ -24,7 +24,7 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
     const[mass,setMass] = useState<string>('')
     const[massError,setMassError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
 

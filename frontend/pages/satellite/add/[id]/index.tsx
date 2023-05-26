@@ -2,7 +2,7 @@ import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import SatelliteService from 'services/SatelliteService'
 import {useState,useEffect} from 'react'
-import {Planet} from 'types'
+import {Planet, StatusMessage} from 'types'
 import Router, { useRouter } from 'next/router'
 
 const addSatellite: React.FC = () => {
@@ -21,10 +21,7 @@ const addSatellite: React.FC = () => {
     const[mass,setMass] = useState<string>('')
     const[massError,setMassError] = useState<string>('')
 
-    //const[planet_id,setPlanetId] = useState<string>('')
-    //const[planet_idError,setPlanetIdError] = useState<string>('')
-
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     var { id  } =  router.query;

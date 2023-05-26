@@ -2,7 +2,7 @@ import  Header from 'components/header'
 import MetaHead from 'components/MetaHead'
 import ResourceService from 'services/ResourceService'
 import {useState,useEffect} from 'react'
-import {Resource} from 'types'
+import {Resource, StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 
 const addresource: React.FC = () => {
@@ -18,7 +18,7 @@ const addresource: React.FC = () => {
     const[description,setDescription] = useState<string>('')
     const[descriptionError,setDescriptionError] = useState<string>('')
 
-    const[statusMessage,setStatusMessage] = useState<StatusMessage>(null)
+    const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     var { id } = router.query;
