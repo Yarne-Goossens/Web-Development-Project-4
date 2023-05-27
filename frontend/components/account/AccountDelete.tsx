@@ -54,10 +54,9 @@ const router = useRouter();
 ) : (<>
 {account ? (
     <>
-      <p>Are you sure you want to delete the planet with id {account._account_id}?</p>
+      <p>Are you sure you want to delete the account with id {account._account_id}?</p>
       <p>Username: {account._username}</p>
       <p>Email: {account._email}</p>
-      <p>Password: {account._password}</p>
       <a href='#' onClick={handleNoDelete}>No</a>
       <br />
       <a href='#' onClick={handleDelete}>Yes</a>

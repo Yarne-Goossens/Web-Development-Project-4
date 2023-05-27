@@ -60,6 +60,11 @@ export async function satelliteNameExists(name: string): Promise<boolean> {
     return satellite != null;
 }
 
+export async function satelliteNameExistsExceptSameSatellite(id:number,name: string): Promise<boolean> {
+    const satellite: PrismaSatellite = await prisma.satellite.findFirst({ where: { satellite_name: name,satellite_id:{not:id} } });
+    return !!satellite;
+}
+
 export async function buySatellite(sat_id: number,account_id:number) {
     await prisma.account.update({
         where: { account_id: account_id },

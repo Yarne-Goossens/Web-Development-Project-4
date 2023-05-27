@@ -1,9 +1,6 @@
 import Header from '../../../../components/header';
 import MetaHead from '../../../../components/MetaHead';
-import AccountService from '../../../../services/AccountService';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Account } from 'types';
 import AccountDelete from '@/components/account/AccountDelete';
 
 const deleteConfirm: React.FC = () => {

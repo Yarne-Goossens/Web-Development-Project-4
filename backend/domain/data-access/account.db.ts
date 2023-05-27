@@ -61,6 +61,11 @@ const prisma = new PrismaClient();
     return Account.from(<Account>account);
 }
 
+export async function accountEmailExistsExceptSameAccount(id:number,email: string): Promise<boolean> {
+    const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email,account_id:{not:id} } });
+    return !!account;
+}
+
 const AccountDb={
     getAllAccounts,addAccount,getAccountWithId,updateAccount,deleteAccount,loginValidation,idExists,emailExists,getUserByEmail
     

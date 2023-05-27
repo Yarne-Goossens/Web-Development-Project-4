@@ -100,10 +100,6 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
         const email=String(req.body.email);const username=String(req.body.username);const password=String(req.body.password);
         const toAdd=new Account(email,username, password)
 
-        if(await AccountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
-        if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
-        if(username==null|| username==""){res.status(400).json({message:"Name cannot be empty"});return;}
-        if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
         await AccountService.addAccountService(toAdd);
 
         res.status(200).json({toAdd});
@@ -167,12 +163,7 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 account_router.put('/editaccount/:account_id', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.params.account_id);const name=String(req.body.username);const email=String(req.body.email);const password=String(req.body.password)
-        /*if(await AccountService.idExistsService(account_id)===false){ res.status(404).json({message:"Account not found"});return;}
-
-        if(name==null||name.length<1||name.length>30){res.status(400).json({message:"Name required"});return;}
-        if(email==null||email.length<1||email.length>30){res.status(400).json({message:"Email required"});return;}
-        if(password==null||password.length<1||password.length>30){res.status(400).json({message:"Password required"});return;}*/
-
+        
         const planetToEdit=AccountService.getAccountById(account_id);
         AccountService.updateAccount(account_id,
             new Account(email,name,password));
@@ -217,13 +208,10 @@ account_router.put('/editaccount/:account_id', async(req:Request, res:Response) 
 account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.params.account_id);
-        if(await AccountService.idExistsService(account_id)===false){
-            res.status(404).json({message: 'Account not found'});
-            return;
-        }
-        const planetToDelete=AccountService.getAccountById(account_id);
+
+        const accountToDelete=AccountService.getAccountById(account_id);
         AccountService.deleteAccount(account_id);
-        res.status(200).json({planetToDelete});
+        res.status(200).json({accountToDelete});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: 'Internal Server Error'});

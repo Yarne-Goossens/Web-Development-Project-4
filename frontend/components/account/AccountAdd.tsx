@@ -68,10 +68,17 @@ const AccountAdd = () => {
         
         if(response.status===200){
             setStatusMessage({type:'success',message:data.message})
-            
+
+            if(sessionStorage.getItem("token")==null){
+                setTimeout(()=>{
+                    router.push('/')
+                },500)
+            }
+            else{
                 setTimeout(()=>{
                     router.push('/account/overview')
                 },500)
+            }
             
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})

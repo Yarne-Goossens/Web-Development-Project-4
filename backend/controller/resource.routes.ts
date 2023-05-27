@@ -152,12 +152,6 @@ resource_router.post('/addresource/', async(req:Request, res:Response) => {
         req.query.planet_id=req.body.planet_id;
 
         const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
-
-        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 30 characters'});return;}
-        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
-        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
-        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
-        if(await planetService.idExistsService(planet_id)==false){res.status(404).json({message: 'Planet not found'});return;}
         
         const resource = await resourceservice.addResource(
         new Resource( resource_name, chemical_composition, description, planet_id));
@@ -220,13 +214,6 @@ resource_router.put('/editresource/:resource_id', async(req:Request, res:Respons
         const resource_name=String(req.body.resource_name);
         const chemical_composition=String(req.body.chemical_composition);
         const description=String(req.body.description);
-
-        /*if(resource_id==null||resource_id<0){res.status(400).json({message: 'Resource id must be a number'});return;}
-        if(resource_name==null||resource_name.length<1||resource_name.length>30){res.status(400).json({message: 'Resource name must be between 1 and 50 characters'});return;}
-        if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){res.status(400).json({message: 'Chemical composition must be between 1 and 30 characters'});return;}
-        if(description==null||description.length<1||description.length>255){res.status(400).json({message: 'Description must be between 1 and 255 characters'});return;}
-        if(planet_id==null||planet_id<0){res.status(400).json({message: 'Planet id must be a number'});return;}
-        if(await planetService.idExistsService(planet_id)==false){res.status(400).json({message: 'Planet not found'});return;}*/
 
         const resourceToEdit=await resourceservice.getResourceWithIdService(resource_id);
         resourceservice.editResourceService(resource_id,

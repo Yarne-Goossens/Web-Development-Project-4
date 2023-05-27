@@ -52,7 +52,7 @@ const ResourceDelete: React.FC<Props> = ({id}:Props) => {
   ) : (<>
     {resource ? (
         <>
-          <p>Are you sure you want to delete the planet with id {resource._resource_id}?</p>
+          <p>Are you sure you want to delete the resource with id {resource._resource_id}?</p>
           <p>Resource name: {resource._resource_name}</p>
           <p>Chemical Composition: {resource._chemical_composition}</p>
           <p>Description: {resource._description}</p>

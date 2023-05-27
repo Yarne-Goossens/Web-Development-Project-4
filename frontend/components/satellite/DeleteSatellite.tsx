@@ -53,7 +53,7 @@ const DeleteSatellite: React.FC<Props> = ({id}:Props) => {
     ) : (<>
     {satellite ? (
         <>
-          <p>Are you sure you want to delete the planet with id {satellite._satellite_id}?</p>
+          <p>Are you sure you want to delete the satellite with id {satellite._satellite_id}?</p>
           <p>Satellite name: {satellite._satellite_name}</p>
           <p>Account id: {satellite._account_id}</p>
           <p>Radius: {satellite._radius}</p>

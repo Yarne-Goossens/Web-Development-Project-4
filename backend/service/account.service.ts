@@ -1,27 +1,47 @@
 import {Account} from '../domain/model/account';
 
-import AccountDb from '../domain/data-access/account.db';
+import AccountDb, { accountEmailExistsExceptSameAccount } from '../domain/data-access/account.db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { idExists } from '../domain/data-access/satellite.db';
 
 
 const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts();
 
     const addAccountService=async(account:Account)=>{
+        const email=account.email;const username=account.username;const password=account.password;
+
+        if(await emailExistsService(email)){throw new Error("Email already exists");}
+        if(email==null|| email==""){throw new Error("Email cannot be empty");}
+        if(username==null|| username==""){throw new Error("Name cannot be empty");}
+        if(password==null|| password==""){throw new Error("Password cannot be empty");}
+
         const hashpass=await bcrypt.hash(account.password,12);
         account.password=hashpass;
+
         await AccountDb.addAccount(account);
     }
 
     const getAccountById=async(id:number):Promise<Account>=>await AccountDb.getAccountWithId(id);
 
     const updateAccount=async(id:number,account:Account)=>{
+        const email=account.email;const username=account.username;const password=account.password;
+
+        if(await idExists(id)==false){throw new Error('Account does not exist');}
+        if(await accountEmailExistsExceptSameAccount(id,email)){throw new Error("Email already exists");}
+        if(email==null|| email==""){throw new Error("Email cannot be empty");}
+        if(username==null|| username==""){throw new Error("Name cannot be empty");}
+        if(password==null|| password==""){throw new Error("Password cannot be empty");}
+
         const hashpass=await bcrypt.hash(account.password,12);
         account.password=hashpass;
         await AccountDb.updateAccount(id,account);
     }
 
-    const deleteAccount=async (id:number)=>await AccountDb.deleteAccount(id);
+    const deleteAccount=async (id:number)=>{
+        if(await idExists(id)==false){throw new Error('Account does not exist');}
+        await AccountDb.deleteAccount(id);
+    }
 
     const loginValidation=async(email:string,password:string):Promise<string>=>{
         const user=await AccountDb.getUserByEmail(email);
