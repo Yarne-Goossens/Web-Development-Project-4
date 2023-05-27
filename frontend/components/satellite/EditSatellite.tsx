@@ -22,20 +22,33 @@ const[satellite_name,setName] = useState<string>('')
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
-   
+    const [error, setError] = useState<StatusMessage | null>(null);
+
     const router=useRouter()
 
     useEffect(() => {
+        
         const fetchSatellite = async () => {
+            try{
           const satellite_id = Number(id);
           const response = await SatelliteService.getSatelliteWithId(satellite_id);
+          if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
           const data = await response.json();
 
           setMass(data._mass);
             setRadius(data._radius);
             setSemimajor(data._semimajor_axis);
             setName(data._satellite_name);
-
+        } catch (error) {
+            console.log('Error fetching Account', error);
+        } 
         };
     
         if (id) {
@@ -103,7 +116,9 @@ const[satellite_name,setName] = useState<string>('')
         }
     };
 
-    return (<>
+    return (<>{error ? (
+        <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+    ) : (<>
     
     <form onSubmit={handleSubmit}>
         <div>
@@ -142,7 +157,7 @@ const[satellite_name,setName] = useState<string>('')
             </button>
         </div>
       </form>
-    
+      </>)}
     </>)
 }
 export default EditSatellite;

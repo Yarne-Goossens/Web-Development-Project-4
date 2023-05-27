@@ -20,6 +20,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
+    const [error, setError] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     var { id  } =  router.query;
@@ -60,6 +61,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
     }
 
     const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
+        try{
         event.preventDefault();
         if(!validate()){
             return; 
@@ -67,7 +69,14 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
         var planet_id=Number(id);
         console.log(planet_id);
         const response= await SatelliteService.addSatellite({satellite_name,radius,semimajor_axis,mass,planet_id} );
-
+        if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
         const data= await response.json();
         console.log(response);
         console.log(data);
@@ -81,9 +90,14 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }
+    } catch (error) {
+        console.log('Error fetching Account', error);
+    } 
     }
     return(
-    <>
+        <>{error ? (
+            <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+        ) : (<>  
     <form onSubmit={handleSubmit}>
         <div>
             <div>
@@ -121,7 +135,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
             </button>
         </div>
       </form>
-    
+      </>)}
       </>)
     ;}
     export default AddSatellite;

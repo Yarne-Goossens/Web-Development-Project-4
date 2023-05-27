@@ -1,13 +1,45 @@
 import styles from '@/styles/Home.module.css'
-import { Planet } from '../../types'
-import React, { MouseEvent, MouseEventHandler} from "react";
+import { Planet, StatusMessage } from '../../types'
+import React, { MouseEvent, MouseEventHandler, useEffect, useState} from "react";
 import Link from 'next/link'
-type Props  = {
-  planets:Array<Planet>
-}
+import useInterval from "use-interval"
+import PlanetService from '@/services/PlanetService';
 
-const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
-  return (
+const PlanetOverviewTable: React.FC = () => {
+
+  const[planets,setPlanets] = useState<Array<Planet>>([])
+    const [error, setError] = useState<StatusMessage | null>(null);
+    const getPlanets = async () => {
+        try{
+            const response = await PlanetService.getAllPlanets();
+
+            if(!response.ok){
+                
+                if(response.status===401){
+                    setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+                }
+                else{
+                    setError({message: response.statusText, type: 'error'});
+                }
+            }
+            else{
+            const data = await response.json();
+            setPlanets(data);
+        }
+        } catch (error) {
+            console.log('Error fetching Planets', error);
+        } 
+
+    }
+    useEffect(()=>{
+        getPlanets()
+    },[])
+    useInterval(getPlanets, 5000)
+
+  return (<>
+    {error ? (
+                <p >{error.message}</p>
+            ) : (
     <>
       <main className={styles.main}>
         <div className={styles.description}>
@@ -135,6 +167,7 @@ const PlanetOverviewTable: React.FC<Props> = ({ planets }: Props) => {
           )}
         </div>
       </main>
+    </>)}
     </>
   );
 };

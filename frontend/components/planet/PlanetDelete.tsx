@@ -1,5 +1,5 @@
 import PlanetService from "@/services/PlanetService";
-import { Planet } from "@/types";
+import { Planet, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -10,13 +10,26 @@ const PlanetDelete: React.FC<Props> = ({id}:Props) => {
 const router = useRouter();
 
 const [planet, setPlanet] = useState<Planet | null>(null);
+const [error, setError] = useState<StatusMessage | null>(null);
 
   useEffect(() => {
     const fetchPlanet = async () => {
+      try{
       const planet_id = Number(id);
       const response = await PlanetService.getPlanetWithId(planet_id);
+      if(!response.ok){
+        if(response.status===401){
+            setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+        }
+        else{
+            setError({message: response.statusText, type: 'error'});
+        }
+    }
       const data = await response.json();
       setPlanet(data);
+    } catch (error) {
+      console.log('Error fetching Account', error);
+  } 
     };
 
     if (id) {
@@ -35,8 +48,11 @@ const [planet, setPlanet] = useState<Planet | null>(null);
   const handleNoDelete = () => {
     router.push('/planet/overview');
   };
-  return (<>{planet ? (
-    <>
+  return (<>{error ? (
+    <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+) : (<>
+{planet ? (
+  <>
       <p>Are you sure you want to delete the planet with id {planet._planet_id}?</p>
       <p>Planet name: {planet._planet_name}</p>
       <p>Account id: {planet._account_id}</p>
@@ -46,8 +62,11 @@ const [planet, setPlanet] = useState<Planet | null>(null);
       <a href='#' onClick={handleNoDelete}>No</a>
       <br />
       <a href='#' onClick={handleDelete}>Yes</a>
-    </>
-  ) : (
-    <p>Loading...</p>
-  )}</>)}
+      </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>)}
+    </>)
+    }
 export default PlanetDelete;

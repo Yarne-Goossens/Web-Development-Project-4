@@ -20,9 +20,11 @@ const PlanetAdd: React.FC = () => {
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
+    const [error, setError] = useState<StatusMessage | null>(null);
+
     const router=useRouter()
     useEffect(()=>{
-        console.log("useEffect")
+        
     },[])
 
     const validate=():boolean=>{
@@ -68,15 +70,22 @@ const PlanetAdd: React.FC = () => {
     }
 
     const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
+        try{
         event.preventDefault();
         if(!validate()){
             return; 
         }
         
         const response= await PlanetService.addPlanet({planet_name,radius,semimajor_axis,mass});
+        if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
         const data= await response.json();
-        console.log(response);
-        console.log(data);
         if(response.status===200){
             setStatusMessage({type:'success',message:data.message})
             setTimeout(()=>{
@@ -85,10 +94,14 @@ const PlanetAdd: React.FC = () => {
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }
+    } catch (error) {
+        console.log('Error fetching Account', error);
+    } 
     };
 
-    return (
-      <>        
+    return (<>{error ? (
+        <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+    ) : (<>  
       <form onSubmit={handleSubmit}>
         <div>
             <div>
@@ -126,6 +139,7 @@ const PlanetAdd: React.FC = () => {
             </button>
         </div>
       </form>
+      </>)}
     </>)
 }
 export default PlanetAdd;

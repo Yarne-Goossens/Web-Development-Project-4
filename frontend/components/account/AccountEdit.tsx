@@ -23,11 +23,21 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
     const router=useRouter()
 
     const [account, setAccount] = useState<Account | null>(null);
-
+    const [error, setError] = useState<StatusMessage | null>(null);
+    
     useEffect(() => {
         const fetchAccount = async () => {
+            try{
           const account_id = Number(id);
           const response = await AccountService.getAccountWithId(account_id);
+          if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
           const data = await response.json();
           setAccount(data);
           console.log(data)
@@ -35,7 +45,10 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
           setUsername(data._username);
             setEmail(data._email)
             setPassword(data._password);
-
+            
+        } catch (error) {
+            console.log('Error fetching Account', error);
+        } 
         };
     
         if (id) {
@@ -86,7 +99,9 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
     };
 
 
-    return (<>
+    return (<>{error ? (
+        <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+    ) : (<>
     <form onSubmit={handleSubmit}>
         <div>
             <div>
@@ -117,7 +132,7 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
             </button>
         </div>
       </form>
-    
+      </>)}
     </>)
 };
 export default AccountEdit;

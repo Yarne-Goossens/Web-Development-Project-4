@@ -10,7 +10,7 @@ const editaccount: React.FC = () => {
     const router=useRouter()
     const { id } = router.query;
     
-
+    
     return (
       <>
       <Header />

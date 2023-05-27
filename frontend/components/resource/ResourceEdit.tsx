@@ -18,21 +18,32 @@ const[description,setDescription] = useState<string>('')
 const[descriptionError,setDescriptionError] = useState<string>('')
 
 const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
-
+const [error, setError] = useState<StatusMessage | null>(null);
 const router=useRouter()
 
 
 useEffect(() => {
     const fetchResource = async () => {
+        try{
       const resource_id = Number(id);
       const response = await ResourceService.getResourceWithId(resource_id);
+      if(!response.ok){
+        if(response.status===401){
+            setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+        }
+        else{
+            setError({message: response.statusText, type: 'error'});
+        }
+    }
       const data = await response.json();
       console.log(data)
 
       setChemicalComposition(data._chemical_composition);
         setDescription(data._description)
         setName(data._resource_name);
-
+    } catch (error) {
+        console.log('Error fetching Account', error);
+    } 
     };
 
     if (id) {
@@ -85,7 +96,9 @@ const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
     
 };
 
-return(<>
+return(<>{error ? (
+    <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+) : (<>
     
     <form onSubmit={handleSubmit}>
         <div>
@@ -118,7 +131,7 @@ return(<>
         </div>
       </form>
     
-    
+      </>)}
     </>)
 }
 export default ResourceEdit;

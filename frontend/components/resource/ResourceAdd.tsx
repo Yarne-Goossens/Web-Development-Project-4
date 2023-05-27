@@ -17,6 +17,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
     const[descriptionError,setDescriptionError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
+    const [error, setError] = useState<StatusMessage | null>(null);
 
     const router=useRouter()
     var { id } = router.query;
@@ -53,6 +54,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
     }
 
     const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
+        try{
         event.preventDefault();
         if(!validate()){
             return; 
@@ -60,9 +62,15 @@ const[resources,setResources] = useState<Array<Resource>>([])
         
         var planet_id=Number(id);
         const response= await ResourceService.addResource({resource_name: resource_name,chemical_composition: chemical_composition,description: description,planet_id});
+        if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
         const data= await response.json();
-        console.log(response);
-        console.log(data);
         if(response.status===200){
 
             setStatusMessage({type:'success',message:data.message})
@@ -72,9 +80,14 @@ const[resources,setResources] = useState<Array<Resource>>([])
         }else if(response.status===400){
             setStatusMessage({type:'error',message:data.message})
         }
+    } catch (error) {
+        console.log('Error fetching Account', error);
+    } 
     };
 
-    return (<>
+    return (<>{error ? (
+        <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+    ) : (<>  
     <form onSubmit={handleSubmit}>
         <div>
             <div>
@@ -105,6 +118,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
             </button>
         </div>
       </form>
+      </>)}
       </>)
 }
 export default ResourceAdd;

@@ -1,5 +1,5 @@
 import AccountService from "@/services/AccountService";
-import { Account } from "@/types";
+import { Account, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -11,13 +11,26 @@ const AccountDelete: React.FC<Props> = ({id}:Props) => {
 const router = useRouter();
 
   const [account, setAccount] = useState<Account | null>(null);
+  const [error, setError] = useState<StatusMessage | null>(null);
 
   useEffect(() => {
     const fetchPlanet = async () => {
+      try{
       const account_id = Number(id);
       const response = await AccountService.getAccountWithId(account_id);
+      if(!response.ok){
+        if(response.status===401){
+            setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+        }
+        else{
+            setError({message: response.statusText, type: 'error'});
+        }
+    }
       const data = await response.json();
       setAccount(data);
+    } catch (error) {
+      console.log('Error fetching Account', error);
+  } 
     };
 
     if (id) {
@@ -37,7 +50,10 @@ const router = useRouter();
     router.push('/account/overview');
   };
 
-  return (<>{account ? (
+  return (<>{error ? (
+    <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+) : (<>
+{account ? (
     <>
       <p>Are you sure you want to delete the planet with id {account._account_id}?</p>
       <p>Username: {account._username}</p>
@@ -49,5 +65,7 @@ const router = useRouter();
     </>
   ) : (
     <p>Loading...</p>
-  )}</>)}
+  )}
+  </>)}
+  </>)}
 export default AccountDelete;

@@ -35,6 +35,7 @@ const Accounts: React.FC = () => {
         console.log(    "useEffect")
         getAccounts()
     },[])
+    
     useInterval(getAccounts, 5000)
     return (<>
         <Header />

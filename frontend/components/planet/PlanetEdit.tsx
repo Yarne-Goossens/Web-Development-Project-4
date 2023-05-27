@@ -22,21 +22,34 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
     const[massError,setMassError] = useState<string>('')
 
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
-
+    const [error, setError] = useState<StatusMessage | null>(null);
     const router=useRouter()
-
 
     useEffect(() => {
         const fetchPlanet = async () => {
+        try{
           const planet_id = Number(id);
           const response = await PlanetService.getPlanetWithId(planet_id);
-          const data = await response.json();
-
-          setMass(data._mass);
+          
+            console.log(response.status);
+          if(!response.ok){
+            if(response.status===401){
+                setError({message: `An error has occurred: you must be logged in`, type: 'error'});
+            }
+            else{
+                setError({message: response.statusText, type: 'error'});
+            }
+        }
+        const data = await response.json();
+            setMass(data._mass);
             setRadius(data._radius);
             setSemimajor(data._semimajor_axis);
             setName(data._planet_name);
+        }
+        catch(error){
+            console.log('Error fetching PlanetEdit', error);
 
+        }
         };
     
         if (id) {
@@ -104,8 +117,9 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         }
     };
 
-    return (
-      <>
+    return (<>{error ? (
+        <p className={`text-${error.type === 'success' ? 'green' : 'red'}-500`}>{error.message}</p>
+    ) : (<>
       <form onSubmit={handleSubmit}>
         <div>
             <div>
@@ -143,6 +157,7 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
             </button>
         </div>
       </form>
+      </>)}
     </>)
 }
 export default PlanetEdit;
