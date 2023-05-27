@@ -99,14 +99,13 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 
         const email=String(req.body.email);const username=String(req.body.username);const password=String(req.body.password);
         const toAdd=new Account(email,username, password)
-        //console.log(toAdd);
 
         if(await AccountService.emailExistsService(email)){res.status(400).json({message:"Email already exists"});return;}
         if(email==null|| email==""){res.status(400).json({message:"Email cannot be empty"});return;}
         if(username==null|| username==""){res.status(400).json({message:"Name cannot be empty"});return;}
         if(password==null|| password==""){res.status(400).json({message:"Password cannot be empty"});return;}
-        //console.log(toAdd);
         await AccountService.addAccountService(toAdd);
+
         res.status(200).json({toAdd});
     } catch (error) {
         console.log(error);
@@ -271,7 +270,6 @@ account_router.post('/login', async(req:Request, res:Response) => {
         const userInput=req.body;
         const email=userInput.email;
         const password=userInput.password;
-        console.log(email,password)
         const token =await AccountService.loginValidation(email,password);
         res.status(200).json({message:'Authentication successful',token});
     }catch(error){

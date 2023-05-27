@@ -15,12 +15,15 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
 
     const getAccountById=async(id:number):Promise<Account>=>await AccountDb.getAccountWithId(id);
 
-    const updateAccount=async(id:number,account:Account)=>await updateAccount(id,account);
+    const updateAccount=async(id:number,account:Account)=>{
+        const hashpass=await bcrypt.hash(account.password,12);
+        account.password=hashpass;
+        await AccountDb.updateAccount(id,account);
+    }
 
-    const deleteAccount=async (id:number)=>await deleteAccount(id);
+    const deleteAccount=async (id:number)=>await AccountDb.deleteAccount(id);
 
     const loginValidation=async(email:string,password:string):Promise<string>=>{
-
         const user=await AccountDb.getUserByEmail(email);
         const isValidPassword=await bcrypt.compare(password,user.password);
         if(!isValidPassword) {throw new Error('Invalid password');}

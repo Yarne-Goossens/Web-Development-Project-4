@@ -31,7 +31,6 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
           const planet_id = Number(id);
           const response = await PlanetService.getPlanetWithId(planet_id);
           
-            console.log(response.status);
           if(!response.ok){
             if(response.status===401){
                 setError({message: `An error has occurred: you must be logged in`, type: 'error'});

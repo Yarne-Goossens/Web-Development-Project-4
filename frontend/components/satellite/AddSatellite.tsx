@@ -27,7 +27,6 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
     
     useEffect(()=>{
         if (id) {
-            console.log(id); // correct value
           }
         }, [id]);
     
@@ -78,8 +77,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
             }
         }
         const data= await response.json();
-        console.log(response);
-        console.log(data);
+       
 
         if(response.status===200){
             

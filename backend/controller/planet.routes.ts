@@ -230,12 +230,6 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
         const mass = Number(req.body.mass);
         const planet_name = String(req.body.planet_name);
 
-        console.log(radius);
-        console.log(semimajor_axis);
-        console.log(mass);
-        console.log(planet_name);
-
-
         const planetToEdit=await planetService.editPlanetService(Number(req.params.planet_id),
             new Planet(
             radius, 

@@ -55,9 +55,9 @@ const prisma = new PrismaClient();
 }
 
  async function getUserByEmail(email: string): Promise<Account> {
-    console.log(email);
+    
     const account: PrismaAccount = await prisma.account.findFirst({ where: { email: email } });
-    console.log(account);
+    
     return Account.from(<Account>account);
 }
 

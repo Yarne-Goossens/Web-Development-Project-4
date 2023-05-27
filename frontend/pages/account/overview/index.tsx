@@ -32,7 +32,6 @@ const Accounts: React.FC = () => {
 
     }
     useEffect(()=>{
-        console.log(    "useEffect")
         getAccounts()
     },[])
     

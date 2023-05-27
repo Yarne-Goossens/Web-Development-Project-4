@@ -25,7 +25,6 @@ const[resources,setResources] = useState<Array<Resource>>([])
 
     useEffect(()=>{
         if (id) {
-          console.log(id);
         }
       }, [id])
 

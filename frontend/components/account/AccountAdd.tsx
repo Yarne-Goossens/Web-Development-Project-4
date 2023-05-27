@@ -23,7 +23,7 @@ const AccountAdd = () => {
 
     useEffect(()=>{
         if (id) {
-          console.log(id);
+          
         }
       }, [id])
 
@@ -47,6 +47,12 @@ const AccountAdd = () => {
             setPasswordError('Password is required');
             errorBool= false;
         }
+        //check if email is valid using regex
+        if(email && !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)){
+            setEmailError('Email is invalid');
+            errorBool= false;
+        }
+
 
         return errorBool;
     }
@@ -59,8 +65,7 @@ const AccountAdd = () => {
         
         const response= await AccountService.addAccount({username:username,email:email,password:password});
         const data= await response.json();
-        console.log(response);
-        console.log(data);
+        
         if(response.status===200){
             setStatusMessage({type:'success',message:data.message})
             

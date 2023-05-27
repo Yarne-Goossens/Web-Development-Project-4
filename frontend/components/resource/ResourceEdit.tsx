@@ -36,7 +36,6 @@ useEffect(() => {
         }
     }
       const data = await response.json();
-      console.log(data)
 
       setChemicalComposition(data._chemical_composition);
         setDescription(data._description)

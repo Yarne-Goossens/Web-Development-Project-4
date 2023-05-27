@@ -40,7 +40,6 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
         }
           const data = await response.json();
           setAccount(data);
-          console.log(data)
 
           setUsername(data._username);
             setEmail(data._email)

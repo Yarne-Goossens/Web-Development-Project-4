@@ -32,7 +32,6 @@ const Satellites: React.FC = () => {
         } 
     }
     useEffect(()=>{
-        console.log(    "useEffect")
         getSatellites()
     },[])
     useInterval(getSatellites, 5000)

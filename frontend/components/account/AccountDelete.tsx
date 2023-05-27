@@ -3,7 +3,6 @@ import { Account, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-
 type Props={
     id: number|undefined
 }
