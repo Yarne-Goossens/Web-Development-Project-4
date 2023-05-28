@@ -26,7 +26,6 @@
 import express,{Request,Response} from 'express';
 import { ResourceService } from '../service/resource.service';
 import { Resource } from '../domain/model/resource';
-import { planetService } from './planet.routes';
 
 export const resourceservice:ResourceService=new ResourceService();
 export const resource_router = express.Router();
@@ -61,7 +60,7 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
 * @swagger
  * /resource/resourceoverview/{planet_id}:
  *   get:
- *      summary: Show all resources that belong to a planet
+ *      summary: Show all resources that belong to a planet using planet_id
  *      tags:
  *        - resource
  *      parameters:
@@ -74,7 +73,7 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
  * 
  *      responses:
  *         200:
- *            description: Resource shown
+ *            description: Resources shown
  *            content:
  *               application/json:
  *                   schema:
@@ -257,7 +256,7 @@ resource_router.delete('/deleteresource/:resource_id', async(req:Request, res:Re
     try {
         const resource_id=Number(req.params.resource_id);       
         const resourceToDelete= await resourceservice.deleteResource(Number(resource_id));
-        res.status(200).json({message: 'Resource with id '+ req.query.resource_id +' deleted succesfully'});
+        res.status(200).json({message: 'Resource with id '+ resource_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});

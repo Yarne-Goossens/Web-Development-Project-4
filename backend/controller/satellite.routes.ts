@@ -151,8 +151,6 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
 
 satellite_router.post('/addsatellite/:planet_id', async(req:Request, res:Response) => {
     try {
-        
-
         const radius=Number(req.body.radius);const semimajor_axis=Number(req.body.semimajor_axis);const mass=Number(req.body.mass);const satellite_name=String(req.body.satellite_name);
         const planet_id=Number(req.params.planet_id);
         
@@ -272,7 +270,7 @@ satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res
     try {
         const satellite_id=Number(req.params.satellite_id);
         const satelliteToDelete= await satelliteService.deleteSatellite(satellite_id);
-        res.status(200).json({message: 'Satellite with id '+ req.query.satellite_id +' deleted succesfully'});
+        res.status(200).json({message: 'Satellite with id '+ satellite_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});
@@ -283,7 +281,7 @@ satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res
  * @swagger
  * /satellite/buysatellite/{satellite_id}/to/{account_id}:
  *   put:
- *      summary: buy a Planet through a form using the planet_id
+ *      summary: buy a Planet through a form using the planet_id and account_id 
  *      tags:
  *        - satellite
  *      parameters:
@@ -331,7 +329,7 @@ satellite_router.put('/buysatellite/:satellite_id/to/:account_id', async(req:Req
  * @swagger
  * /satellite/sellsatellite/{satellite_id}/from/{account_id}:
  *   put:
- *      summary: sell a Planet through a form using the planet_id
+ *      summary: sell a Planet through a form using the planet_id and account_id
  *      tags:
  *        - satellite
  *      parameters:
@@ -368,7 +366,7 @@ satellite_router.put('/sellsatellite/:satellite_id/from/:account_id', async(req:
 
         await satelliteService.sellSatelliteService(satellite_id,account_id);
 
-        res.status(200).json({message: 'Planet deleted successfully'});
+        res.status(200).json({message: 'Planet sold successfully with id: '+satellite_id+' from account with id: '+account_id});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});

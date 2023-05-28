@@ -16,7 +16,7 @@ export class ResourceService{
     }
     
     getResourceWithIdService=async(id:number):Promise<Resource>=>{
-        if(await idExists(id)==false){throw new Error('Planet does not exist');}
+        if(await idExists(id)==false){throw new Error('Resource does not exist');}
         return await getResourceWithId(id);
     }
 

@@ -64,7 +64,7 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *        - account
  *      responses:
  *          200:
- *            description: Planet added
+ *            description: Account added successfully
  *            content:
  *               application/json:
  *                   schema:
@@ -75,7 +75,7 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *           description: Internal server error
  * 
  *      requestBody:
- *       description: Edited account
+ *       description: added account
  *       required: true
  *       content:
  *         application/json:
@@ -114,7 +114,7 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
  * @swagger
  * /account/getaccountbyemail/{email}:
  *   get:
- *      summary: get a account using its id
+ *      summary: get a account by email
  *      tags:
  *        - account
  *      parameters:
@@ -213,7 +213,7 @@ account_router.put('/editaccount/:account_id', async(req:Request, res:Response) 
  * @swagger
  * /account/deleteaccount/{account_id}:
  *   delete:
- *      summary: delete an Account through a form using the account_id
+ *      summary: delete an Account through a form using the account_id path variable
  *      tags:
  *        - account
  *      parameters:
@@ -302,7 +302,7 @@ account_router.post('/login', async(req:Request, res:Response) => {
  * @swagger
  * /account/getaccountwithid/{account_id}:
  *   get:
- *      summary: get a account using its id
+ *      summary: get a account by id
  *      tags:
  *        - account
  *      parameters:

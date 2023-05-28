@@ -58,6 +58,23 @@ const main = async () => {
         semimajor_axis: 1830,
         mass: 6.4171 * Math.pow(10, 23),
       },
+      {
+        planet_name: 'Mercury',
+        radius: 2439.7,
+        semimajor_axis: 57909175,
+        mass: 3.3011 * Math.pow(10, 23),
+      },
+      {
+        planet_name: 'Venus',
+        radius: 6051.8,
+        semimajor_axis: 108208000,
+        mass: 4.8675 * Math.pow(10, 24),
+      },{
+        planet_name: 'Saturn',
+        radius: 58232,
+        semimajor_axis: 1426666422,
+        mass: 5.6834 * Math.pow(10, 26),
+      },
     ],
   });
   
@@ -180,22 +197,21 @@ const satellites=await prisma.satellite.createMany({
   semimajor_axis: 23460,
   mass: 1.4762*Math.pow(10,15),
   planet_id: 3
-}
+},{
+  satellite_name: 'Titan',
+  radius: 2575,
+  semimajor_axis: 1221870,
+  mass: 1.3452 * Math.pow(10, 23),
+  planet_id: 6,
+},
+{
+  satellite_name: 'Enceladus',
+  radius: 252.1,
+  semimajor_axis: 237948,
+  mass: 1.08022 * Math.pow(10, 20),
+  planet_id: 6,
+},
 ]
-})
-const accounts=await prisma.account.createMany({
-  data: [
-    {
-      username: 'admin',
-      password: 'admin',
-      email:'admin@telenet.be'
-    },
-    {
-      username: 'Jefke Bezos',
-      password: 'Jefke',
-      email:'jefke@hotmail.com'
-    }
-    ]
 })
 
 

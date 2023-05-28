@@ -104,7 +104,6 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        
         const radius=Number(req.body.radius);const semimajor_axis=Number(req.body.semimajor_axis);const mass=Number(req.body.mass);const planet_name=String(req.body.planet_name);
         const planet=new Planet(radius, semimajor_axis, mass, planet_name);
         const planets = await planetService.addPlanetService(
@@ -121,20 +120,20 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
  * @swagger
  * /planet/getplanetwithid/{planet_id}:
  *   get:
- *      summary: delete a Planet through a form using the planet_id
+ *      summary: get a Planet through the path variable using the planet_id
  *      tags:
  *        - planet
  *      parameters:
  *        - name: planet_id
  *          in: path
- *          description: planet id to delete
+ *          description: planet id to get
  *          required: true
  *          schema:
  *            type: number
  * 
  *      responses:
  *         200:
- *            description: Planet deleted successfully
+ *            description: Planet getted successfully
  *            content:
  *               application/json:
  *                   schema:
@@ -172,7 +171,7 @@ planet_router.get('/getplanetwithid/:planet_id', async(req:Request, res:Response
  *          schema:
  *            type: number
  *      requestBody:
- *       description: Account login credentials
+ *       description: editplanet properties
  *       required: true
  *       content:
  *         application/json:
@@ -237,7 +236,7 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
  * @swagger
  * /planet/deleteplanet/{planet_id}:
  *   delete:
- *      summary: delete a Planet through a form using the planet_id
+ *      summary: delete a Planet through the path variable using the planet_id
  *      tags:
  *        - planet
  *      parameters:
@@ -265,7 +264,7 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
     try {
         const planet_id=Number(req.params.planet_id);
         const deletePlanet=await planetService.deletePlanetService(planet_id);
-        res.status(200).json({message:  'Planet with id: '+req.query.planet_id+ ' deleted successfully'});
+        res.status(200).json({message:  'Planet with id: '+planet_id+ ' deleted successfully'});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});
@@ -276,7 +275,7 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
  * @swagger
  * /planet/buyplanet/{planet_id}/to/{account_id}:
  *   put:
- *      summary: buy a Planet through a form using the planet_id
+ *      summary: buy a Planet through a form using the planet_id and adding it to the account with id
  *      tags:
  *        - planet
  *      parameters:
@@ -323,7 +322,7 @@ planet_router.put('/buyplanet/:planet_id/to/:account_id', async(req:Request, res
  * @swagger
  * /planet/sellplanet/{planet_id}/from/{account_id}:
  *   put:
- *      summary: sell a Planet through a form using the planet_id
+ *      summary: sell a Planet through a form using the planet_id and removing it from the account with id
  *      tags:
  *        - planet
  *      parameters:
@@ -335,7 +334,7 @@ planet_router.put('/buyplanet/:planet_id/to/:account_id', async(req:Request, res
  *            type: number
  *        - name: account_id
  *          in: path
- *          description: account to 
+ *          description: account id to remove the planet from
  *          required: true
  *          schema:
  *            type: number

@@ -94,7 +94,7 @@ const AccountLogin:React.FC=()=>{
             </button>
         </div>
 
-        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
+        {statusMessage && <div >{statusMessage.message}</div>}
       </form>
       
     
