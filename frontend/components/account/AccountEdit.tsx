@@ -89,7 +89,7 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
         const data= await response.json();
 
         if(response.status===200){
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `The account was edited succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/account/overview')
             },500)
@@ -131,6 +131,7 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
                 Edit Account
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       </>)}
     </>)

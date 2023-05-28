@@ -69,7 +69,7 @@ const AccountAdd = () => {
         const data= await response.json();
         
         if(response.status===200){
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `The account was added succesfully`, type: 'success'})
 
             if(sessionStorage.getItem("token")==null){
                 setTimeout(()=>{
@@ -117,6 +117,7 @@ const AccountAdd = () => {
                 Add Account
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
     
     </>)

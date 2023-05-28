@@ -116,8 +116,9 @@ const[resources,setResources] = useState<Array<Resource>>([])
                 Add Resource
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
-      {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
+      
       </>)}
       </>)
 }
