@@ -106,10 +106,11 @@ planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
         
         const radius=Number(req.body.radius);const semimajor_axis=Number(req.body.semimajor_axis);const mass=Number(req.body.mass);const planet_name=String(req.body.planet_name);
+        const planet=new Planet(radius, semimajor_axis, mass, planet_name);
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
         
-        res.status(200).json({planets});
+        res.status(200).json(planet);
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});
@@ -223,7 +224,7 @@ planet_router.put('/editplanet/:planet_id', async(req:Request, res:Response) => 
             mass, 
             planet_name,
         ));
-        res.status(200).json({message: 'Planet edited successfully with id: '+req.query.planet_id});
+        res.status(200).json({message: 'Planet edited successfully with id: '+req.params.planet_id});
         
     } catch (error) {
         console.log(error);

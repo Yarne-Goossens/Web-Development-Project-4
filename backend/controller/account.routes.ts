@@ -50,10 +50,7 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
         res.status(200).json(accounts);
     } catch (error) {
         console.log(error);
-        if( error instanceof Error){
-            res.status(400).json(error)
-        }
-        res.status(500).json(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -67,11 +64,15 @@ account_router.get('/accountoverview', async(req:Request, res:Response) => {
  *        - account
  *      responses:
  *          200:
- *            description: Account added
+ *            description: Planet added
  *            content:
  *               application/json:
  *                   schema:
- *                       $ref: '#/components/schemas/Account'
+ *                       $ref: '#/components/schemas/Planet'
+ *          404:
+ *           description: User Input Error
+ *          500:
+ *           description: Internal server error
  * 
  *      requestBody:
  *       description: Edited account
@@ -105,10 +106,7 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
         res.status(200).json({toAdd});
     } catch (error) {
         console.log(error);
-        if( error instanceof Error){
-            res.status(400).json(error)
-        }
-        res.status(500).json(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -147,7 +145,7 @@ account_router.get('/getaccountbyemail/:email', async(req:Request, res:Response)
         res.status(200).json(account);
     } catch (error) {
         console.log(error);
-        res.status(500).json(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }});
 
 /** 
@@ -164,7 +162,18 @@ account_router.get('/getaccountbyemail/:email', async(req:Request, res:Response)
  *          required: true
  *          schema:
  *            type: string
- *        
+ *      responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Account'
+ *       404:
+ *         description: Object not found
+ *       500:
+ *         description: Internal server error
+ *   
  *      requestBody:
  *       description: Edited account
  *       required: true
@@ -184,34 +193,19 @@ account_router.get('/getaccountbyemail/:email', async(req:Request, res:Response)
  *                 type: string
  *                 description: password
  *                 format: password
- * 
- *      responses:
- *         200:
- *            description: Account edited successfully
- *            content:
- *               application/json:
- *                   schema:
- *                       $ref: '#/components/schemas/Account'
- *         404:
- *          description: Object not found
- *         500:
- *          description: Internal server error
  */
 
 account_router.put('/editaccount/:account_id', async(req:Request, res:Response) => {
     try {
         const account_id=Number(req.params.account_id);const name=String(req.body.username);const email=String(req.body.email);const password=String(req.body.password)
         
-        const planetToEdit=AccountService.getAccountById(account_id);
-        AccountService.updateAccount(account_id,
-            new Account(email,name,password));
+        const planetToEdit=await AccountService.getAccountById(account_id);
+
+        AccountService.updateAccount(account_id,new Account(email,name,password));
         res.status(200).json({planetToEdit});
     } catch (error) {
         console.log(error);
-        if( error instanceof Error){
-            res.status(400).json(error)
-        }
-        res.status(500).json(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -247,12 +241,12 @@ account_router.delete('/deleteAccount/:account_id', async(req:Request, res:Respo
     try {
         const account_id=Number(req.params.account_id);
 
-        const accountToDelete=AccountService.getAccountById(account_id);
+        const accountToDelete=await AccountService.getAccountById(account_id);
         AccountService.deleteAccount(account_id);
         res.status(200).json({accountToDelete});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 /**
@@ -299,7 +293,8 @@ account_router.post('/login', async(req:Request, res:Response) => {
         const token =await AccountService.loginValidation(email,password);
         res.status(200).json({message:'Authentication successful',token});
     }catch(error){
-        res.status(401).json({status :'unauthorized',errorMessage:error.message})
+        console.log(error);
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 

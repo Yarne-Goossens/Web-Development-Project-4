@@ -87,15 +87,12 @@ resource_router.get('/resourceoverview', async(req:Request, res:Response) => {
 
 resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Response) => {
     try {
-        if(await planetService.idExistsService(Number(req.params.planet_id)) == false){
-            res.status(404).json({message: 'Planet not found'});
-        }
 
         const resourcesOfPlanet = await resourceservice.getAllResourceOfPlanetWithId(Number(req.params.planet_id));
         res.status(200).json({resourcesOfPlanet});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -107,12 +104,16 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
  *      tags:
  *        - resource
  *      responses:
- *          200:
- *            description: Resource added
+ *         200:
+ *            description: Resource edited successfully
  *            content:
  *               application/json:
  *                   schema:
  *                       $ref: '#/components/schemas/Resource'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
  * 
  *      parameters:
  * 
@@ -152,7 +153,7 @@ resource_router.post('/addresource/:planet_id', async(req:Request, res:Response)
         res.status(200).json({resource});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -220,7 +221,7 @@ resource_router.put('/editresource/:resource_id', async(req:Request, res:Respons
         res.status(200).json({resourceToEdit});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -259,7 +260,7 @@ resource_router.delete('/deleteresource/:resource_id', async(req:Request, res:Re
         res.status(200).json({message: 'Resource with id '+ req.query.resource_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 

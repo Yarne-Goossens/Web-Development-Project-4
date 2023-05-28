@@ -58,7 +58,7 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
         res.status(200).json(satellites);
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -93,14 +93,12 @@ satellite_router.get('/satelliteoverview', async(req:Request, res:Response) => {
 satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Response) => {
     try {
         const planet_id=Number(req.params.planet_id);
-        if(await planetService.idExistsService(planet_id)===false){
-            res.status(404).json({message: 'Planet not found'});
-        }
+        
         const satellitesOfPlanet = await satelliteService.getAllSatellitesOfPlanetWithId(planet_id);
         res.status(200).json({satellitesOfPlanet});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -167,7 +165,7 @@ satellite_router.post('/addsatellite/:planet_id', async(req:Request, res:Respons
         res.status(200).json({satellite});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -239,7 +237,7 @@ satellite_router.put('/editsatellite/:satellite_id', async(req:Request, res:Resp
         res.status(200).json({satelliteToEdit});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -277,7 +275,7 @@ satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res
         res.status(200).json({message: 'Satellite with id '+ req.query.satellite_id +' deleted succesfully'});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -325,7 +323,7 @@ satellite_router.put('/buysatellite/:satellite_id/to/:account_id', async(req:Req
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: error});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 
@@ -373,7 +371,7 @@ satellite_router.put('/sellsatellite/:satellite_id/from/:account_id', async(req:
         res.status(200).json({message: 'Planet deleted successfully'});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: error});
+        res.status(404).json({status:'error',errorMessage: error.message});
     }
 });
 

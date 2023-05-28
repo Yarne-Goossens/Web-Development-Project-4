@@ -34,7 +34,7 @@ const prisma = new PrismaClient();
     });
 }
 
- async function deleteAccount(id: number) {
+async function deleteAccount(id: number) {
     await prisma.account.delete({ where: { account_id: id } });
 }
 
@@ -46,7 +46,7 @@ const prisma = new PrismaClient();
 
  async function idExists(id: number): Promise<boolean> {
     const account: PrismaAccount = await prisma.account.findUnique({ where: { account_id: id } });
-    return account !== null;
+    return !!account ;
 }
 
  async function emailExists(email: string): Promise<boolean> {

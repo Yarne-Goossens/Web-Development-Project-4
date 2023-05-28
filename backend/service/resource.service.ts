@@ -1,16 +1,28 @@
 
 import { getAllResources, getAllResourcesOfPlanetWithId, getResourceWithId, addResource, editResource, deleteResource,idExists }  from '../domain/data-access/resource.db';
 import {Resource} from '../domain/model/resource';
+import {PlanetService} from '../service/planet.service';
 
 export class ResourceService{
+    planetService:PlanetService=new PlanetService();
+
     getAllResourceService=async():Promise<Resource[]>=>await getAllResources();
 
-    getAllResourceOfPlanetWithId=async(planet_id:number):Promise<Resource[]>=>await getAllResourcesOfPlanetWithId(planet_id);
+    getAllResourceOfPlanetWithId=async(planet_id:number):Promise<Resource[]>=>
+    {
+        if(!this.planetService.idExistsService(planet_id)){throw new Error('Planet does not exist');}
+        
+        return await getAllResourcesOfPlanetWithId(planet_id);
+    }
     
-    getResourceWithIdService=async(id:number):Promise<Resource>=>await getResourceWithId(id);
+    getResourceWithIdService=async(id:number):Promise<Resource>=>{
+        if(await idExists(id)==false){throw new Error('Planet does not exist');}
+        return await getResourceWithId(id);
+    }
 
     addResource=async(resource:Resource)=>{
         const resource_name=resource.resource_name;const chemical_composition=resource.chemical_composition;const description=resource.description;const planet_id=resource.planet_id;
+        if(!this.planetService.idExistsService(planet_id)){throw new Error('Planet does not exist');}
 
         if(resource_name==null||resource_name.length<1||resource_name.length>30){throw new Error('Resource name must be between 1 and 30 characters');}
         if(chemical_composition==null||chemical_composition.length<1||chemical_composition.length>30){throw new Error('Chemical composition must be between 1 and 30 characters');}
