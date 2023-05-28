@@ -2,7 +2,7 @@ import ResourceService from "@/services/ResourceService"
 import { Resource, StatusMessage } from "@/types"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-
+import styles from '@/styles/Home.module.css'
 
 const ResourceAdd:React.FC=()=>{
 const[resources,setResources] = useState<Array<Resource>>([])
@@ -94,25 +94,25 @@ const[resources,setResources] = useState<Array<Resource>>([])
             </div>
             <div>
                 <input id='resourcenameInput' type="text" value={resource_name} onChange={(event)=>setResourceName(event.target.value)}/>
-                {resourceNameError && <div>{resourceNameError}</div>}
+                {resourceNameError && <div className={styles.error}>{resourceNameError}</div>}
             </div>
             <div>
                 <label htmlFor="chemical_compositionInput">Chemical Composition:</label>
             </div>
             <div>
                 <input id='chemical_compositionInput' type="text" value={chemical_composition} onChange={(event)=>setChemical_composition(event.target.value)}/>
-                {chemical_compositionError && <div>{chemical_compositionError}</div>}
+                {chemical_compositionError && <div className={styles.error}>{chemical_compositionError}</div>}
             </div>
             <div>
                 <label htmlFor="descriptionInput">Description:</label>
             </div>
             <div>
                 <input id='descriptionInput' type="text" value={description} onChange={(event)=>setDescription(event.target.value)}/>
-                {descriptionError && <div>{descriptionError}</div>}
+                {descriptionError && <div className={styles.error}>{descriptionError}</div>}
             </div>
         </div>
         <div>
-            <button type='submit'>
+            <button type='submit' className="px-7 py-3">
                 Add Resource
             </button>
         </div>

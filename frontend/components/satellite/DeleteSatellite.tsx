@@ -2,6 +2,7 @@ import SatelliteService from "@/services/SatelliteService";
 import { Satellite, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import styles from '@/styles/Home.module.css'
 
 type Props={
     id: number|undefined
@@ -53,15 +54,19 @@ const DeleteSatellite: React.FC<Props> = ({id}:Props) => {
     ) : (<>
     {satellite ? (
         <>
+        <div className={styles.delete}>
           <p>Are you sure you want to delete the satellite with id {satellite._satellite_id}?</p>
           <p>Satellite name: {satellite._satellite_name}</p>
           <p>Account id: {satellite._account_id}</p>
           <p>Radius: {satellite._radius}</p>
           <p>Semimajor axis: {satellite._semimajor_axis}</p>
           <p>Mass: {satellite._mass}</p>
-          <a href='#' onClick={handleNoDelete}>No</a>
-          <br />
-          <a href='#' onClick={handleDelete}>Yes</a>
+          <div className={styles.buttondiv}>
+              <a href='#' onClick={handleDelete} className={styles.deletebutton}>Yes</a>
+              <a href='#' onClick={handleNoDelete} className={styles.deletebutton}>No</a>
+            </div>
+            <br/>
+          </div>
         </>
       ) : (
         <p>Loading...</p>

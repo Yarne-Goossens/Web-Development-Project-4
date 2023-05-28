@@ -3,6 +3,7 @@ import {useState,useEffect} from 'react'
 import {  StatusMessage} from 'types'
 import  { useRouter } from 'next/router'
 import ResourceService from '@/services/ResourceService'
+import styles from '@/styles/Home.module.css'
 
 type Props={
     id: number|undefined
@@ -106,25 +107,25 @@ return(<>{error ? (
             </div>
             <div>
                 <input id='resourcenameInput' type="text" value={resource_name} onChange={(event)=>setName(event.target.value)}/>
-                {nameError && <div>{nameError}</div>}
+                {nameError && <div className={styles.error}>{nameError}</div>}
             </div>
             <div>
                 <label htmlFor="chemicalCompositionInput">Chemical composition:</label>
             </div>
             <div>
                 <input id='chemicalCompositionInput' type="text" value={chemical_composition} onChange={(event)=>setChemicalComposition(event.target.value)}/>
-                {chemical_compositionError && <div>{chemical_compositionError}</div>}
+                {chemical_compositionError && <div className={styles.error}>{chemical_compositionError}</div>}
             </div>
             <div>
                 <label htmlFor="descriptionInput">Description:</label>
             </div>
             <div>
                 <input id='descriptionInput' type="text" value={description} onChange={(event)=>setDescription(event.target.value)}/>
-                {descriptionError && <div>{descriptionError}</div>}
+                {descriptionError && <div className={styles.error}>{descriptionError}</div>}
             </div>
         </div>
         <div>
-            <button type='submit'>
+            <button type='submit' className="px-7 py-3">
                 Edit Resource
             </button>
         </div>

@@ -2,6 +2,7 @@ import PlanetService from "@/services/PlanetService";
 import { Planet, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import styles from '@/styles/Home.module.css'
 
 type Props={
     id: number|undefined
@@ -53,15 +54,20 @@ const [error, setError] = useState<StatusMessage | null>(null);
 ) : (<>
 {planet ? (
   <>
-      <p>Are you sure you want to delete the planet with id {planet._planet_id}?</p>
-      <p>Planet name: {planet._planet_name}</p>
-      <p>Account id: {planet._account_id}</p>
-      <p>Radius: {planet._radius}</p>
-      <p>Semimajor axis: {planet._semimajor_axis}</p>
-      <p>Mass: {planet._mass}</p>
-      <a href='#' onClick={handleNoDelete}>No</a>
-      <br />
-      <a href='#' onClick={handleDelete}>Yes</a>
+            <div className={styles.delete}>
+              <p className="text-lg font-bold"></p>
+              <p>Are you sure you want to delete the planet with id {planet._planet_id}?</p>
+              <p>Planet name: {planet._planet_name}</p>
+              <p>Account id: {planet._account_id}</p>
+              <p>Radius: {planet._radius}</p>
+              <p>Semimajor axis: {planet._semimajor_axis}</p>
+              <p>Mass: {planet._mass}</p>
+              <div className={styles.buttondiv}>
+              <a href='#' onClick={handleDelete} className={styles.deletebutton}>Yes</a>
+              <a href='#' onClick={handleNoDelete} className={styles.deletebutton}>No</a>
+              </div>
+              <br />
+            </div>
       </>
       ) : (
         <p>Loading...</p>

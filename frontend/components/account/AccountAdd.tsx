@@ -2,6 +2,8 @@ import AccountService from "@/services/AccountService"
 import { Account, StatusMessage } from "@/types"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import styles from '@/styles/Home.module.css'
+
 
 
 const AccountAdd = () => {
@@ -93,25 +95,25 @@ const AccountAdd = () => {
             </div>
             <div>
                 <input id='usernameInput' type="text" value={username} onChange={(event)=>setUsername(event.target.value)}/>
-                {usernameError && <div>{usernameError}</div>}
+                {usernameError && <div className={styles.error}>{usernameError}</div>}
             </div>
             <div>
                 <label htmlFor="emailInput">Email:</label>
             </div>
             <div>
                 <input id='emailInput' type="text" value={email} onChange={(event)=>setEmail(event.target.value)}/>
-                {emailError && <div>{emailError}</div>}
+                {emailError && <div className={styles.error}>{emailError}</div>}
             </div>
             <div>
                 <label htmlFor="passwordInput">Password:</label>
             </div>
             <div>
                 <input id='passwordInput' type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
-                {passwordError && <div>{passwordError}</div>}
+                {passwordError && <div className={styles.error}>{passwordError}</div>}
             </div>
         </div>
         <div>
-            <button type='submit'>
+            <button type='submit' className="px-7 py-3">
                 Add Account
             </button>
         </div>

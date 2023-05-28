@@ -2,6 +2,7 @@ import PlanetService from 'services/PlanetService'
 import {useState,useEffect} from 'react'
 import {Planet, StatusMessage} from 'types'
 import { useRouter } from 'next/router'
+import styles from '@/styles/Home.module.css'
 
 const PlanetAdd: React.FC = () => {
 
@@ -109,32 +110,32 @@ const PlanetAdd: React.FC = () => {
             </div>
             <div>
                 <input id='planetnameInput' type="text" value={planet_name} onChange={(event)=>setName(event.target.value)}/>
-                {nameError && <div>{nameError}</div>}
+                {nameError && <div className={styles.error}>{nameError}</div>}
             </div>
             <div>
                 <label htmlFor="radiusInput">Radius:</label>
             </div>
             <div>
                 <input id='radiusInput' type="text" value={radius} onChange={(event)=>setRadius(event.target.value)}/>
-                {radiusError && <div>{radiusError}</div>}
+                {radiusError && <div className={styles.error}>{radiusError}</div>}
             </div>
             <div>
                 <label htmlFor="semimajorInput">Semimajor-Axis:</label>
             </div>
             <div>
                 <input id='semimajorInput' type="text" value={semimajor_axis} onChange={(event)=>setSemimajor(event.target.value)}/>
-                {semimajor_axisError && <div>{semimajor_axisError}</div>}
+                {semimajor_axisError && <div className={styles.error}>{semimajor_axisError}</div>}
             </div>
             <div>
                 <label htmlFor="massInput">Mass:</label>
             </div>
             <div>
                 <input id='massInput' type="text" value={mass} onChange={(event)=>setMass(event.target.value)}/>
-                {massError && <div>{massError}</div>}
+                {massError && <div className={styles.error}>{massError}</div>}
             </div>
         </div>
         <div>
-            <button type='submit'>
+            <button type='submit' className="px-7 py-3">
                 Add Planet
             </button>
         </div>

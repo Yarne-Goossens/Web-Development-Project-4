@@ -265,7 +265,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relatve;
+  position: relative;
   padding: 20%;
   font-size:2em
+}
+
+.error{
+  margin-bottom: 2em;
+}
+
+.delete{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-top: 10em;
+  font-size: large;
+}
+
+.buttondiv{
+  margin: 1em;
+}
+
+.deletebutton{
+  padding: 1em;
 }

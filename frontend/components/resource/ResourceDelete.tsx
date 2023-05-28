@@ -2,6 +2,7 @@ import ResourceService from "@/services/ResourceService";
 import { Resource, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import styles from '@/styles/Home.module.css'
 
 type Props={
     id: number|undefined
@@ -52,13 +53,17 @@ const ResourceDelete: React.FC<Props> = ({id}:Props) => {
   ) : (<>
     {resource ? (
         <>
+        <div className={styles.delete}>
           <p>Are you sure you want to delete the resource with id {resource._resource_id}?</p>
           <p>Resource name: {resource._resource_name}</p>
           <p>Chemical Composition: {resource._chemical_composition}</p>
           <p>Description: {resource._description}</p>
-          <a href='#' onClick={handleNoDelete}>No</a>
-          <br />
-          <a href='#' onClick={handleDelete}>Yes</a>
+          <div className={styles.buttondiv}>
+              <a href='#' onClick={handleDelete} className={styles.deletebutton}>Yes</a>
+              <a href='#' onClick={handleNoDelete} className={styles.deletebutton}>No</a>
+            </div>
+            <br/>
+          </div>
         </>
       ) : (
         <p>Loading...</p>

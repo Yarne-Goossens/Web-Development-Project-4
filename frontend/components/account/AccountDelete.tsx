@@ -2,6 +2,7 @@ import AccountService from "@/services/AccountService";
 import { Account, StatusMessage } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import styles from '@/styles/Home.module.css'
 
 type Props={
     id: number|undefined
@@ -54,12 +55,16 @@ const router = useRouter();
 ) : (<>
 {account ? (
     <>
+      <div className={styles.delete}>
       <p>Are you sure you want to delete the account with id {account._account_id}?</p>
       <p>Username: {account._username}</p>
       <p>Email: {account._email}</p>
-      <a href='#' onClick={handleNoDelete}>No</a>
-      <br />
-      <a href='#' onClick={handleDelete}>Yes</a>
+      <div className={styles.buttondiv}>
+        <a href='#' onClick={handleDelete} className={styles.deletebutton}>Yes</a>
+        <a href='#' onClick={handleNoDelete} className={styles.deletebutton}>No</a>
+      </div>
+        <br/>
+      </div>
     </>
   ) : (
     <p>Loading...</p>
