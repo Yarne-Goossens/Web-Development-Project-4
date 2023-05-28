@@ -10,6 +10,17 @@ const getAllAccounts=()=>{
             
         },})
 }
+const getAccountWithEmail=(email:any)=>{
+    const token=sessionStorage.getItem('token')
+    return fetch(`${accountApiURL}/getaccountbyemail/${email}`,{
+        method:'GET',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+            
+        },})
+}
+
 const getAccountWithId=(account_id:any)=>{
     const token=sessionStorage.getItem('token')
     return fetch(`${accountApiURL}/getaccountwithid/${account_id}`, {
@@ -65,7 +76,7 @@ const loginValidation=(email:string,password:string)=>{
     })
 }
 const AccountService={
-    getAllAccounts,loginValidation,getAccountWithId,addAccount,editAccount,deleteAccount
+    getAllAccounts,loginValidation,getAccountWithId,addAccount,editAccount,deleteAccount,getAccountWithEmail
     
 }
 export default AccountService

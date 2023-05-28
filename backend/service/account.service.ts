@@ -24,6 +24,8 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
 
     const getAccountById=async(id:number):Promise<Account>=>await AccountDb.getAccountWithId(id);
 
+    const getAccountByEmail=async(email:string):Promise<Account>=>await AccountDb.getUserByEmail(email);
+
     const updateAccount=async(id:number,account:Account)=>{
         const email=account.email;const username=account.username;const password=account.password;
 
@@ -69,6 +71,6 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
      }
 
      const AccountService={
-        getAllAccounts,addAccountService,getAccountById,updateAccount,deleteAccount,loginValidation,idExistsService,emailExistsService,generateJwtToken
+        getAllAccounts,addAccountService,getAccountById,updateAccount,deleteAccount,loginValidation,idExistsService,emailExistsService,generateJwtToken,getAccountByEmail
     }
     export default AccountService

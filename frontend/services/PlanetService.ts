@@ -54,18 +54,28 @@ const editPlanet=(planet:any,planet_id:any)=>{
 }
 const buyPlanet=(planet_id:any,account_id:any)=>{
     const token=sessionStorage.getItem('token')
-    return fetch(`${planetApiURL}/buyplanet/${planet_id}`,{
+    return fetch(`${planetApiURL}/buyplanet/${planet_id}/to/${account_id}`,{
         method:'PUT',
         headers:{
             Authorization:`Bearer ${token}`,
             'Content-Type':'application/json'
-        },
-        body:JSON.stringify(account_id)
+        }
+    })
+}
+
+const sellPlanet=(planet_id:any,account_id:any)=>{
+    const token=sessionStorage.getItem('token')
+    return fetch(`${planetApiURL}/sellplanet/${planet_id}/from/${account_id}`,{
+        method:'PUT',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+        }
     })
 }
 const PlanetService={
     getAllPlanets,
-    addPlanet,deletePlanet,getPlanetWithId,editPlanet,buyPlanet
+    addPlanet,deletePlanet,getPlanetWithId,editPlanet,buyPlanet,sellPlanet
 }
 
 

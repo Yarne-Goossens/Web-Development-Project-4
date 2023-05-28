@@ -77,6 +77,12 @@ const PlanetOverviewTable: React.FC = () => {
                     <td><Link href="/planet/delete/[id]" as={`/planet/delete/${planet._planet_id}`}>
                       Delete Planet
                     </Link></td>
+                    <td><Link href="/planet/buy/[id]" as={`/planet/buy/${planet._planet_id}`}>
+                      Buy Planet
+                    </Link></td>
+                    <td><Link href="/planet/sell/[id]" as={`/planet/sell/${planet._planet_id}`}>
+                      Sell Planet
+                    </Link></td>
                     
                     </tr>
                     {planet._satellites && planet._satellites.length > 0 && (

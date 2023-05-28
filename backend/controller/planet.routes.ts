@@ -273,20 +273,20 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
 
 /** 
  * @swagger
- * /planet/buyplanet:
+ * /planet/buyplanet/{planet_id}/to/{account_id}:
  *   put:
  *      summary: buy a Planet through a form using the planet_id
  *      tags:
  *        - planet
  *      parameters:
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: planet id to buy
  *          required: true
  *          schema:
  *            type: number
  *        - name: account_id
- *          in: query
+ *          in: path
  *          description: account id to add it to
  *          required: true
  *          schema:
@@ -305,13 +305,13 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
  *          description: Internal server error
  */
 
-planet_router.put('/buyplanet/:planet_id', async(req:Request, res:Response) => {
+planet_router.put('/buyplanet/:planet_id/to/:account_id', async(req:Request, res:Response) => {
     try {
         const planet_id=Number(req.params.planet_id);
-        const account_id=Number(req.body.account_id)
+        const account_id=Number(req.params.account_id)
 
         await planetService.buyPlanetService(planet_id,account_id);
-        res.status(200).json({message: 'Planet bought successfully with id: '+req.query.planet_id}+' to account with id: '+req.query.account_id);
+        res.status(200).json({message: 'Planet bought successfully with id: '+planet_id+' to account with id: '+account_id});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});
@@ -320,20 +320,20 @@ planet_router.put('/buyplanet/:planet_id', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /planet/sellplanet:
+ * /planet/sellplanet/{planet_id}/from/{account_id}:
  *   put:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
  *        - planet
  *      parameters:
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: planet id to sell
  *          required: true
  *          schema:
  *            type: number
  *        - name: account_id
- *          in: query
+ *          in: path
  *          description: account to 
  *          required: true
  *          schema:
@@ -352,12 +352,13 @@ planet_router.put('/buyplanet/:planet_id', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-planet_router.put('/sellplanet', async(req:Request, res:Response) => {
+planet_router.put('/sellplanet/:planet_id/from/:account_id', async(req:Request, res:Response) => {
     try {
-        
+        const planet_id=Number(req.params.planet_id);
+        const account_id=Number(req.params.account_id)
+        await planetService.sellPlanetService(planet_id,account_id);
 
-        await planetService.sellPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
-        res.status(200).json({message: 'Planet with id: '+Number(req.query.planet_id)+' sold successfully to account with id: '+Number(req.query.account_id)});
+        res.status(200).json({message: 'Planet with id: '+planet_id+' sold successfully to account with id: '+account_id});
     } catch (error) {
         console.log(error);
         res.status(404).json({status:'error',errorMessage: error.message});

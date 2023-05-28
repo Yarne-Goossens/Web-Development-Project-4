@@ -114,6 +114,44 @@ account_router.post('/addaccount', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
+ * /account/getaccountbyemail/{email}:
+ *   get:
+ *      summary: get a account using its id
+ *      tags:
+ *        - account
+ *      parameters:
+ *        - name: email
+ *          in: path
+ *          description: account email to find
+ *          required: true
+ *          schema:
+ *            type: string
+ * 
+ *      responses:
+ *         200:
+ *            description: account found successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Account'
+ *         404:
+ *          description: user input error
+ *         500:
+ *          description: Internal server error
+ */
+
+account_router.get('/getaccountbyemail/:email', async(req:Request, res:Response) => {
+    try {
+        const email=String(req.params.email);
+        const account = await AccountService.getAccountByEmail(email);
+        res.status(200).json(account);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }});
+
+/** 
+ * @swagger
  * /account/editaccount/{account_id}:
  *   put:
  *      summary: edit an account through a form using the account id
