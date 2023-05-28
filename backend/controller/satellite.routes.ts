@@ -283,20 +283,20 @@ satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res
 
 /** 
  * @swagger
- * /satellite/buysatellite/:
+ * /satellite/buysatellite/{satellite_id}/to/{account_id}:
  *   put:
  *      summary: buy a Planet through a form using the planet_id
  *      tags:
  *        - satellite
  *      parameters:
  *        - name: satellite_id
- *          in: query
+ *          in: path
  *          description: planet id to buy
  *          required: true
  *          schema:
  *            type: number
  *        - name: account_id
- *          in: query
+ *          in: path
  *          description: account id to add it to
  *          required: true
  *          schema:
@@ -315,13 +315,14 @@ satellite_router.delete('/deletesatellite/:satellite_id', async(req:Request, res
  *          description: Internal server error
  */
 
-satellite_router.put('/buysatellite/', async(req:Request, res:Response) => {
+satellite_router.put('/buysatellite/:satellite_id/to/:account_id', async(req:Request, res:Response) => {
     try {
-        if(await satelliteService.idExistsService(Number(req.query.satellite_id))==false)
-        {res.status(400).json({message: 'Planet not found'});return;}//error handling
+        const satellite_id=Number(req.params.satellite_id);
+        const account_id=Number(req.params.account_id);
 
-        satelliteService.buySatelliteService(Number(req.query.satellite_id),Number(req.query.account_id));
-        res.status(200).json({message: 'Planet deleted successfully'});
+        await satelliteService.buySatelliteService(satellite_id,account_id);
+        res.status(200).json({message: 'Planet bought successfully with id: '+satellite_id+' to account with id: '+account_id});
+
     } catch (error) {
         console.log(error);
         res.status(500).json({message: error});
@@ -330,20 +331,20 @@ satellite_router.put('/buysatellite/', async(req:Request, res:Response) => {
 
 /** 
  * @swagger
- * /satellite/sellsatellite/:
+ * /satellite/sellsatellite/{satellite_id}/from/{account_id}:
  *   put:
  *      summary: sell a Planet through a form using the planet_id
  *      tags:
  *        - satellite
  *      parameters:
- *        - name: sat_id
- *          in: query
- *          description: planet id to sell
+ *        - name: satellite_id
+ *          in: path
+ *          description: satellite id to sell
  *          required: true
  *          schema:
  *            type: number
  *        - name: account_id
- *          in: query
+ *          in: path
  *          description: account to 
  *          required: true
  *          schema:
@@ -362,12 +363,13 @@ satellite_router.put('/buysatellite/', async(req:Request, res:Response) => {
  *          description: Internal server error
  */
 
-satellite_router.put('/sellsatellite/', async(req:Request, res:Response) => {
+satellite_router.put('/sellsatellite/:satellite_id/from/:account_id', async(req:Request, res:Response) => {
     try {
-        if(await satelliteService.idExistsService(Number(req.query.sat_id))==false)
-        {res.status(400).json({message: 'Satellite not found'});return;}//error handling
+        const satellite_id=Number(req.params.satellite_id);
+        const account_id=Number(req.params.account_id);
 
-        satelliteService.sellSatelliteService(Number(req.query.sat_id),Number(req.query.account_id));
+        await satelliteService.sellSatelliteService(satellite_id,account_id);
+
         res.status(200).json({message: 'Planet deleted successfully'});
     } catch (error) {
         console.log(error);

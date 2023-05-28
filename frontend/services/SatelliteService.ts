@@ -52,11 +52,35 @@ const deleteSatellite=(satellite_id:any)=>{
         }
     })
 }
+
+const buySatellite=(satellite_id:any,account_id:any)=>{
+    const token=sessionStorage.getItem('token')
+    return fetch(`${satelliteApiURL}/buysatellite/${satellite_id}/to/${account_id}`,{
+        method:'PUT',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+        }
+    })
+}
+
+const sellSatellite=(satellite_id:any,account_id:any)=>{
+    const token=sessionStorage.getItem('token')
+    return fetch(`${satelliteApiURL}/sellsatellite/${satellite_id}/from/${account_id}`,{
+        method:'PUT',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+        }
+    })
+}
 const SatelliteService={
     getAllSatellites,
     addSatellite,
     getSatelliteWithId,
     editSatellite,
-    deleteSatellite
+    deleteSatellite,
+    buySatellite,
+    sellSatellite
 }
 export default SatelliteService

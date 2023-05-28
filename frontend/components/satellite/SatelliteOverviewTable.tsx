@@ -14,6 +14,7 @@ const SatelliteOverviewTable:React.FC<Props> = ({satellites}:Props) => {
           
           {satellites&& (<table><thead><tr>
             <th>Satellite Name</th>
+            <th>Account Id</th>
             <th>Satellite Id</th>
             <th>Radius</th>
             <th>Semimajor Axis</th>
@@ -24,6 +25,7 @@ const SatelliteOverviewTable:React.FC<Props> = ({satellites}:Props) => {
             <tbody>{satellites && satellites.map((satellite,index)=>(
               <tr key={index}>
                 <td>{satellite._satellite_name}</td>
+                <td>{satellite._account_id}</td>
                 <td>{satellite._satellite_id}</td>
                 <td>{satellite._radius}</td>
                 <td>{satellite._semimajor_axis}</td>
@@ -34,6 +36,12 @@ const SatelliteOverviewTable:React.FC<Props> = ({satellites}:Props) => {
                     </Link></td>
                 <td><Link href="/satellite/delete/[id]" as={`/satellite/delete/${satellite._satellite_id}`}>
                       Delete Satellite
+                    </Link></td>
+                    <td><Link href="/satellite/buy/[id]" as={`/satellite/buy/${satellite._satellite_id}`}>
+                      Buy Satellite
+                    </Link></td>
+                    <td><Link href="/satellite/sell/[id]" as={`/satellite/sell/${satellite._satellite_id}`}>
+                      Sell Satellite
                     </Link></td>
               </tr>
             ))}
