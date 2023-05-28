@@ -73,48 +73,39 @@ planet_router.get('/planetoverview', async(req:Request, res:Response) => {
  *          500:
  *           description: Internal server error
  * 
- *      parameters:
- *        - name: planet_name
- *          in: query
- *          description: planet name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: radius
- *          in: query
- *          description: radius
- *          required: true
- *          schema:
- *            type: number
- * 
- *        - name: semimajor_axis
- *          in: query
- *          description: semimajor_axis in mathematical notation or normal notation
- *          required: true
- *          schema:  
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- * 
- *        - name: mass
- *          in: query
- *          description: mass in mathematical notation or normal notation
- *          required: true
- *          schema:
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *      requestBody:
+ *       description: Account login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               planet_name:
+ *                 type: string
+ *                 format: string
+ *                 description: name of the planet
+ *               radius:
+ *                 type: number
+ *                 format: number
+ *                 description: radius of the planet
+ *               semimajor_axis:
+ *                 type: string
+ *                 pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *                 description: semimajor_axis of the planet
+ *               mass:
+ *                 type: number
+ *                 pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *                 description: mass of the planet
+ *  
+ *       
  *       
  */
 
 planet_router.post('/addplanet', async(req:Request, res:Response) => {
     try {
-        //turn every part of the query into a body
-        req.query.radius=req.body.radius;
-        req.query.semimajor_axis=req.body.semimajor_axis;
-        req.query.mass=req.body.mass;
-        req.query.planet_name=req.body.planet_name;
         
-        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const planet_name=String(req.query.planet_name);
+        const radius=Number(req.body.radius);const semimajor_axis=Number(req.body.semimajor_axis);const mass=Number(req.body.mass);const planet_name=String(req.body.planet_name);
         const planets = await planetService.addPlanetService(
         new Planet(radius, semimajor_axis, mass, planet_name));
         
@@ -179,35 +170,30 @@ planet_router.get('/getplanetwithid/:planet_id', async(req:Request, res:Response
  *          required: true
  *          schema:
  *            type: number
- *        - name: planet_name
- *          in: body
- *          description: planet name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: radius
- *          in: body
- *          description: radius
- *          required: true
- *          schema:
- *            type: number
- * 
- *        - name: semimajor_axis
- *          in: body
- *          description: semimajor_axis in mathematical notation or normal notation
- *          required: true
- *          schema:  
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- * 
- *        - name: mass
- *          in: body
- *          description: mass in mathematical notation or normal notation
- *          required: true
- *          schema:
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *      requestBody:
+ *       description: Account login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               planet_name:
+ *                 type: string
+ *                 format: string
+ *                 description: name of the planet
+ *               radius:
+ *                 type: number
+ *                 format: number
+ *                 description: radius of the planet
+ *               semimajor_axis:
+ *                 type: string
+ *                 pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *                 description: semimajor_axis of the planet
+ *               mass:
+ *                 type: number
+ *                 pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
+ *                 description: mass of the planet
  *
  *      responses:
  *         200:

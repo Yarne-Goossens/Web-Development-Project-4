@@ -60,7 +60,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
         }
         
         var planet_id=Number(id);
-        const response= await ResourceService.addResource({resource_name: resource_name,chemical_composition: chemical_composition,description: description,planet_id});
+        const response= await ResourceService.addResource({resource_name: resource_name,chemical_composition: chemical_composition,description: description},planet_id);
         if(!response.ok){
             if(response.status===401){
                 setError({message: `An error has occurred: you must be logged in`, type: 'error'});
