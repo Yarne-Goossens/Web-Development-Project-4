@@ -7,7 +7,6 @@ import { useState } from "react"
 
 
 const AccountLogin:React.FC=()=>{
-const[planets,setPlanets] = useState<Array<Planet>>([])
 
     const[account_email,setEmail] = useState<string>('')
     const[emailError,setEmailError] = useState<string>('')
@@ -31,6 +30,11 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
 
         if(!account_email &&account_email.trim()===""){
             setEmailError('Account email is required');
+            errorBool=false;
+        }
+        //valid email using regex
+        if(!/\S+@\S+\.\S+/.test(account_email)){
+            setEmailError('Account email is invalid');
             errorBool=false;
         }
         if(!password &&password.trim()===""){
@@ -59,7 +63,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
             setTimeout(()=>{
                 router.push('/')
             },500)
-        }else if(response.status==401 ){
+        }else {
             setError({message:"The email/password you tried to log in with is wrong.",type:'error'})
         }
     };
@@ -90,7 +94,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
             </button>
         </div>
 
-        {statusMessage && (<p>{statusMessage.message}</p>)}
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       
     
