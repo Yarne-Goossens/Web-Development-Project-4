@@ -106,70 +106,57 @@ satellite_router.get('/satelliteoverview/:planet_id', async(req:Request, res:Res
 
 /** 
  * @swagger
- * /satellite/addsatellite:
+ * /satellite/addsatellite/{planet_id}:
  *   post:
  *      summary: Add a new satellite through a form
  *      tags:
  *        - satellite
- *      responses:
- *          200:
- *            description: Satellite added
- *            content:
- *               application/json:
- *                   schema:
- *                       $ref: '#/components/schemas/Satellite'
+ *      
  * 
  *      parameters:
- *        - name: satellite_name
- *          in: query
- *          description: satellite name
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: radius
- *          in: query
- *          description: radius
- *          required: true
- *          schema:
- *            type: number
- * 
- *        - name: semimajor_axis
- *          in: query
- *          description: semimajor_axis in mathematical notation or normal notation
- *          required: true
- *          schema:  
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- * 
- *        - name: mass
- *          in: query
- *          description: mass in mathematical notation or normal notation
- *          required: true
- *          schema:
- *            type: string
- *            pattern: '^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|\.[0-9]+([eE][-+]?[0-9]+)?)$'
- *
  *        - name: planet_id
- *          in: query
+ *          in: path
  *          description: id of the planet the satellite belongs to
  *          required: true
  *          schema:
  *            type: string
  * 
+ *      requestBody:
+ *       description: Edited account
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               satellite_name:
+ *                 type: string
+ *                 description: account name
+ *               radius:
+ *                 type: number
+ *               semimajor_axis:
+ *                 type: number
+ *               mass:
+ *                 type: number
+ *      responses:
+ *         200:
+ *            description: Account edited successfully
+ *            content:
+ *               application/json:
+ *                   schema:
+ *                       $ref: '#/components/schemas/Account'
+ *         404:
+ *          description: Object not found
+ *         500:
+ *          description: Internal server error
  */
 
-satellite_router.post('/addsatellite', async(req:Request, res:Response) => {
+satellite_router.post('/addsatellite/:planet_id', async(req:Request, res:Response) => {
     try {
-        //turn every part of the query into a body
-        req.query.radius=req.body.radius;
-        req.query.semimajor_axis=req.body.semimajor_axis;
-        req.query.mass=req.body.mass;
-        req.query.satellite_name=req.body.satellite_name;
-        req.query.planet_id=req.body.planet_id;
+        
 
-        const radius=Number(req.query.radius);const semimajor_axis=Number(req.query.semimajor_axis);const mass=Number(req.query.mass);const satellite_name=String(req.query.satellite_name);
-        const planet_id=Number(req.query.planet_id);
+        const radius=Number(req.body.radius);const semimajor_axis=Number(req.body.semimajor_axis);const mass=Number(req.body.mass);const satellite_name=String(req.body.satellite_name);
+        const planet_id=Number(req.params.planet_id);
         
         const satellite = await satelliteService.addSatellite(
         new Satellite( radius, 

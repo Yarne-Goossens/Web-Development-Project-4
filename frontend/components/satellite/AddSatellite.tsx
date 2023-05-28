@@ -67,7 +67,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
         }
         var planet_id=Number(id);
         console.log(planet_id);
-        const response= await SatelliteService.addSatellite({satellite_name,radius,semimajor_axis,mass,planet_id} );
+        const response= await SatelliteService.addSatellite({satellite_name,radius,semimajor_axis,mass},planet_id );
         if(!response.ok){
             if(response.status===401){
                 setError({message: `An error has occurred: you must be logged in`, type: 'error'});

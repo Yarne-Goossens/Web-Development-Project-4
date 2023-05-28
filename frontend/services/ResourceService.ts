@@ -19,9 +19,9 @@ const getResourceWithId=(resource_id:any)=>{
       'Content-Type': 'application/json'
     }})
 }
-const addResource=(resource:any)=>{
+const addResource=(resource:any,planet_id:any)=>{
     const token=sessionStorage.getItem('token')
-    return fetch(`${resourceApiURL}/addresource`,{
+    return fetch(`${resourceApiURL}/addresource/${planet_id}`,{
         method:'POST',
         headers:{
             Authorization:`Bearer ${token}`,

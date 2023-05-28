@@ -115,43 +115,37 @@ resource_router.get('/resourceoverview/:planet_id', async(req:Request, res:Respo
  *                       $ref: '#/components/schemas/Resource'
  * 
  *      parameters:
- *        - name: resource_name
- *          in: body
- *          description: resource name
- *          required: true
- *          schema:
- *            type: string
  * 
- *        - name: chemical_composition
- *          in: body
- *          description: chemical compostion
- *          required: true
- *          schema:
- *            type: string
- * 
- *        - name: description
- *          in: body
- *          description: description
- *          required: true
- *          schema:  
- *            type: string
- *
  *        - name: planet_id
  *          in: path
  *          description: planet id of the planet the resource is on
  *          required: true
  *          schema:
- *            type: string
+ *            type: number
+ * 
+ *      requestBody:
+ *       description: Edited account
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               resource_name:
+ *                 type: string
+ *                 description: resource name
+ *               chemical_composition:
+ *                 type: string
+ *                 description: chemical_composition
+ *               description:
+ *                 type: string
+ *                 description: description of the resource
  */
 
-resource_router.post('/addresource/', async(req:Request, res:Response) => {
+resource_router.post('/addresource/:planet_id', async(req:Request, res:Response) => {
     try {
-        req.query.resource_name=req.body.resource_name;
-        req.query.chemical_composition=req.body.chemical_composition;
-        req.query.description=req.body.description;
-        req.query.planet_id=req.body.planet_id;
-
-        const resource_name=String(req.query.resource_name);const chemical_composition=String(req.query.chemical_composition);const description=String(req.query.description);const planet_id=Number(req.query.planet_id);
+        const resource_name=String(req.body.resource_name);const chemical_composition=String(req.body.chemical_composition);
+        const description=String(req.body.description);const planet_id=Number(req.params.planet_id);
         
         const resource = await resourceservice.addResource(
         new Resource( resource_name, chemical_composition, description, planet_id));
@@ -214,6 +208,7 @@ resource_router.put('/editresource/:resource_id', async(req:Request, res:Respons
         const resource_name=String(req.body.resource_name);
         const chemical_composition=String(req.body.chemical_composition);
         const description=String(req.body.description);
+        
 
         const resourceToEdit=await resourceservice.getResourceWithIdService(resource_id);
         resourceservice.editResourceService(resource_id,

@@ -20,9 +20,9 @@ const getSatelliteWithId=(satellite_id:any)=>{
       'Content-Type': 'application/json'
     }})
 }
-const addSatellite=(satellite:any)=>{
+const addSatellite=(satellite:any,planet_id:any)=>{
     const token=sessionStorage.getItem('token')
-        return fetch(`${satelliteApiURL}/addsatellite`,{
+        return fetch(`${satelliteApiURL}/addsatellite/${planet_id}`,{
         method:'POST',
         headers:{
             Authorization:`Bearer ${token}`,
