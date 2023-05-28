@@ -319,10 +319,12 @@ planet_router.delete('/deleteplanet/:planet_id', async(req:Request, res:Response
  *          description: Internal server error
  */
 
-planet_router.put('/buyplanet', async(req:Request, res:Response) => {
+planet_router.put('/buyplanet/:planet_id', async(req:Request, res:Response) => {
     try {
+        const planet_id=Number(req.params.planet_id);
+        const account_id=Number(req.body.account_id)
 
-        await planetService.buyPlanetService(Number(req.query.planet_id),Number(req.query.account_id));
+        await planetService.buyPlanetService(planet_id,account_id);
         res.status(200).json({message: 'Planet bought successfully with id: '+req.query.planet_id}+' to account with id: '+req.query.account_id);
     } catch (error) {
         console.log(error);

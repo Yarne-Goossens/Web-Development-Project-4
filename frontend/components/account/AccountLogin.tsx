@@ -15,6 +15,8 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
     const[password,setPassword] = useState<string>('')
     const[passwordError,setPasswordError] = useState<string>('')
 
+    const[account_id,setAccountId] = useState<string>('')
+
     const[statusMessage,setStatusMessage] = useState<StatusMessage | null>(null);
     const [error, setError] = useState<StatusMessage | null>(null);
     const router=useRouter()

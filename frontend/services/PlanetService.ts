@@ -52,9 +52,20 @@ const editPlanet=(planet:any,planet_id:any)=>{
         body:JSON.stringify(planet)
     })
 }
+const buyPlanet=(planet_id:any,account_id:any)=>{
+    const token=sessionStorage.getItem('token')
+    return fetch(`${planetApiURL}/buyplanet/${planet_id}`,{
+        method:'PUT',
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(account_id)
+    })
+}
 const PlanetService={
     getAllPlanets,
-    addPlanet,deletePlanet,getPlanetWithId,editPlanet
+    addPlanet,deletePlanet,getPlanetWithId,editPlanet,buyPlanet
 }
 
 
