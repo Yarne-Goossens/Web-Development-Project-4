@@ -85,7 +85,7 @@ const handleSubmit=async (event: React.FormEvent<HTMLFormElement>)=>{
     
     if(response.status===200){
         
-        setStatusMessage({type:'success',message:data.message})
+        setStatusMessage({message: `The resource was edited succesfully`, type: 'success'})
         setTimeout(()=>{
             router.push('/resource/overview')
         },500)
@@ -129,6 +129,7 @@ return(<>{error ? (
                 Edit Resource
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
     
       </>)}

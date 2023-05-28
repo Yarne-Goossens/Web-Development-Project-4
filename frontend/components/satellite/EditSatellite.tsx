@@ -108,7 +108,7 @@ const[satellite_name,setName] = useState<string>('')
         const data= await response.json();
         if(response.status===200){
             
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `The satellite was edjited succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/satellite/overview')
             },500)
@@ -157,6 +157,7 @@ const[satellite_name,setName] = useState<string>('')
                 Edit Satellite
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       </>)}
     </>)

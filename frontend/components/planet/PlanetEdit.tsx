@@ -108,7 +108,7 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
         const response= await PlanetService.editPlanet({planet_name,radius,semimajor_axis,mass},Number(id));
         const data= await response.json();
         if(response.status===200){
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `Planet edited succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/planet/overview')
             },500)
@@ -156,6 +156,7 @@ const PlanetEdit: React.FC<Props> = ({id}:Props) => {
                 Edit Planet
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       </>)}
     </>)

@@ -122,7 +122,7 @@ const AccountEdit: React.FC<Props> = ({id}:Props) => {
                 <label htmlFor="passwordInput">Password:</label>
             </div>
             <div>
-                <input id='passwordInput' type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
+                <input id='passwordInput' type="text"  onChange={(event)=>setPassword(event.target.value)}/>
                 {passwordError && <div className={styles.error}>{passwordError}</div>}
             </div>
         </div>

@@ -72,7 +72,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
         const data= await response.json();
         if(response.status===200){
 
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `The resource was added succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/planet/overview')
             },500)
@@ -117,6 +117,7 @@ const[resources,setResources] = useState<Array<Resource>>([])
             </button>
         </div>
       </form>
+      {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </>)}
       </>)
 }

@@ -3,7 +3,6 @@ import {Account} from '../domain/model/account';
 import AccountDb, { accountEmailExistsExceptSameAccount } from '../domain/data-access/account.db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { idExists } from '../domain/data-access/satellite.db';
 
 
 const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts();
@@ -29,7 +28,7 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
     const updateAccount=async(id:number,account:Account)=>{
         const email=account.email;const username=account.username;const password=account.password;
 
-        if(await idExists(id)==false){throw new Error('Account does not exist');}
+        if(await AccountDb.idExists(id)==false){throw new Error('Account does not exist');}
         if(await accountEmailExistsExceptSameAccount(id,email)){throw new Error("Email already exists");}
         if(email==null|| email==""){throw new Error("Email cannot be empty");}
         if(username==null|| username==""){throw new Error("Name cannot be empty");}
@@ -41,7 +40,7 @@ const getAllAccounts=async():Promise<Account[]>=>await AccountDb.getAllAccounts(
     }
 
     const deleteAccount=async (id:number)=>{
-        if(await idExists(id)==false){throw new Error('Account does not exist');}
+        if(await AccountDb.idExists(id)==false){throw new Error('Account does not exist');}
         await AccountDb.deleteAccount(id);
     }
 

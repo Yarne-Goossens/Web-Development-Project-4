@@ -81,7 +81,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
 
         if(response.status===200){
             
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `The satellite was added succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/planet/overview')
             },500)
@@ -132,6 +132,7 @@ const[planets,setPlanets] = useState<Array<Planet>>([])
                 Add Satellite
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       </>)}
       </>)

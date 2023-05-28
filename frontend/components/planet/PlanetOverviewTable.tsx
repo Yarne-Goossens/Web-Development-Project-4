@@ -87,7 +87,7 @@ const PlanetOverviewTable: React.FC = () => {
                     </tr>
                     {planet._satellites && planet._satellites.length > 0 && (
                       <tr role='button'  onClick={hide_or_show_sat(planet._planet_name)}>
-                        <td colSpan={10} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
+                        <td colSpan={12} ><div id={`showsat${planet._planet_name}`} >show satellites</div>
                           <table id={planet._planet_name} style={{ display: "none" }}>
                             <thead> 
                               <tr>
@@ -124,12 +124,12 @@ const PlanetOverviewTable: React.FC = () => {
                     
                     {(!planet._satellites || planet._satellites.length === 0) && (
                       <tr>
-                        <td colSpan={10}>No satellites available</td>
+                        <td colSpan={12}>No satellites available</td>
                       </tr>
                     )}
                     {planet._resources && planet._resources.length > 0 && (
                   <tr role='button' onClick={hide_or_show_res(planet._planet_name)}>
-                    <td colSpan={10}>
+                    <td colSpan={12}>
                       <div id={`showres${planet._planet_name}`}>show resources</div>
                       <table id={`tableres${planet._planet_name}`} style={{ display: "none" }}>
                         <thead>
@@ -162,7 +162,7 @@ const PlanetOverviewTable: React.FC = () => {
                 )}
                 {planet._resources && planet._resources.length === 0 && (
                   <tr>
-                    <td colSpan={10}>No resources available</td>
+                    <td colSpan={12}>No resources available</td>
                   </tr>
                 )}
 

@@ -88,7 +88,7 @@ const PlanetAdd: React.FC = () => {
         }
         const data= await response.json();
         if(response.status===200){
-            setStatusMessage({type:'success',message:data.message})
+            setStatusMessage({message: `Planet created succesfully`, type: 'success'})
             setTimeout(()=>{
                 router.push('/planet/overview')
             },500)
@@ -139,6 +139,7 @@ const PlanetAdd: React.FC = () => {
                 Add Planet
             </button>
         </div>
+        {statusMessage && <div className={styles.success}>{statusMessage.message}</div>}
       </form>
       </>)}
     </>)
